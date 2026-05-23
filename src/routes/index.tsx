@@ -294,10 +294,13 @@ function Home() {
           >
             <Map className="h-4 w-4" /> {T[lang].map}
           </Link>
-          <button className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface">
+          <Link
+            to="/favorites"
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
+          >
             <Heart className="h-4 w-4" />
             {count > 0 && <span className="tabular-nums text-primary">{count}</span>}
-          </button>
+          </Link>
         </div>
       </div>
     </div>
