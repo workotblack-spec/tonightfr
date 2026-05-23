@@ -1,33 +1,40 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Map, Sparkles, Heart, Loader2 } from "lucide-react";
+import { Map, Heart, CalendarX } from "lucide-react";
 import heroImg from "@/assets/hero-night.jpg";
+import logo from "@/assets/logo-tonight.png";
+import ogImg from "@/assets/og-tonight.jpg";
 import { type CategoryKey } from "@/data/events";
 import { T, type Lang } from "@/data/i18n";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { CategoryChips } from "@/components/tonight/CategoryChips";
 import { DateChips } from "@/components/tonight/DateChips";
 import { EventCard } from "@/components/tonight/EventCard";
+import { EventCardSkeleton } from "@/components/tonight/EventCardSkeleton";
 import { fetchEvents, type WhenFilter } from "@/lib/events";
 import { useFavorites } from "@/hooks/useFavorites";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tonight FR — What's on tonight in Fribourg" },
+      { title: "Tonight.fr — What's on tonight in Fribourg" },
       {
         name: "description",
         content:
           "Discover tonight's afterworks, concerts, clubbing, shisha, lounge bars, expos and live sports in Fribourg, Switzerland. Curated nightlife in FR / DE / EN.",
       },
-      { property: "og:title", content: "Tonight FR — Fribourg nightlife tonight" },
+      { property: "og:title", content: "Tonight.fr — Fribourg nightlife tonight" },
       {
         property: "og:description",
         content:
           "Everything happening in Fribourg tonight, at a glance. Afterwork, happy hour, concerts, clubbing, shisha, lounge, culture and sport.",
       },
+      { property: "og:image", content: ogImg },
+      { name: "twitter:image", content: ogImg },
+      { property: "og:url", content: "/" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Home,
 });
@@ -54,14 +61,18 @@ function Home() {
     <div className="relative min-h-screen pb-32">
       <header className="glass-strong sticky top-0 z-40">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-3">
-          <div className="flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-aurora shadow-neon">
-              <Sparkles className="h-4 w-4 text-primary-foreground" />
-            </span>
+          <Link to="/" className="flex items-center gap-2">
+            <img
+              src={logo}
+              alt=""
+              width={32}
+              height={32}
+              className="h-8 w-8 drop-shadow-[0_0_12px_rgba(255,45,184,0.35)]"
+            />
             <span className="font-display text-base font-semibold tracking-tight">
               Tonight<span className="text-gradient-neon">.fr</span>
             </span>
-          </div>
+          </Link>
           <LanguageSwitcher lang={lang} onChange={setLang} />
         </div>
       </header>
@@ -134,13 +145,24 @@ function Home() {
         </div>
 
         {eventsQuery.isLoading ? (
-          <div className="flex items-center justify-center py-20 text-muted-foreground">
-            <Loader2 className="h-5 w-5 animate-spin" />
+          <div className="grid gap-5">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <EventCardSkeleton key={i} />
+            ))}
           </div>
         ) : events.length === 0 ? (
-          <p className="rounded-2xl glass py-12 text-center text-sm text-muted-foreground">
-            {T[lang].noEvents}
-          </p>
+          <div className="flex flex-col items-center gap-3 rounded-2xl glass py-14 text-center">
+            <div className="grid h-12 w-12 place-items-center rounded-full bg-surface-elevated">
+              <CalendarX className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <p className="text-sm text-muted-foreground">{T[lang].noEvents}</p>
+            <button
+              onClick={() => setWhen("all")}
+              className="mt-1 rounded-full bg-gradient-aurora px-4 py-2 text-xs font-semibold text-primary-foreground shadow-neon"
+            >
+              {T[lang].fAll}
+            </button>
+          </div>
         ) : (
           <div className="grid gap-5">
             {events.map((e, i) => (
@@ -156,7 +178,18 @@ function Home() {
           </div>
         )}
 
-        <p className="mt-16 text-center text-xs text-muted-foreground">{T[lang].footer}</p>
+        <footer className="mt-16 flex flex-col items-center gap-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-4">
+            <Link to="/about" className="hover:text-foreground">
+              À propos
+            </Link>
+            <span>·</span>
+            <Link to="/legal" className="hover:text-foreground">
+              Mentions légales
+            </Link>
+          </div>
+          <p>{T[lang].footer}</p>
+        </footer>
       </main>
 
       <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-5">
