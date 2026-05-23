@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Map, Heart, CalendarX, Locate, LocateFixed } from "lucide-react";
+import { Map, Heart, CalendarX, Locate, LocateFixed, User as UserIcon, LogOut, Settings } from "lucide-react";
 import heroImg from "@/assets/hero-night.jpg";
 import logo from "@/assets/logo-tonight.png";
 import ogImg from "@/assets/og-tonight.jpg";
@@ -16,6 +16,8 @@ import { EventCardSkeleton } from "@/components/tonight/EventCardSkeleton";
 import { fetchEvents, type WhenFilter, type DbEvent } from "@/lib/events";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useGeolocation, distanceKm } from "@/hooks/useGeolocation";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,6 +49,8 @@ function Home() {
   const [when, setWhen] = useState<WhenFilter>("tonight");
   const [search, setSearch] = useState("");
   const { has, toggle, count } = useFavorites();
+  const auth = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
   const geo = useGeolocation();
 
   const eventsQuery = useQuery({
@@ -100,7 +104,50 @@ function Home() {
               Tonight<span className="text-gradient-neon">.fr</span>
             </span>
           </Link>
-          <LanguageSwitcher lang={lang} onChange={setLang} />
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher lang={lang} onChange={setLang} />
+            <div className="relative">
+              <button
+                onClick={() => setMenuOpen((v) => !v)}
+                className="grid h-9 w-9 place-items-center rounded-full glass hover:bg-surface-elevated"
+                aria-label={T[lang].myAccount}
+              >
+                <UserIcon className="h-4 w-4" />
+              </button>
+              {menuOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-border/40 bg-background shadow-elevated"
+                  onMouseLeave={() => setMenuOpen(false)}
+                >
+                  {auth.user ? (
+                    <>
+                      <div className="px-3 py-2 text-xs text-muted-foreground truncate">
+                        {auth.user.email}
+                      </div>
+                      <Link to="/favorites" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-elevated" onClick={() => setMenuOpen(false)}>
+                        <Heart className="h-4 w-4" /> {T[lang].favorites}
+                      </Link>
+                      {(auth.role === "venue" || auth.role === "admin") && (
+                        <Link to="/admin" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-elevated" onClick={() => setMenuOpen(false)}>
+                          <Settings className="h-4 w-4" /> {T[lang].admin}
+                        </Link>
+                      )}
+                      <button
+                        onClick={() => { supabase.auth.signOut(); setMenuOpen(false); }}
+                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-surface-elevated"
+                      >
+                        <LogOut className="h-4 w-4" /> {T[lang].signOut}
+                      </button>
+                    </>
+                  ) : (
+                    <Link to="/auth" className="block px-3 py-2 text-sm hover:bg-surface-elevated" onClick={() => setMenuOpen(false)}>
+                      {T[lang].signIn}
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
@@ -247,10 +294,13 @@ function Home() {
           >
             <Map className="h-4 w-4" /> {T[lang].map}
           </Link>
-          <button className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface">
+          <Link
+            to="/favorites"
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
+          >
             <Heart className="h-4 w-4" />
             {count > 0 && <span className="tabular-nums text-primary">{count}</span>}
-          </button>
+          </Link>
         </div>
       </div>
     </div>
