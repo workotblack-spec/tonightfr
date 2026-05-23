@@ -145,19 +145,39 @@ function Home() {
                 >
                   {events.length} {T[lang].events}
                 </a>
-                <button className="inline-flex items-center gap-2 rounded-full glass px-5 py-3 text-sm font-semibold transition-colors hover:bg-surface-elevated">
+                <Link
+                  to="/map"
+                  className="inline-flex items-center gap-2 rounded-full glass px-5 py-3 text-sm font-semibold transition-colors hover:bg-surface-elevated"
+                >
                   <Map className="h-4 w-4" />
                   {T[lang].seeMap}
-                </button>
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Date filter */}
+      {/* Search + Date + Category filter */}
       <section className="sticky top-[60px] z-30 glass-strong">
         <div className="mx-auto max-w-3xl space-y-3 px-5 py-3">
+          <div className="flex items-center gap-2">
+            <div className="flex-1">
+              <SearchBar value={search} onChange={setSearch} placeholder={T[lang].searchPh} />
+            </div>
+            <button
+              onClick={geo.coords ? geo.clear : geo.request}
+              disabled={geo.loading}
+              aria-label={T[lang].locateMe}
+              className={`grid h-10 w-10 shrink-0 place-items-center rounded-full transition-colors ${
+                geo.coords
+                  ? "bg-gradient-aurora text-primary-foreground shadow-neon"
+                  : "glass hover:bg-surface-elevated"
+              }`}
+            >
+              {geo.coords ? <LocateFixed className="h-4 w-4" /> : <Locate className="h-4 w-4" />}
+            </button>
+          </div>
           <DateChips active={when} onChange={setWhen} lang={lang} />
           <CategoryChips active={active} onChange={setActive} lang={lang} />
         </div>
@@ -221,9 +241,12 @@ function Home() {
 
       <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-5">
         <div className="pointer-events-auto flex items-center gap-1 rounded-full glass-strong p-1.5 shadow-elevated">
-          <button className="inline-flex items-center gap-2 rounded-full bg-gradient-aurora px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-neon">
+          <Link
+            to="/map"
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-aurora px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-neon"
+          >
             <Map className="h-4 w-4" /> {T[lang].map}
-          </button>
+          </Link>
           <button className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface">
             <Heart className="h-4 w-4" />
             {count > 0 && <span className="tabular-nums text-primary">{count}</span>}
