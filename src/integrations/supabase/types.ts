@@ -14,7 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      events: {
+        Row: {
+          address: string | null
+          area: string
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_key: string
+          lat: number | null
+          lineup: string | null
+          lng: number | null
+          price_text: string | null
+          starts_at: string
+          ticket_url: string | null
+          title: string
+          venue: string
+        }
+        Insert: {
+          address?: string | null
+          area: string
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_key: string
+          lat?: number | null
+          lineup?: string | null
+          lng?: number | null
+          price_text?: string | null
+          starts_at: string
+          ticket_url?: string | null
+          title: string
+          venue: string
+        }
+        Update: {
+          address?: string | null
+          area?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_key?: string
+          lat?: number | null
+          lineup?: string | null
+          lng?: number | null
+          price_text?: string | null
+          starts_at?: string
+          ticket_url?: string | null
+          title?: string
+          venue?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
