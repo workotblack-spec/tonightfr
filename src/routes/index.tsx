@@ -104,7 +104,50 @@ function Home() {
               Tonight<span className="text-gradient-neon">.fr</span>
             </span>
           </Link>
-          <LanguageSwitcher lang={lang} onChange={setLang} />
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher lang={lang} onChange={setLang} />
+            <div className="relative">
+              <button
+                onClick={() => setMenuOpen((v) => !v)}
+                className="grid h-9 w-9 place-items-center rounded-full glass hover:bg-surface-elevated"
+                aria-label={T[lang].myAccount}
+              >
+                <UserIcon className="h-4 w-4" />
+              </button>
+              {menuOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-border/40 bg-background shadow-elevated"
+                  onMouseLeave={() => setMenuOpen(false)}
+                >
+                  {auth.user ? (
+                    <>
+                      <div className="px-3 py-2 text-xs text-muted-foreground truncate">
+                        {auth.user.email}
+                      </div>
+                      <Link to="/favorites" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-elevated" onClick={() => setMenuOpen(false)}>
+                        <Heart className="h-4 w-4" /> {T[lang].favorites}
+                      </Link>
+                      {(auth.role === "venue" || auth.role === "admin") && (
+                        <Link to="/admin" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-surface-elevated" onClick={() => setMenuOpen(false)}>
+                          <Settings className="h-4 w-4" /> {T[lang].admin}
+                        </Link>
+                      )}
+                      <button
+                        onClick={() => { supabase.auth.signOut(); setMenuOpen(false); }}
+                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-surface-elevated"
+                      >
+                        <LogOut className="h-4 w-4" /> {T[lang].signOut}
+                      </button>
+                    </>
+                  ) : (
+                    <Link to="/auth" className="block px-3 py-2 text-sm hover:bg-surface-elevated" onClick={() => setMenuOpen(false)}>
+                      {T[lang].signIn}
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
