@@ -45,14 +45,39 @@ function Home() {
   const [lang, setLang] = useState<Lang>("fr");
   const [active, setActive] = useState<CategoryKey | "all">("all");
   const [when, setWhen] = useState<WhenFilter>("tonight");
+  const [search, setSearch] = useState("");
   const { has, toggle, count } = useFavorites();
+  const geo = useGeolocation();
 
   const eventsQuery = useQuery({
     queryKey: ["events", when, active],
     queryFn: () => fetchEvents({ when, category: active }),
   });
 
-  const events = useMemo(() => eventsQuery.data ?? [], [eventsQuery.data]);
+  const events = useMemo(() => {
+    let list: (DbEvent & { _distance?: number })[] = eventsQuery.data ?? [];
+    const term = search.trim().toLowerCase();
+    if (term) {
+      list = list.filter(
+        (e) =>
+          e.title.toLowerCase().includes(term) ||
+          e.venue.toLowerCase().includes(term) ||
+          e.area.toLowerCase().includes(term),
+      );
+    }
+    if (geo.coords) {
+      list = list
+        .map((e) => ({
+          ...e,
+          _distance:
+            e.lat != null && e.lng != null
+              ? distanceKm(geo.coords!, { lat: e.lat, lng: e.lng })
+              : Number.POSITIVE_INFINITY,
+        }))
+        .sort((a, b) => (a._distance ?? Infinity) - (b._distance ?? Infinity));
+    }
+    return list;
+  }, [eventsQuery.data, search, geo.coords]);
 
   const today = new Date().toLocaleDateString(
     lang === "fr" ? "fr-CH" : lang === "de" ? "de-CH" : "en-GB",
