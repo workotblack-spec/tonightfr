@@ -17,6 +17,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EventIdRouteImport } from './routes/event.$id'
+import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml'
 
 const MapRoute = MapRouteImport.update({
   id: '/map',
@@ -58,6 +59,11 @@ const EventIdRoute = EventIdRouteImport.update({
   path: '/event/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
+  id: '/api/sitemap.xml',
+  path: '/api/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/api/sitemap.xml'
     | '/event/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/api/sitemap.xml'
     | '/event/$id'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/api/sitemap.xml'
     | '/event/$id'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   FavoritesRoute: typeof FavoritesRoute
   LegalRoute: typeof LegalRoute
   MapRoute: typeof MapRoute
+  ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   EventIdRoute: typeof EventIdRoute
 }
 
@@ -192,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/sitemap.xml': {
+      id: '/api/sitemap.xml'
+      path: '/api/sitemap.xml'
+      fullPath: '/api/sitemap.xml'
+      preLoaderRoute: typeof ApiSitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -203,8 +223,19 @@ const rootRouteChildren: RootRouteChildren = {
   FavoritesRoute: FavoritesRoute,
   LegalRoute: LegalRoute,
   MapRoute: MapRoute,
+  ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   EventIdRoute: EventIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
