@@ -11,7 +11,9 @@ export type CategoryKey =
   | "concert"
   | "clubbing"
   | "culture"
-  | "sport";
+  | "sport"
+  | "shisha"
+  | "lounge";
 
 export const CATEGORIES: { key: CategoryKey; label: Record<"fr" | "de" | "en", string> }[] = [
   { key: "afterwork", label: { fr: "Afterwork", de: "Afterwork", en: "Afterwork" } },
@@ -20,6 +22,8 @@ export const CATEGORIES: { key: CategoryKey; label: Record<"fr" | "de" | "en", s
   { key: "clubbing", label: { fr: "Clubbing", de: "Clubbing", en: "Clubbing" } },
   { key: "culture", label: { fr: "Culture & Expo", de: "Kultur & Expo", en: "Culture & Expo" } },
   { key: "sport", label: { fr: "Sport en direct", de: "Sport Live", en: "Sport Broadcast" } },
+  { key: "shisha", label: { fr: "Shisha", de: "Shisha", en: "Shisha" } },
+  { key: "lounge", label: { fr: "Bar lounge", de: "Lounge Bar", en: "Lounge Bar" } },
 ];
 
 export type Event = {
@@ -213,5 +217,65 @@ export const EVENTS: Event[] = [
     image: culture,
     price: "Entrée libre",
     area: "Rue de Romont",
+  },
+  {
+    id: "19",
+    title: "Soirée Chicha — Oriental Vibes",
+    venue: "Oxygène Lounge",
+    time: "19:00",
+    category: "shisha",
+    image: bar,
+    price: "CHF 18",
+    area: "Rue de Lausanne",
+  },
+  {
+    id: "20",
+    title: "Lounge & Cocktails — Sunset Vibes",
+    venue: "Le 7ème Ciel",
+    time: "18:00",
+    category: "lounge",
+    image: afterwork,
+    price: "dès CHF 14",
+    area: "Pérolles",
+  },
+  {
+    id: "21",
+    title: "Shisha Night — Mint & Grape",
+    venue: "Le Caire",
+    time: "20:00",
+    category: "shisha",
+    image: bar,
+    price: "CHF 16",
+    area: "Basse-Ville",
+  },
+  {
+    id: "22",
+    title: "Chill Lounge — Deep House Session",
+    venue: "Terrasse Samsâra",
+    time: "19:30",
+    category: "lounge",
+    image: afterwork,
+    price: "Entrée libre",
+    area: "Rue de Lausanne",
+  },
+  {
+    id: "23",
+    title: "Chicha & Thé à la Menthe",
+    venue: "Oxygène Lounge",
+    time: "21:00",
+    category: "shisha",
+    image: bar,
+    price: "CHF 15",
+    area: "Rue de Lausanne",
+  },
+  {
+    id: "24",
+    title: "Rooftop Lounge — Golden Hour",
+    venue: "Le 7ème Ciel",
+    time: "17:30",
+    category: "lounge",
+    image: afterwork,
+    price: "dès CHF 12",
+    area: "Pérolles",
   },
 ];

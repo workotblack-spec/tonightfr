@@ -15,13 +15,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Discover tonight's afterworks, concerts, clubbing, expos and live sports in Fribourg, Switzerland. Curated nightlife in FR / DE / EN.",
+          "Discover tonight's afterworks, concerts, clubbing, shisha, lounge bars, expos and live sports in Fribourg, Switzerland. Curated nightlife in FR / DE / EN.",
       },
       { property: "og:title", content: "Tonight FR — Fribourg nightlife tonight" },
       {
         property: "og:description",
         content:
-          "Everything happening in Fribourg tonight, at a glance. Afterwork, happy hour, concerts, clubbing, culture and sport.",
+          "Everything happening in Fribourg tonight, at a glance. Afterwork, happy hour, concerts, clubbing, shisha, lounge, culture and sport.",
       },
     ],
   }),
