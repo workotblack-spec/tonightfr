@@ -49,6 +49,8 @@ function Home() {
   const [when, setWhen] = useState<WhenFilter>("tonight");
   const [search, setSearch] = useState("");
   const { has, toggle, count } = useFavorites();
+  const auth = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
   const geo = useGeolocation();
 
   const eventsQuery = useQuery({
