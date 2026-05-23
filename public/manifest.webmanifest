@@ -1,0 +1,13 @@
+{
+  "name": "Tonight.fr — Fribourg",
+  "short_name": "Tonight.fr",
+  "description": "What's on tonight in Fribourg: concerts, clubbing, afterworks, lounge & sport.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0410",
+  "theme_color": "#0b0410",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
