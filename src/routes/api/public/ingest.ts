@@ -1,0 +1,231 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { supabaseAdmin } from "@/integrations/supabase/client.server";
+
+// Sources to scrape — Fribourg nightlife & culture
+const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: string; defaultCategory: string; defaultImage: string; lat?: number; lng?: number; address?: string }[] = [
+  {
+    id: "frison",
+    url: "https://fri-son.ch/programme/",
+    defaultVenue: "Fri-Son",
+    defaultArea: "Fribourg",
+    defaultCategory: "concert",
+    defaultImage: "concert",
+    lat: 46.8023,
+    lng: 7.1467,
+    address: "Route de la Fonderie 13, 1700 Fribourg",
+  },
+  {
+    id: "nouveaumonde",
+    url: "https://www.nouveaumonde.ch/agenda/",
+    defaultVenue: "Le Nouveau Monde",
+    defaultArea: "Fribourg",
+    defaultCategory: "concert",
+    defaultImage: "concert",
+    lat: 46.8011,
+    lng: 7.1503,
+    address: "Esplanade de l'Ancienne-Gare 3, 1700 Fribourg",
+  },
+  {
+    id: "fribourgtourisme",
+    url: "https://www.fribourgtourisme.ch/fr/agenda.html",
+    defaultVenue: "Fribourg",
+    defaultArea: "Fribourg",
+    defaultCategory: "culture",
+    defaultImage: "culture",
+    lat: 46.8065,
+    lng: 7.1619,
+  },
+];
+
+const ALLOWED_CATEGORIES = [
+  "afterwork",
+  "happyhour",
+  "concert",
+  "clubbing",
+  "culture",
+  "sport",
+  "shisha",
+  "lounge",
+] as const;
+
+const ALLOWED_IMAGES = ["club", "bar", "concert", "culture", "sport", "afterwork"] as const;
+
+type ParsedEvent = {
+  title: string;
+  starts_at: string; // ISO
+  category: (typeof ALLOWED_CATEGORIES)[number];
+  image_key: (typeof ALLOWED_IMAGES)[number];
+  description?: string;
+  lineup?: string;
+  price_text?: string;
+  ticket_url?: string;
+  external_slug: string;
+};
+
+async function firecrawlScrape(url: string): Promise<string> {
+  const apiKey = process.env.FIRECRAWL_API_KEY;
+  if (!apiKey) throw new Error("FIRECRAWL_API_KEY missing");
+  const res = await fetch("https://api.firecrawl.dev/v2/scrape", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      url,
+      formats: ["markdown"],
+      onlyMainContent: true,
+      waitFor: 1500,
+    }),
+  });
+  if (!res.ok) throw new Error(`Firecrawl ${res.status}: ${await res.text()}`);
+  const json = (await res.json()) as { data?: { markdown?: string }; markdown?: string };
+  return json.data?.markdown ?? json.markdown ?? "";
+}
+
+async function aiExtract(markdown: string, sourceId: string, defaults: { category: string; image: string }): Promise<ParsedEvent[]> {
+  const apiKey = process.env.LOVABLE_API_KEY;
+  if (!apiKey) throw new Error("LOVABLE_API_KEY missing");
+
+  const currentYear = new Date().getFullYear();
+  const prompt = `You are an event extractor for a Fribourg (Switzerland) nightlife app. From the page content below, extract upcoming events.
+
+Rules:
+- Only include events in the next 90 days. Today is ${new Date().toISOString().slice(0, 10)}.
+- starts_at must be ISO 8601 with timezone (assume Europe/Zurich, +01:00 or +02:00 for summer).
+- If only a date is given, use 20:00 local time.
+- Year defaults to ${currentYear} or ${currentYear + 1} if the month already passed.
+- category MUST be one of: ${ALLOWED_CATEGORIES.join(", ")}. Default: ${defaults.category}.
+- image_key MUST be one of: ${ALLOWED_IMAGES.join(", ")}. Default: ${defaults.image}.
+- external_slug: short kebab-case unique key derived from title+date (e.g. "artist-name-2026-03-15").
+- Return ONLY valid JSON, no prose.
+
+Page content:
+---
+${markdown.slice(0, 25000)}
+---`;
+
+  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "google/gemini-2.5-flash",
+      messages: [{ role: "user", content: prompt }],
+      tools: [
+        {
+          type: "function",
+          function: {
+            name: "save_events",
+            description: "Save extracted events",
+            parameters: {
+              type: "object",
+              properties: {
+                events: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      title: { type: "string" },
+                      starts_at: { type: "string" },
+                      category: { type: "string", enum: [...ALLOWED_CATEGORIES] },
+                      image_key: { type: "string", enum: [...ALLOWED_IMAGES] },
+                      description: { type: "string" },
+                      lineup: { type: "string" },
+                      price_text: { type: "string" },
+                      ticket_url: { type: "string" },
+                      external_slug: { type: "string" },
+                    },
+                    required: ["title", "starts_at", "category", "image_key", "external_slug"],
+                  },
+                },
+              },
+              required: ["events"],
+            },
+          },
+        },
+      ],
+      tool_choice: { type: "function", function: { name: "save_events" } },
+    }),
+  });
+
+  if (!res.ok) throw new Error(`AI gateway ${res.status}: ${await res.text()}`);
+  const data = (await res.json()) as {
+    choices?: { message?: { tool_calls?: { function?: { arguments?: string } }[] } }[];
+  };
+  const args = data.choices?.[0]?.message?.tool_calls?.[0]?.function?.arguments;
+  if (!args) return [];
+  try {
+    const parsed = JSON.parse(args) as { events?: ParsedEvent[] };
+    return parsed.events ?? [];
+  } catch {
+    return [];
+  }
+}
+
+async function ingestSource(source: (typeof SOURCES)[number]) {
+  const md = await firecrawlScrape(source.url);
+  if (!md || md.length < 100) return { source: source.id, scraped: 0, upserted: 0, skipped: "no content" };
+
+  const events = await aiExtract(md, source.id, {
+    category: source.defaultCategory,
+    image: source.defaultImage,
+  });
+
+  let upserted = 0;
+  const errors: string[] = [];
+  for (const ev of events) {
+    if (!ev.title || !ev.starts_at || !ev.external_slug) continue;
+    const externalId = `${source.id}:${ev.external_slug}`;
+    const { error } = await supabaseAdmin
+      .from("events")
+      .upsert(
+        {
+          external_id: externalId,
+          title: ev.title.slice(0, 200),
+          venue: source.defaultVenue,
+          area: source.defaultArea,
+          category: ALLOWED_CATEGORIES.includes(ev.category) ? ev.category : source.defaultCategory,
+          starts_at: ev.starts_at,
+          image_key: ALLOWED_IMAGES.includes(ev.image_key) ? ev.image_key : source.defaultImage,
+          description: ev.description ?? null,
+          lineup: ev.lineup ?? null,
+          price_text: ev.price_text ?? null,
+          ticket_url: ev.ticket_url ?? null,
+          address: source.address ?? null,
+          lat: source.lat ?? null,
+          lng: source.lng ?? null,
+        },
+        { onConflict: "external_id" },
+      );
+    if (error) errors.push(error.message);
+    else upserted++;
+  }
+  return { source: source.id, scraped: events.length, upserted, errors: errors.slice(0, 3) };
+}
+
+export const Route = createFileRoute("/api/public/ingest")({
+  server: {
+    handlers: {
+      POST: async () => {
+        const results = [];
+        for (const s of SOURCES) {
+          try {
+            results.push(await ingestSource(s));
+          } catch (e) {
+            results.push({ source: s.id, error: e instanceof Error ? e.message : String(e) });
+          }
+        }
+        return Response.json({ ok: true, ranAt: new Date().toISOString(), results });
+      },
+      GET: async () => {
+        // Allow manual trigger from browser for testing
+        const results = [];
+        for (const s of SOURCES) {
+          try {
+            results.push(await ingestSource(s));
+          } catch (e) {
+            results.push({ source: s.id, error: e instanceof Error ? e.message : String(e) });
+          }
+        }
+        return Response.json({ ok: true, ranAt: new Date().toISOString(), results });
+      },
+    },
+  },
+});
