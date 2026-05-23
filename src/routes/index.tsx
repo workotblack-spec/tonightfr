@@ -1,33 +1,40 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Map, Sparkles, Heart, Loader2 } from "lucide-react";
+import { Map, Heart, CalendarX } from "lucide-react";
 import heroImg from "@/assets/hero-night.jpg";
+import logo from "@/assets/logo-tonight.png";
+import ogImg from "@/assets/og-tonight.jpg";
 import { type CategoryKey } from "@/data/events";
 import { T, type Lang } from "@/data/i18n";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { CategoryChips } from "@/components/tonight/CategoryChips";
 import { DateChips } from "@/components/tonight/DateChips";
 import { EventCard } from "@/components/tonight/EventCard";
+import { EventCardSkeleton } from "@/components/tonight/EventCardSkeleton";
 import { fetchEvents, type WhenFilter } from "@/lib/events";
 import { useFavorites } from "@/hooks/useFavorites";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tonight FR — What's on tonight in Fribourg" },
+      { title: "Tonight.fr — What's on tonight in Fribourg" },
       {
         name: "description",
         content:
           "Discover tonight's afterworks, concerts, clubbing, shisha, lounge bars, expos and live sports in Fribourg, Switzerland. Curated nightlife in FR / DE / EN.",
       },
-      { property: "og:title", content: "Tonight FR — Fribourg nightlife tonight" },
+      { property: "og:title", content: "Tonight.fr — Fribourg nightlife tonight" },
       {
         property: "og:description",
         content:
           "Everything happening in Fribourg tonight, at a glance. Afterwork, happy hour, concerts, clubbing, shisha, lounge, culture and sport.",
       },
+      { property: "og:image", content: ogImg },
+      { name: "twitter:image", content: ogImg },
+      { property: "og:url", content: "/" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Home,
 });
