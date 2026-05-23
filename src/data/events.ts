@@ -11,7 +11,9 @@ export type CategoryKey =
   | "concert"
   | "clubbing"
   | "culture"
-  | "sport";
+  | "sport"
+  | "shisha"
+  | "lounge";
 
 export const CATEGORIES: { key: CategoryKey; label: Record<"fr" | "de" | "en", string> }[] = [
   { key: "afterwork", label: { fr: "Afterwork", de: "Afterwork", en: "Afterwork" } },
@@ -20,6 +22,8 @@ export const CATEGORIES: { key: CategoryKey; label: Record<"fr" | "de" | "en", s
   { key: "clubbing", label: { fr: "Clubbing", de: "Clubbing", en: "Clubbing" } },
   { key: "culture", label: { fr: "Culture & Expo", de: "Kultur & Expo", en: "Culture & Expo" } },
   { key: "sport", label: { fr: "Sport en direct", de: "Sport Live", en: "Sport Broadcast" } },
+  { key: "shisha", label: { fr: "Shisha", de: "Shisha", en: "Shisha" } },
+  { key: "lounge", label: { fr: "Bar lounge", de: "Lounge Bar", en: "Lounge Bar" } },
 ];
 
 export type Event = {
