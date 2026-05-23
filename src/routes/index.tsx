@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Map, Heart, CalendarX } from "lucide-react";
+import { Map, Heart, CalendarX, Locate, LocateFixed } from "lucide-react";
 import heroImg from "@/assets/hero-night.jpg";
 import logo from "@/assets/logo-tonight.png";
 import ogImg from "@/assets/og-tonight.jpg";
@@ -10,10 +10,12 @@ import { T, type Lang } from "@/data/i18n";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { CategoryChips } from "@/components/tonight/CategoryChips";
 import { DateChips } from "@/components/tonight/DateChips";
+import { SearchBar } from "@/components/tonight/SearchBar";
 import { EventCard } from "@/components/tonight/EventCard";
 import { EventCardSkeleton } from "@/components/tonight/EventCardSkeleton";
-import { fetchEvents, type WhenFilter } from "@/lib/events";
+import { fetchEvents, type WhenFilter, type DbEvent } from "@/lib/events";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useGeolocation, distanceKm } from "@/hooks/useGeolocation";
 
 export const Route = createFileRoute("/")({
   head: () => ({
