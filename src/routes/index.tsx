@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Map, Heart, CalendarX, Locate, LocateFixed } from "lucide-react";
+import { Map, Heart, CalendarX, Locate, LocateFixed, User as UserIcon, LogOut, Settings } from "lucide-react";
 import heroImg from "@/assets/hero-night.jpg";
 import logo from "@/assets/logo-tonight.png";
 import ogImg from "@/assets/og-tonight.jpg";
@@ -16,6 +16,8 @@ import { EventCardSkeleton } from "@/components/tonight/EventCardSkeleton";
 import { fetchEvents, type WhenFilter, type DbEvent } from "@/lib/events";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useGeolocation, distanceKm } from "@/hooks/useGeolocation";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
