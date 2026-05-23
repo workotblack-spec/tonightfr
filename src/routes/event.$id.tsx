@@ -92,8 +92,27 @@ function EventDetail() {
     }
   };
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: ev.title,
+    startDate: date.toISOString(),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: {
+      "@type": "Place",
+      name: ev.venue,
+      address: ev.address || `${ev.area}, Fribourg, Switzerland`,
+      ...(ev.lat && ev.lng ? { geo: { "@type": "GeoCoordinates", latitude: ev.lat, longitude: ev.lng } } : {}),
+    },
+    image: imageFor(ev.image_key),
+    description: ev.description || `${ev.venue} · ${ev.area}`,
+    ...(ev.ticket_url ? { offers: { "@type": "Offer", url: ev.ticket_url, price: ev.price_text || "0" } } : {}),
+  };
+
   return (
     <div className="relative min-h-screen pb-32">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <header className="glass-strong sticky top-0 z-40">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-3">
           <Link
