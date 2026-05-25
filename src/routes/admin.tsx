@@ -103,6 +103,17 @@ function AdminPage() {
     qc.invalidateQueries({ queryKey: ["events"] });
   };
 
+  const onTogglePromo = async (e: DbEvent) => {
+    const active = e.is_promoted && (!e.promoted_until || new Date(e.promoted_until).getTime() > Date.now());
+    const payload = active
+      ? { is_promoted: false, promoted_until: null }
+      : { is_promoted: true, promoted_until: new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString() };
+    const { error } = await supabase.from("events").update(payload).eq("id", e.id);
+    if (error) { alert(error.message); return; }
+    qc.invalidateQueries({ queryKey: ["my-events"] });
+    qc.invalidateQueries({ queryKey: ["events"] });
+  };
+
   return (
     <div className="min-h-screen bg-background px-5 py-6 pb-24">
       <div className="mx-auto max-w-3xl">
