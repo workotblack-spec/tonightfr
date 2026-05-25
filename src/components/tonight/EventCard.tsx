@@ -27,10 +27,15 @@ export function EventCard({
   index: number;
 }) {
   const cat = CATEGORIES.find((c) => c.key === event.category);
+  const promoted =
+    !!event.is_promoted &&
+    (!event.promoted_until || new Date(event.promoted_until).getTime() > Date.now());
 
   return (
     <article
-      className="group relative overflow-hidden rounded-2xl bg-card shadow-card animate-fade-up"
+      className={`group relative overflow-hidden rounded-2xl bg-card shadow-card animate-fade-up ${
+        promoted ? "ring-1 ring-amber-400/60 shadow-[0_0_24px_-4px_rgba(251,191,36,0.35)]" : ""
+      }`}
       style={{ animationDelay: `${index * 60}ms` }}
     >
       <Link
