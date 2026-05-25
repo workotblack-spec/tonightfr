@@ -45,14 +45,12 @@ function AdminPage() {
   }, [loading, user, navigate]);
 
   const q = useQuery({
-    queryKey: ["my-events", user?.id],
+    queryKey: ["my-events", user?.id, role],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("events")
-        .select("*")
-        .eq("owner_id", user!.id)
-        .order("starts_at", { ascending: false });
+      let qb = supabase.from("events").select("*").order("starts_at", { ascending: false });
+      if (role !== "admin") qb = qb.eq("owner_id", user!.id);
+      const { data, error } = await qb;
       if (error) throw error;
       return (data ?? []) as DbEvent[];
     },
