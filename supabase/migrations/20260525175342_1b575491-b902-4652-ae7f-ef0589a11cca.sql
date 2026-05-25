@@ -8,7 +8,7 @@ SELECT cron.schedule(
     url := 'https://project--bef9f403-76ca-46c2-a723-2d1f8606abb7.lovable.app/api/public/ingest',
     headers := jsonb_build_object(
       'Content-Type','application/json',
-      'Authorization','Bearer emqJx9Mq0aanCAo5szMLNsjc8ojDsV'
+      'Authorization','Bearer __ROTATED_DO_NOT_USE__'
     ),
     body := jsonb_build_object('source','cron')
   );
