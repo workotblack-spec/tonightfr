@@ -213,9 +213,9 @@ function EventDetail() {
             <Share2 className="h-4 w-4" />
             {T[lang].share}
           </button>
-          {ev.ticket_url && (
+          {safeTicketUrl && (
             <a
-              href={ev.ticket_url}
+              href={safeTicketUrl}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-gradient-aurora px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-neon"
