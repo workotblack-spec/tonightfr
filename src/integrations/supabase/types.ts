@@ -24,11 +24,13 @@ export type Database = {
           external_id: string | null
           id: string
           image_key: string
+          is_promoted: boolean
           lat: number | null
           lineup: string | null
           lng: number | null
           owner_id: string | null
           price_text: string | null
+          promoted_until: string | null
           starts_at: string
           ticket_url: string | null
           title: string
@@ -43,11 +45,13 @@ export type Database = {
           external_id?: string | null
           id?: string
           image_key: string
+          is_promoted?: boolean
           lat?: number | null
           lineup?: string | null
           lng?: number | null
           owner_id?: string | null
           price_text?: string | null
+          promoted_until?: string | null
           starts_at: string
           ticket_url?: string | null
           title: string
@@ -62,11 +66,13 @@ export type Database = {
           external_id?: string | null
           id?: string
           image_key?: string
+          is_promoted?: boolean
           lat?: number | null
           lineup?: string | null
           lng?: number | null
           owner_id?: string | null
           price_text?: string | null
+          promoted_until?: string | null
           starts_at?: string
           ticket_url?: string | null
           title?: string
