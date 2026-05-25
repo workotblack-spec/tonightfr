@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { AuthSync } from "@/components/AuthSync";
+import { PWARegister } from "@/components/PWARegister";
 
 function NotFoundComponent() {
   return (
@@ -124,6 +125,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthSync />
+      <PWARegister />
       <Outlet />
     </QueryClientProvider>
   );
