@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Plus, Pencil, Trash2, X } from "lucide-react";
+import { ArrowLeft, Plus, Pencil, Trash2, X, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { CATEGORIES, type CategoryKey } from "@/data/events";
@@ -45,14 +45,12 @@ function AdminPage() {
   }, [loading, user, navigate]);
 
   const q = useQuery({
-    queryKey: ["my-events", user?.id],
+    queryKey: ["my-events", user?.id, role],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("events")
-        .select("*")
-        .eq("owner_id", user!.id)
-        .order("starts_at", { ascending: false });
+      let qb = supabase.from("events").select("*").order("starts_at", { ascending: false });
+      if (role !== "admin") qb = qb.eq("owner_id", user!.id);
+      const { data, error } = await qb;
       if (error) throw error;
       return (data ?? []) as DbEvent[];
     },
@@ -99,6 +97,17 @@ function AdminPage() {
       alert(error.message);
       return;
     }
+    qc.invalidateQueries({ queryKey: ["my-events"] });
+    qc.invalidateQueries({ queryKey: ["events"] });
+  };
+
+  const onTogglePromo = async (e: DbEvent) => {
+    const active = e.is_promoted && (!e.promoted_until || new Date(e.promoted_until).getTime() > Date.now());
+    const payload = active
+      ? { is_promoted: false, promoted_until: null }
+      : { is_promoted: true, promoted_until: new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString() };
+    const { error } = await supabase.from("events").update(payload).eq("id", e.id);
+    if (error) { alert(error.message); return; }
     qc.invalidateQueries({ queryKey: ["my-events"] });
     qc.invalidateQueries({ queryKey: ["events"] });
   };
@@ -150,6 +159,19 @@ function AdminPage() {
                   </div>
                 </div>
                 <div className="flex shrink-0 gap-1">
+                  {role === "admin" && (() => {
+                    const active = e.is_promoted && (!e.promoted_until || new Date(e.promoted_until).getTime() > Date.now());
+                    return (
+                      <button
+                        onClick={() => onTogglePromo(e)}
+                        title={active ? "Retirer la promotion" : "Promouvoir 30 jours"}
+                        className={`grid h-9 w-9 place-items-center rounded-full hover:bg-surface-elevated ${active ? "text-amber-300" : "text-muted-foreground"}`}
+                        aria-label="Promouvoir"
+                      >
+                        <Sparkles className="h-4 w-4" />
+                      </button>
+                    );
+                  })()}
                   <button
                     onClick={() =>
                       setEditing({
