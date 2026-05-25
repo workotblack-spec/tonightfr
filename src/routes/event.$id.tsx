@@ -92,6 +92,9 @@ function EventDetail() {
     }
   };
 
+  const isHttpUrl = (u?: string | null) => !!u && /^https?:\/\//i.test(u);
+  const safeTicketUrl = isHttpUrl(ev.ticket_url) ? ev.ticket_url : null;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Event",
@@ -107,12 +110,15 @@ function EventDetail() {
     },
     image: imageFor(ev.image_key),
     description: ev.description || `${ev.venue} · ${ev.area}`,
-    ...(ev.ticket_url ? { offers: { "@type": "Offer", url: ev.ticket_url, price: ev.price_text || "0" } } : {}),
+    ...(safeTicketUrl ? { offers: { "@type": "Offer", url: safeTicketUrl, price: ev.price_text || "0" } } : {}),
   };
+
+  // Escape </script> and < to prevent XSS via JSON-LD injection
+  const safeJsonLd = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 
   return (
     <div className="relative min-h-screen pb-32">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd }} />
       <header className="glass-strong sticky top-0 z-40">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-3">
           <Link
@@ -207,9 +213,9 @@ function EventDetail() {
             <Share2 className="h-4 w-4" />
             {T[lang].share}
           </button>
-          {ev.ticket_url && (
+          {safeTicketUrl && (
             <a
-              href={ev.ticket_url}
+              href={safeTicketUrl}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-gradient-aurora px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-neon"

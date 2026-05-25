@@ -225,6 +225,9 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   const errors: string[] = [];
   for (const ev of events) {
     if (!ev.title || !ev.starts_at || !ev.external_slug) continue;
+    // Validate ticket_url scheme to prevent javascript:/data: URL injection
+    const safeTicketUrl =
+      ev.ticket_url && /^https?:\/\//i.test(ev.ticket_url) ? ev.ticket_url : null;
     const externalId = `${source.id}:${ev.external_slug}`;
     const { error } = await supabaseAdmin
       .from("events")
@@ -240,7 +243,7 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
           description: ev.description ?? null,
           lineup: ev.lineup ?? null,
           price_text: ev.price_text ?? null,
-          ticket_url: ev.ticket_url ?? null,
+          ticket_url: safeTicketUrl,
           address: source.address ?? null,
           lat: source.lat ?? null,
           lng: source.lng ?? null,
@@ -253,22 +256,20 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   return { source: source.id, scraped: events.length, upserted, errors: errors.slice(0, 3) };
 }
 
+function isAuthorized(request: Request): boolean {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+  const header = request.headers.get("authorization") ?? "";
+  return header === `Bearer ${secret}`;
+}
+
 export const Route = createFileRoute("/api/public/ingest")({
   server: {
     handlers: {
-      POST: async () => {
-        const results = [];
-        for (const s of SOURCES) {
-          try {
-            results.push(await ingestSource(s));
-          } catch (e) {
-            results.push({ source: s.id, error: e instanceof Error ? e.message : String(e) });
-          }
+      POST: async ({ request }) => {
+        if (!isAuthorized(request)) {
+          return new Response("Unauthorized", { status: 401 });
         }
-        return Response.json({ ok: true, ranAt: new Date().toISOString(), results });
-      },
-      GET: async () => {
-        // Allow manual trigger from browser for testing
         const results = [];
         for (const s of SOURCES) {
           try {
@@ -282,3 +283,4 @@ export const Route = createFileRoute("/api/public/ingest")({
     },
   },
 });
+
