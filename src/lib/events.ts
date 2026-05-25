@@ -16,7 +16,15 @@ export type DbEvent = {
   lat: number | null;
   lng: number | null;
   ticket_url: string | null;
+  is_promoted?: boolean | null;
+  promoted_until?: string | null;
 };
+
+function isActivePromo(e: DbEvent): boolean {
+  if (!e.is_promoted) return false;
+  if (!e.promoted_until) return true;
+  return new Date(e.promoted_until).getTime() > Date.now();
+}
 
 export type WhenFilter = "tonight" | "tomorrow" | "weekend" | "all";
 
