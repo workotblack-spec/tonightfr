@@ -216,7 +216,7 @@ async function aiExtract(markdown: string, sourceId: string, defaults: { categor
   if (!apiKey) throw new Error("LOVABLE_API_KEY missing");
 
   const currentYear = new Date().getFullYear();
-  const prompt = `You are an event extractor for a Fribourg (Switzerland) nightlife app. From the page content below, extract upcoming events.
+  const prompt = `You are an event extractor for a Swiss nightlife & culture app (Fribourg + Lausanne). From the page content below, extract upcoming events.
 
 Rules:
 - Only include events in the next 90 days. Today is ${new Date().toISOString().slice(0, 10)}.
