@@ -107,12 +107,15 @@ function EventDetail() {
     },
     image: imageFor(ev.image_key),
     description: ev.description || `${ev.venue} · ${ev.area}`,
-    ...(ev.ticket_url ? { offers: { "@type": "Offer", url: ev.ticket_url, price: ev.price_text || "0" } } : {}),
+    ...(safeTicketUrl ? { offers: { "@type": "Offer", url: safeTicketUrl, price: ev.price_text || "0" } } : {}),
   };
+
+  // Escape </script> and < to prevent XSS via JSON-LD injection
+  const safeJsonLd = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 
   return (
     <div className="relative min-h-screen pb-32">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd }} />
       <header className="glass-strong sticky top-0 z-40">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-3">
           <Link
