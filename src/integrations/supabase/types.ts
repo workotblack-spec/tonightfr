@@ -163,6 +163,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      sync_cron_secret_to_vault: {
+        Args: { _value: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "venue" | "user"
