@@ -16,21 +16,32 @@ const browser = await openBrowser("chrome", {
   chromeMode: "chrome-for-testing",
 });
 
-const composition = await selectComposition({
-  serveUrl: bundled,
-  id: "main",
-  puppeteerInstance: browser,
-});
+const variants = [
+  { voice: "fr", out: "/mnt/documents/tonight-tiktok-fr.mp4", muted: false },
+  { voice: "de", out: "/mnt/documents/tonight-tiktok-de.mp4", muted: false },
+  { voice: "mute", out: "/mnt/documents/tonight-tiktok-mute.mp4", muted: true },
+];
 
-await renderMedia({
-  composition,
-  serveUrl: bundled,
-  codec: "h264",
-  outputLocation: "/mnt/documents/tonight-tiktok.mp4",
-  puppeteerInstance: browser,
-  muted: true,
-  concurrency: 1,
-});
+for (const v of variants) {
+  console.log(`Rendering ${v.voice}...`);
+  const composition = await selectComposition({
+    serveUrl: bundled,
+    id: "main",
+    puppeteerInstance: browser,
+    inputProps: { voice: v.voice },
+  });
+  await renderMedia({
+    composition,
+    serveUrl: bundled,
+    codec: "h264",
+    outputLocation: v.out,
+    puppeteerInstance: browser,
+    inputProps: { voice: v.voice },
+    muted: v.muted,
+    concurrency: 1,
+  });
+  console.log(`Done ${v.out}`);
+}
 
 await browser.close({ silent: false });
-console.log("DONE");
+console.log("ALL DONE");
