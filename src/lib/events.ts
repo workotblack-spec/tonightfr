@@ -16,7 +16,15 @@ export type DbEvent = {
   lat: number | null;
   lng: number | null;
   ticket_url: string | null;
+  is_promoted?: boolean | null;
+  promoted_until?: string | null;
 };
+
+function isActivePromo(e: DbEvent): boolean {
+  if (!e.is_promoted) return false;
+  if (!e.promoted_until) return true;
+  return new Date(e.promoted_until).getTime() > Date.now();
+}
 
 export type WhenFilter = "tonight" | "tomorrow" | "weekend" | "all";
 
@@ -77,7 +85,14 @@ export async function fetchEvents(opts: {
   }
   const { data, error } = await q;
   if (error) throw error;
-  return (data ?? []) as DbEvent[];
+  const list = (data ?? []) as DbEvent[];
+  // Promoted events first
+  return list.slice().sort((a, b) => {
+    const ap = isActivePromo(a) ? 1 : 0;
+    const bp = isActivePromo(b) ? 1 : 0;
+    if (ap !== bp) return bp - ap;
+    return new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime();
+  });
 }
 
 export async function fetchEventById(id: string): Promise<DbEvent | null> {

@@ -27,10 +27,15 @@ export function EventCard({
   index: number;
 }) {
   const cat = CATEGORIES.find((c) => c.key === event.category);
+  const promoted =
+    !!event.is_promoted &&
+    (!event.promoted_until || new Date(event.promoted_until).getTime() > Date.now());
 
   return (
     <article
-      className="group relative overflow-hidden rounded-2xl bg-card shadow-card animate-fade-up"
+      className={`group relative overflow-hidden rounded-2xl bg-card shadow-card animate-fade-up ${
+        promoted ? "ring-1 ring-amber-400/60 shadow-[0_0_24px_-4px_rgba(251,191,36,0.35)]" : ""
+      }`}
       style={{ animationDelay: `${index * 60}ms` }}
     >
       <Link
@@ -54,6 +59,12 @@ export function EventCard({
             <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full glass px-2.5 py-1 text-[11px] font-medium uppercase tracking-wider">
               <span className="h-1.5 w-1.5 rounded-full bg-gradient-aurora" />
               {cat.label[lang]}
+            </div>
+          )}
+
+          {promoted && (
+            <div className="absolute left-3 top-12 inline-flex items-center gap-1 rounded-full bg-amber-400/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-950 shadow-md">
+              ★ Sponsorisé
             </div>
           )}
 

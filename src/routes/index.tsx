@@ -78,7 +78,12 @@ function Home() {
               ? distanceKm(geo.coords!, { lat: e.lat, lng: e.lng })
               : Number.POSITIVE_INFINITY,
         }))
-        .sort((a, b) => (a._distance ?? Infinity) - (b._distance ?? Infinity));
+        .sort((a, b) => {
+          const ap = a.is_promoted ? 1 : 0;
+          const bp = b.is_promoted ? 1 : 0;
+          if (ap !== bp) return bp - ap;
+          return (a._distance ?? Infinity) - (b._distance ?? Infinity);
+        });
     }
     return list;
   }, [eventsQuery.data, search, geo.coords]);
@@ -273,6 +278,12 @@ function Home() {
         )}
 
         <footer className="mt-16 flex flex-col items-center gap-3 text-xs text-muted-foreground">
+          <Link
+            to="/promouvoir"
+            className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-xs font-semibold text-amber-300 transition-colors hover:bg-amber-400/20"
+          >
+            ✨ Promouvoir mon événement
+          </Link>
           <div className="flex items-center gap-4">
             <Link to="/about" className="hover:text-foreground">
               À propos
