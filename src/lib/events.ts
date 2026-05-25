@@ -85,7 +85,14 @@ export async function fetchEvents(opts: {
   }
   const { data, error } = await q;
   if (error) throw error;
-  return (data ?? []) as DbEvent[];
+  const list = (data ?? []) as DbEvent[];
+  // Promoted events first
+  return list.slice().sort((a, b) => {
+    const ap = isActivePromo(a) ? 1 : 0;
+    const bp = isActivePromo(b) ? 1 : 0;
+    if (ap !== bp) return bp - ap;
+    return new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime();
+  });
 }
 
 export async function fetchEventById(id: string): Promise<DbEvent | null> {
