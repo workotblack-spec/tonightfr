@@ -18,6 +18,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EventIdRouteImport } from './routes/event.$id'
 import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml'
+import { Route as ApiPublicSyncCronSecretRouteImport } from './routes/api/public/sync-cron-secret'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
 
 const MapRoute = MapRouteImport.update({
@@ -65,6 +66,11 @@ const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
   path: '/api/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSyncCronSecretRoute = ApiPublicSyncCronSecretRouteImport.update({
+  id: '/api/public/sync-cron-secret',
+  path: '/api/public/sync-cron-secret',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicIngestRoute = ApiPublicIngestRouteImport.update({
   id: '/api/public/ingest',
   path: '/api/public/ingest',
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/sync-cron-secret': typeof ApiPublicSyncCronSecretRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/sync-cron-secret': typeof ApiPublicSyncCronSecretRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
+  '/api/public/sync-cron-secret': typeof ApiPublicSyncCronSecretRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/ingest'
+    | '/api/public/sync-cron-secret'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/ingest'
+    | '/api/public/sync-cron-secret'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/ingest'
+    | '/api/public/sync-cron-secret'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +170,7 @@ export interface RootRouteChildren {
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   EventIdRoute: typeof EventIdRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
+  ApiPublicSyncCronSecretRoute: typeof ApiPublicSyncCronSecretRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/sync-cron-secret': {
+      id: '/api/public/sync-cron-secret'
+      path: '/api/public/sync-cron-secret'
+      fullPath: '/api/public/sync-cron-secret'
+      preLoaderRoute: typeof ApiPublicSyncCronSecretRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/ingest': {
       id: '/api/public/ingest'
       path: '/api/public/ingest'
@@ -246,7 +266,18 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   EventIdRoute: EventIdRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
+  ApiPublicSyncCronSecretRoute: ApiPublicSyncCronSecretRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
