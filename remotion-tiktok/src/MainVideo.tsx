@@ -368,9 +368,12 @@ const CTAScene: React.FC = () => {
 };
 
 // ============ MAIN ============
-export const MainVideo: React.FC = () => {
+export const MainVideo: React.FC<{ voice?: "fr" | "de" | "mute" }> = ({ voice = "mute" }) => {
   return (
     <AbsoluteFill>
+      {voice !== "mute" && (
+        <Audio src={staticFile(`audio/voice-${voice}.mp3`)} volume={1} />
+      )}
       <NoiseBg />
       <Series>
         <Series.Sequence durationInFrames={90}>
