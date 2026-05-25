@@ -225,6 +225,9 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   const errors: string[] = [];
   for (const ev of events) {
     if (!ev.title || !ev.starts_at || !ev.external_slug) continue;
+    // Validate ticket_url scheme to prevent javascript:/data: URL injection
+    const safeTicketUrl =
+      ev.ticket_url && /^https?:\/\//i.test(ev.ticket_url) ? ev.ticket_url : null;
     const externalId = `${source.id}:${ev.external_slug}`;
     const { error } = await supabaseAdmin
       .from("events")
@@ -240,7 +243,7 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
           description: ev.description ?? null,
           lineup: ev.lineup ?? null,
           price_text: ev.price_text ?? null,
-          ticket_url: ev.ticket_url ?? null,
+          ticket_url: safeTicketUrl,
           address: source.address ?? null,
           lat: source.lat ?? null,
           lng: source.lng ?? null,
