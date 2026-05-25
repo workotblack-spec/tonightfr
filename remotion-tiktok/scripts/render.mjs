@@ -20,17 +20,19 @@ const composition = await selectComposition({
   serveUrl: bundled,
   id: "main",
   puppeteerInstance: browser,
+  inputProps: { voice: "mute" },
 });
 
 await renderMedia({
   composition,
   serveUrl: bundled,
   codec: "h264",
-  outputLocation: "/mnt/documents/tonight-tiktok.mp4",
+  outputLocation: "/mnt/documents/tonight-tiktok-mute.mp4",
   puppeteerInstance: browser,
+  inputProps: { voice: "mute" },
   muted: true,
   concurrency: 1,
 });
 
 await browser.close({ silent: false });
-console.log("DONE");
+console.log("VIDEO DONE");
