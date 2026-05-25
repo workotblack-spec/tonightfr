@@ -161,6 +161,19 @@ function AdminPage() {
                   </div>
                 </div>
                 <div className="flex shrink-0 gap-1">
+                  {role === "admin" && (() => {
+                    const active = e.is_promoted && (!e.promoted_until || new Date(e.promoted_until).getTime() > Date.now());
+                    return (
+                      <button
+                        onClick={() => onTogglePromo(e)}
+                        title={active ? "Retirer la promotion" : "Promouvoir 30 jours"}
+                        className={`grid h-9 w-9 place-items-center rounded-full hover:bg-surface-elevated ${active ? "text-amber-300" : "text-muted-foreground"}`}
+                        aria-label="Promouvoir"
+                      >
+                        <Sparkles className="h-4 w-4" />
+                      </button>
+                    );
+                  })()}
                   <button
                     onClick={() =>
                       setEditing({
