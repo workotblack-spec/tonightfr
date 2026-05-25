@@ -78,7 +78,12 @@ function Home() {
               ? distanceKm(geo.coords!, { lat: e.lat, lng: e.lng })
               : Number.POSITIVE_INFINITY,
         }))
-        .sort((a, b) => (a._distance ?? Infinity) - (b._distance ?? Infinity));
+        .sort((a, b) => {
+          const ap = a.is_promoted ? 1 : 0;
+          const bp = b.is_promoted ? 1 : 0;
+          if (ap !== bp) return bp - ap;
+          return (a._distance ?? Infinity) - (b._distance ?? Infinity);
+        });
     }
     return list;
   }, [eventsQuery.data, search, geo.coords]);
