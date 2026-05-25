@@ -88,6 +88,84 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     lat: 46.8052,
     lng: 7.1601,
   },
+  // ===== Lausanne =====
+  {
+    id: "docks",
+    url: "https://www.lesdocks.ch/programme",
+    defaultVenue: "Les Docks",
+    defaultArea: "Lausanne",
+    defaultCategory: "concert",
+    defaultImage: "concert",
+    lat: 46.5189,
+    lng: 6.6225,
+    address: "Avenue de Sévelin 34, 1004 Lausanne",
+  },
+  {
+    id: "mad",
+    url: "https://www.mad.ch/programme",
+    defaultVenue: "MAD Club",
+    defaultArea: "Lausanne",
+    defaultCategory: "clubbing",
+    defaultImage: "club",
+    lat: 46.5197,
+    lng: 6.6322,
+    address: "Rue de Genève 23, 1003 Lausanne",
+  },
+  {
+    id: "dolce",
+    url: "https://www.dolcevita.ch/agenda",
+    defaultVenue: "D! Club",
+    defaultArea: "Lausanne",
+    defaultCategory: "clubbing",
+    defaultImage: "club",
+    lat: 46.5210,
+    lng: 6.6336,
+    address: "Place Centrale 3, 1003 Lausanne",
+  },
+  {
+    id: "romandie",
+    url: "https://www.laromandie.ch/programme",
+    defaultVenue: "La Romandie",
+    defaultArea: "Lausanne",
+    defaultCategory: "concert",
+    defaultImage: "concert",
+    lat: 46.5180,
+    lng: 6.6298,
+    address: "Place de l'Europe 1A, 1003 Lausanne",
+  },
+  {
+    id: "fondation-arts",
+    url: "https://www.fondation-hermitage.ch/agenda",
+    defaultVenue: "Fondation de l'Hermitage",
+    defaultArea: "Lausanne",
+    defaultCategory: "culture",
+    defaultImage: "culture",
+    lat: 46.5300,
+    lng: 6.6420,
+    address: "Route du Signal 2, 1018 Lausanne",
+  },
+  {
+    id: "lausanne-tourisme",
+    url: "https://www.lausanne-tourisme.ch/fr/agenda/",
+    defaultVenue: "Lausanne",
+    defaultArea: "Lausanne",
+    defaultCategory: "culture",
+    defaultImage: "culture",
+    lat: 46.5197,
+    lng: 6.6323,
+  },
+  {
+    id: "great-escape",
+    url: "https://www.the-great.ch/agenda",
+    defaultVenue: "Great Escape",
+    defaultArea: "Lausanne",
+    defaultCategory: "afterwork",
+    defaultImage: "bar",
+    lat: 46.5217,
+    lng: 6.6336,
+    address: "Rue Madeleine 18, 1003 Lausanne",
+  },
+
 ];
 
 const ALLOWED_CATEGORIES = [
@@ -138,7 +216,7 @@ async function aiExtract(markdown: string, sourceId: string, defaults: { categor
   if (!apiKey) throw new Error("LOVABLE_API_KEY missing");
 
   const currentYear = new Date().getFullYear();
-  const prompt = `You are an event extractor for a Fribourg (Switzerland) nightlife app. From the page content below, extract upcoming events.
+  const prompt = `You are an event extractor for a Swiss nightlife & culture app (Fribourg + Lausanne). From the page content below, extract upcoming events.
 
 Rules:
 - Only include events in the next 90 days. Today is ${new Date().toISOString().slice(0, 10)}.
