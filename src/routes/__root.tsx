@@ -85,6 +85,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Tonight.fr" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Tonight.fr — What's on tonight in Fribourg" },
+      { name: "twitter:title", content: "Tonight.fr — What's on tonight in Fribourg" },
+      { name: "description", content: "Tonight FR is a web app for discovering Fribourg's nightlife." },
+      { property: "og:description", content: "Tonight FR is a web app for discovering Fribourg's nightlife." },
+      { name: "twitter:description", content: "Tonight FR is a web app for discovering Fribourg's nightlife." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d7fc8dd4-03d8-41e3-b656-4dd5ddd8300e/id-preview-d0101a44--bef9f403-76ca-46c2-a723-2d1f8606abb7.lovable.app-1779732125377.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d7fc8dd4-03d8-41e3-b656-4dd5ddd8300e/id-preview-d0101a44--bef9f403-76ca-46c2-a723-2d1f8606abb7.lovable.app-1779732125377.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
