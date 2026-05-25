@@ -9,5 +9,6 @@ export const RemotionRoot = () => (
     fps={30}
     width={1080}
     height={1920}
+    defaultProps={{ voice: "mute" as "fr" | "de" | "mute" }}
   />
 );
