@@ -63,12 +63,19 @@ function LegalPage() {
 
       <Section title="4. Données personnelles (LPD révisée 2023)">
         <p>
-          Tonight.fr ne crée pas de compte utilisateur dans cette version. Les favoris sont stockés
-          localement sur votre appareil (localStorage) et ne sont jamais transmis à nos serveurs.
+          Tonight.fr propose une authentification optionnelle par email ou via Google. Lors de la
+          création d'un compte, nous stockons votre adresse email et un identifiant unique afin de
+          synchroniser vos favoris entre appareils. Aucune autre donnée personnelle n'est collectée.
+        </p>
+        <p className="mt-2">
+          Si vous n'êtes pas connecté, vos favoris restent stockés localement sur votre appareil
+          (localStorage) et ne sont jamais transmis à nos serveurs. Vous pouvez supprimer votre
+          compte à tout moment en écrivant à hello@tonight.fr.
         </p>
         <p className="mt-2">
           Aucun cookie de tracking publicitaire n'est utilisé. Aucune donnée n'est revendue ou
-          partagée avec des tiers à des fins marketing.
+          partagée avec des tiers à des fins marketing. Les données d'authentification sont
+          hébergées en Europe via notre prestataire backend (Supabase).
         </p>
       </Section>
 

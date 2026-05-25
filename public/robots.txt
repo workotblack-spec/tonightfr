@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /auth
 Disallow: /favorites
 
-Sitemap: https://tonight.fr/sitemap.xml
+Sitemap: https://tonight.fr/api/sitemap.xml
