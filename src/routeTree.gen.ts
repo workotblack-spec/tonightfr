@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PromouvoirRouteImport } from './routes/promouvoir'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as FavoritesRouteImport } from './routes/favorites'
@@ -21,6 +22,11 @@ import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml
 import { Route as ApiPublicSyncCronSecretRouteImport } from './routes/api/public/sync-cron-secret'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
 
+const PromouvoirRoute = PromouvoirRouteImport.update({
+  id: '/promouvoir',
+  path: '/promouvoir',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MapRoute = MapRouteImport.update({
   id: '/map',
   path: '/map',
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/ingest'
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/ingest'
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/ingest'
@@ -167,6 +179,7 @@ export interface RootRouteChildren {
   FavoritesRoute: typeof FavoritesRoute
   LegalRoute: typeof LegalRoute
   MapRoute: typeof MapRoute
+  PromouvoirRoute: typeof PromouvoirRoute
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   EventIdRoute: typeof EventIdRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
@@ -175,6 +188,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/promouvoir': {
+      id: '/promouvoir'
+      path: '/promouvoir'
+      fullPath: '/promouvoir'
+      preLoaderRoute: typeof PromouvoirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/map': {
       id: '/map'
       path: '/map'
@@ -263,6 +283,7 @@ const rootRouteChildren: RootRouteChildren = {
   FavoritesRoute: FavoritesRoute,
   LegalRoute: LegalRoute,
   MapRoute: MapRoute,
+  PromouvoirRoute: PromouvoirRoute,
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   EventIdRoute: EventIdRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
@@ -271,3 +292,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
