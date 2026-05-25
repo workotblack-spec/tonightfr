@@ -256,22 +256,20 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   return { source: source.id, scraped: events.length, upserted, errors: errors.slice(0, 3) };
 }
 
+function isAuthorized(request: Request): boolean {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+  const header = request.headers.get("authorization") ?? "";
+  return header === `Bearer ${secret}`;
+}
+
 export const Route = createFileRoute("/api/public/ingest")({
   server: {
     handlers: {
-      POST: async () => {
-        const results = [];
-        for (const s of SOURCES) {
-          try {
-            results.push(await ingestSource(s));
-          } catch (e) {
-            results.push({ source: s.id, error: e instanceof Error ? e.message : String(e) });
-          }
+      POST: async ({ request }) => {
+        if (!isAuthorized(request)) {
+          return new Response("Unauthorized", { status: 401 });
         }
-        return Response.json({ ok: true, ranAt: new Date().toISOString(), results });
-      },
-      GET: async () => {
-        // Allow manual trigger from browser for testing
         const results = [];
         for (const s of SOURCES) {
           try {
@@ -285,3 +283,4 @@ export const Route = createFileRoute("/api/public/ingest")({
     },
   },
 });
+
