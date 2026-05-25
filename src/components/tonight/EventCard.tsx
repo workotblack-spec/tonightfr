@@ -62,6 +62,12 @@ export function EventCard({
             </div>
           )}
 
+          {promoted && (
+            <div className="absolute left-3 top-12 inline-flex items-center gap-1 rounded-full bg-amber-400/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-950 shadow-md">
+              ★ Sponsorisé
+            </div>
+          )}
+
           <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/80 px-2.5 py-1 text-sm font-semibold tabular-nums backdrop-blur">
             <Clock className="h-3.5 w-3.5 text-primary" />
             {formatTime(event.starts_at, lang)}
