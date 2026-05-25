@@ -361,7 +361,7 @@ const CTAScene: React.FC = () => {
           boxShadow: `0 20px 60px ${PINK}88`,
         }}
       >
-        tonightfr.lovable.app
+        TONIGHT.FR
       </div>
     </AbsoluteFill>
   );
