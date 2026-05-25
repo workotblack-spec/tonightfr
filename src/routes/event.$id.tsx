@@ -92,6 +92,9 @@ function EventDetail() {
     }
   };
 
+  const isHttpUrl = (u?: string | null) => !!u && /^https?:\/\//i.test(u);
+  const safeTicketUrl = isHttpUrl(ev.ticket_url) ? ev.ticket_url : null;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Event",
