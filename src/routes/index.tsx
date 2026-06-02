@@ -22,17 +22,17 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tonight.fr — What's on tonight in Fribourg" },
+      { title: "Tonight Fribourg — Bars, clubs & sorties ce soir" },
       {
         name: "description",
         content:
-          "Discover tonight's afterworks, concerts, clubbing, shisha, lounge bars, expos and live sports in Fribourg, Switzerland. Curated nightlife in FR / DE / EN.",
+          "Trouve les bars, clubs, chichas, concerts et afterworks autour de toi à Fribourg, Bulle et Lausanne. La vie nocturne romande en un coup d'œil.",
       },
-      { property: "og:title", content: "Tonight.fr — Fribourg nightlife tonight" },
+      { property: "og:title", content: "Tonight Fribourg — sorties ce soir" },
       {
         property: "og:description",
         content:
-          "Everything happening in Fribourg tonight, at a glance. Afterwork, happy hour, concerts, clubbing, shisha, lounge, culture and sport.",
+          "Bars, clubs, chichas, concerts et afterworks autour de toi à Fribourg, Bulle et Lausanne.",
       },
       { property: "og:image", content: ogImg },
       { name: "twitter:image", content: ogImg },
