@@ -136,6 +136,45 @@ export type Database = {
         }
         Relationships: []
       }
+      promo_requests: {
+        Row: {
+          city: string | null
+          contact_name: string
+          created_at: string
+          email: string
+          event_name: string | null
+          id: string
+          message: string | null
+          phone: string | null
+          plan: string | null
+          venue: string
+        }
+        Insert: {
+          city?: string | null
+          contact_name: string
+          created_at?: string
+          email: string
+          event_name?: string | null
+          id?: string
+          message?: string | null
+          phone?: string | null
+          plan?: string | null
+          venue: string
+        }
+        Update: {
+          city?: string | null
+          contact_name?: string
+          created_at?: string
+          email?: string
+          event_name?: string | null
+          id?: string
+          message?: string | null
+          phone?: string | null
+          plan?: string | null
+          venue?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
