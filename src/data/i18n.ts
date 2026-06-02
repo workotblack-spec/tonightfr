@@ -144,7 +144,10 @@ export const T: Record<Lang, Record<string, string>> = {
   en: {
     tonightIn: "Tonight in",
     city: "Fribourg",
-    subtitle: "Everything happening in town, at a glance.",
+    subtitle: "Find bars, clubs, shisha lounges and concerts near you — Fribourg, Bulle and Lausanne.",
+    nearMeCta: "Near me",
+    promote: "Promote my event",
+    citiesLabel: "Cities",
     all: "All",
     map: "Map",
     nowLive: "Live right now",
