@@ -71,9 +71,12 @@ function rangeFor(when: WhenFilter): { from: Date; to: Date } | null {
   return null;
 }
 
+export type CityFilter = "all" | "Fribourg" | "Bulle" | "Lausanne";
+
 export async function fetchEvents(opts: {
   when: WhenFilter;
   category: CategoryKey | "all";
+  city?: CityFilter;
 }): Promise<DbEvent[]> {
   let q = supabase.from("events").select("*").order("starts_at", { ascending: true });
   const range = rangeFor(opts.when);
@@ -83,10 +86,12 @@ export async function fetchEvents(opts: {
   if (opts.category !== "all") {
     q = q.eq("category", opts.category);
   }
+  if (opts.city && opts.city !== "all") {
+    q = q.eq("area", opts.city);
+  }
   const { data, error } = await q;
   if (error) throw error;
   const list = (data ?? []) as DbEvent[];
-  // Promoted events first
   return list.slice().sort((a, b) => {
     const ap = isActivePromo(a) ? 1 : 0;
     const bp = isActivePromo(b) ? 1 : 0;
