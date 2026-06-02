@@ -13,7 +13,7 @@ import { DateChips } from "@/components/tonight/DateChips";
 import { SearchBar } from "@/components/tonight/SearchBar";
 import { EventCard } from "@/components/tonight/EventCard";
 import { EventCardSkeleton } from "@/components/tonight/EventCardSkeleton";
-import { fetchEvents, type WhenFilter, type DbEvent } from "@/lib/events";
+import { fetchEvents, type WhenFilter, type DbEvent, type CityFilter } from "@/lib/events";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useGeolocation, distanceKm } from "@/hooks/useGeolocation";
 import { useAuth } from "@/hooks/useAuth";
