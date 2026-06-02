@@ -4,7 +4,10 @@ export const T: Record<Lang, Record<string, string>> = {
   fr: {
     tonightIn: "Ce soir à",
     city: "Fribourg",
-    subtitle: "Tout ce qu'il se passe en ville, en un coup d'œil.",
+    subtitle: "Trouve les bars, clubs, chichas et concerts autour de toi — à Fribourg, Bulle et Lausanne.",
+    nearMeCta: "Autour de moi",
+    promote: "Promouvoir mon événement",
+    citiesLabel: "Villes",
     all: "Tout",
     map: "Carte",
     nowLive: "En direct maintenant",
