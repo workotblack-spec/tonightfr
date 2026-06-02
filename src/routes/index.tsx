@@ -48,14 +48,15 @@ function Home() {
   const [active, setActive] = useState<CategoryKey | "all">("all");
   const [when, setWhen] = useState<WhenFilter>("tonight");
   const [search, setSearch] = useState("");
+  const [city, setCity] = useState<CityFilter>("all");
   const { has, toggle, count } = useFavorites();
   const auth = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const geo = useGeolocation();
 
   const eventsQuery = useQuery({
-    queryKey: ["events", when, active],
-    queryFn: () => fetchEvents({ when, category: active }),
+    queryKey: ["events", when, active, city],
+    queryFn: () => fetchEvents({ when, category: active, city }),
   });
 
   const events = useMemo(() => {
