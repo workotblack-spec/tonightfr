@@ -106,7 +106,7 @@ function Home() {
               className="h-8 w-8 drop-shadow-[0_0_12px_rgba(255,45,184,0.35)]"
             />
             <span className="font-display text-base font-semibold tracking-tight">
-              Tonight<span className="text-gradient-neon">.fr</span>
+              Tonight<span className="text-gradient-neon"> Fribourg</span>
             </span>
           </Link>
           <div className="flex items-center gap-2">
