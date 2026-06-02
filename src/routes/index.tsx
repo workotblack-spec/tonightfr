@@ -266,10 +266,31 @@ function Home() {
               {geo.coords ? <LocateFixed className="h-4 w-4" /> : <Locate className="h-4 w-4" />}
             </button>
           </div>
+          {/* City chips */}
+          <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {(["all", "Fribourg", "Bulle", "Lausanne"] as CityFilter[]).map((c) => {
+              const isActive = city === c;
+              const label = c === "all" ? T[lang].all : c;
+              return (
+                <button
+                  key={c}
+                  onClick={() => setCity(c)}
+                  className={`whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
+                    isActive
+                      ? "bg-foreground text-background shadow-elevated"
+                      : "glass text-foreground hover:bg-surface-elevated"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
           <DateChips active={when} onChange={setWhen} lang={lang} />
           <CategoryChips active={active} onChange={setActive} lang={lang} />
         </div>
       </section>
+
 
       <main id="events" className="mx-auto max-w-3xl px-5 pt-8">
         <div className="mb-5 flex items-end justify-between">
