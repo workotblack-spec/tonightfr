@@ -157,15 +157,21 @@ function Home() {
       </header>
 
       <section className="relative">
-        <div className="relative h-[78vh] min-h-[520px] w-full overflow-hidden">
+        <div className="relative h-[86vh] min-h-[560px] w-full overflow-hidden">
           <img
             src={heroImg}
-            alt="Fribourg by night"
+            alt="Nuit à Fribourg, Bulle et Lausanne"
             width={1280}
             height={1600}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover scale-105 will-change-transform"
+            style={{ transform: "translateZ(0)" }}
           />
+          {/* Halos néon 3D subtils */}
+          <div className="pointer-events-none absolute -top-32 -left-20 h-80 w-80 rounded-full bg-primary/30 blur-3xl animate-pulse" />
+          <div className="pointer-events-none absolute top-1/3 -right-24 h-96 w-96 rounded-full bg-fuchsia-500/25 blur-3xl" />
+          <div className="pointer-events-none absolute bottom-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/20 blur-3xl" />
           <div className="absolute inset-0 bg-gradient-hero" />
+
           <div className="absolute inset-x-0 bottom-0">
             <div className="mx-auto max-w-3xl px-5 pb-10">
               <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-xs font-medium animate-fade-in">
@@ -175,40 +181,69 @@ function Home() {
                 </span>
                 {T[lang].nowLive} · {today}
               </div>
+
               <h1 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-tight animate-fade-up sm:text-6xl">
                 {T[lang].tonightIn}
                 <br />
-                <span className="text-gradient-neon">{T[lang].city}.</span>
+                <span className="text-gradient-neon drop-shadow-[0_0_25px_rgba(255,45,184,0.35)]">
+                  Fribourg, Bulle & Lausanne.
+                </span>
               </h1>
+
               <p
-                className="mt-3 max-w-md text-base text-muted-foreground animate-fade-up"
+                className="mt-4 max-w-md text-base text-foreground/80 animate-fade-up"
                 style={{ animationDelay: "120ms" }}
               >
                 {T[lang].subtitle}
               </p>
 
+              {/* Pills villes */}
+              <div
+                className="mt-5 flex flex-wrap gap-2 animate-fade-up"
+                style={{ animationDelay: "160ms" }}
+              >
+                {["Fribourg", "Bulle", "Lausanne"].map((c) => (
+                  <span
+                    key={c}
+                    className="inline-flex items-center gap-1.5 rounded-full glass px-3 py-1 text-xs font-medium"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-gradient-aurora" />
+                    {c}
+                  </span>
+                ))}
+              </div>
+
               <div
                 className="mt-6 flex flex-wrap gap-3 animate-fade-up"
-                style={{ animationDelay: "200ms" }}
+                style={{ animationDelay: "220ms" }}
               >
-                <a
-                  href="#events"
-                  className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background transition-transform hover:scale-[1.02]"
+                <button
+                  onClick={geo.coords ? geo.clear : geo.request}
+                  disabled={geo.loading}
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-aurora px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-neon transition-transform hover:scale-[1.03] active:scale-95 disabled:opacity-60"
                 >
-                  {events.length} {T[lang].events}
-                </a>
+                  {geo.coords ? <LocateFixed className="h-4 w-4" /> : <Locate className="h-4 w-4" />}
+                  {T[lang].nearMeCta}
+                </button>
                 <Link
                   to="/map"
-                  className="inline-flex items-center gap-2 rounded-full glass px-5 py-3 text-sm font-semibold transition-colors hover:bg-surface-elevated"
+                  className="inline-flex items-center gap-2 rounded-full glass px-5 py-3.5 text-sm font-semibold transition-colors hover:bg-surface-elevated"
                 >
                   <Map className="h-4 w-4" />
                   {T[lang].seeMap}
                 </Link>
+                <a
+                  href="#events"
+                  className="inline-flex items-center gap-2 rounded-full border border-border/50 px-5 py-3.5 text-sm font-medium text-foreground/90 hover:bg-surface"
+                >
+                  {events.length} {T[lang].events}
+                </a>
               </div>
             </div>
           </div>
         </div>
       </section>
+
 
       {/* Search + Date + Category filter */}
       <section className="sticky top-[60px] z-30 glass-strong">
