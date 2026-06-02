@@ -74,7 +74,10 @@ export const T: Record<Lang, Record<string, string>> = {
   de: {
     tonightIn: "Heute Abend in",
     city: "Freiburg",
-    subtitle: "Alles, was heute Abend in der Stadt passiert.",
+    subtitle: "Finde Bars, Clubs, Shisha-Lounges und Konzerte in deiner Nähe — Freiburg, Bulle und Lausanne.",
+    nearMeCta: "In meiner Nähe",
+    promote: "Mein Event bewerben",
+    citiesLabel: "Städte",
     all: "Alle",
     map: "Karte",
     nowLive: "Jetzt live",
