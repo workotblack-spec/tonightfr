@@ -183,13 +183,14 @@ function Home() {
                 {T[lang].nowLive} · {today}
               </div>
 
-              <h1 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-tight animate-fade-up sm:text-6xl">
-                {T[lang].tonightIn}
+              <h1 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-tight animate-fade-up sm:text-6xl">
+                Ce soir,
                 <br />
-                <span className="text-gradient-neon drop-shadow-[0_0_25px_rgba(255,45,184,0.35)]">
-                  Fribourg, Bulle & Lausanne.
+                <span className="text-gradient-neon drop-shadow-[0_0_30px_oklch(0.82_0.13_85/0.4)]">
+                  on sort où&nbsp;?
                 </span>
               </h1>
+
 
               <p
                 className="mt-4 max-w-md text-base text-foreground/80 animate-fade-up"
@@ -293,22 +294,40 @@ function Home() {
 
 
       <main id="events" className="mx-auto max-w-3xl px-5 pt-8">
+        {/* Coupe du Monde 2026 — bandeau hero */}
+        <button
+          onClick={() => setActive("sport")}
+          className="group mb-4 flex w-full items-center justify-between gap-4 overflow-hidden rounded-2xl border border-gold-soft bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-fuchsia-500/15 px-5 py-4 text-left shadow-gold transition-transform hover:scale-[1.01]"
+        >
+          <div className="flex items-center gap-3">
+            <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-gold text-xl shadow-gold">🏆</span>
+            <div className="leading-tight">
+              <p className="text-sm font-semibold tracking-wide text-foreground">Coupe du Monde 2026 — en direct</p>
+              <p className="text-xs text-muted-foreground">Watch parties dans les meilleurs bars sport · Fribourg · Bulle · Lausanne</p>
+            </div>
+          </div>
+          <span className="shrink-0 rounded-full bg-foreground px-3 py-1.5 text-xs font-semibold text-background transition-transform group-hover:translate-x-0.5">
+            Voir les matchs →
+          </span>
+        </button>
+
         {/* Pro CTA banner */}
         <Link
           to="/promouvoir"
-          className="group mb-6 flex items-center justify-between gap-4 rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-500/15 via-fuchsia-500/10 to-primary/15 px-5 py-4 shadow-elevated transition-transform hover:scale-[1.01]"
+          className="group mb-6 flex items-center justify-between gap-4 rounded-2xl border border-amber-400/20 bg-gradient-to-r from-surface/60 via-surface/40 to-fuchsia-500/10 px-5 py-4 shadow-card transition-transform hover:scale-[1.01]"
         >
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-amber-400/20 text-lg">✨</span>
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-amber-400/15 text-lg">✨</span>
             <div className="leading-tight">
               <p className="text-sm font-semibold text-foreground">Vous êtes un lieu ou un organisateur&nbsp;?</p>
               <p className="text-xs text-muted-foreground">Mettez votre soirée en avant — dès 0&nbsp;CHF</p>
             </div>
           </div>
-          <span className="hidden shrink-0 rounded-full bg-foreground px-3 py-1.5 text-xs font-semibold text-background transition-transform group-hover:translate-x-0.5 sm:inline-block">
+          <span className="hidden shrink-0 rounded-full border border-gold-soft bg-background/40 px-3 py-1.5 text-xs font-semibold text-foreground transition-transform group-hover:translate-x-0.5 sm:inline-block">
             Promouvoir →
           </span>
         </Link>
+
 
         <div className="mb-5 flex items-end justify-between">
           <h2 className="font-display text-2xl font-semibold">{T[lang][whenLabelKey(when)]}</h2>
