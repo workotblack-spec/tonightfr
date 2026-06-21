@@ -345,13 +345,39 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   });
 
   let upserted = 0;
+  let skipped = 0;
   const errors: string[] = [];
   for (const ev of events) {
-    if (!ev.title || !ev.starts_at || !ev.external_slug) continue;
-    // Validate ticket_url scheme to prevent javascript:/data: URL injection
+    if (!ev.title || !ev.starts_at) continue;
+    // Deterministic external_id: source + slug(title) + date — empêche les doublons à chaque scrape
+    const titleSlug = ev.title
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60);
+    const dateKey = ev.starts_at.slice(0, 10);
+    const externalId = `${source.id}:${titleSlug}-${dateKey}`;
+
+    // Skip if a similar event already exists (same lower(title) + same day + same venue)
+    const dayStart = `${dateKey}T00:00:00Z`;
+    const dayEnd = `${dateKey}T23:59:59Z`;
+    const { data: existing } = await supabaseAdmin
+      .from("events")
+      .select("id, external_id")
+      .ilike("title", ev.title.slice(0, 100))
+      .eq("venue", source.defaultVenue)
+      .gte("starts_at", dayStart)
+      .lte("starts_at", dayEnd)
+      .limit(1);
+    if (existing && existing.length > 0 && existing[0].external_id !== externalId) {
+      skipped++;
+      continue;
+    }
+
     const safeTicketUrl =
       ev.ticket_url && /^https?:\/\//i.test(ev.ticket_url) ? ev.ticket_url : null;
-    const externalId = `${source.id}:${ev.external_slug}`;
     const { error } = await supabaseAdmin
       .from("events")
       .upsert(
@@ -376,8 +402,9 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
     if (error) errors.push(error.message);
     else upserted++;
   }
-  return { source: source.id, scraped: events.length, upserted, errors: errors.slice(0, 3) };
+  return { source: source.id, scraped: events.length, upserted, skipped, errors: errors.slice(0, 3) };
 }
+
 
 function isAuthorized(request: Request): boolean {
   const secret = process.env.CRON_SECRET;
