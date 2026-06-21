@@ -165,8 +165,53 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     lng: 6.6336,
     address: "Rue Madeleine 18, 1003 Lausanne",
   },
-
+  // ===== Bulle / Gruyère =====
+  {
+    id: "ebullition",
+    url: "https://www.ebull.ch/programme/",
+    defaultVenue: "Ebullition",
+    defaultArea: "Bulle",
+    defaultCategory: "concert",
+    defaultImage: "concert",
+    lat: 46.6189,
+    lng: 7.0567,
+    address: "Rue de Vevey 5, 1630 Bulle",
+  },
+  {
+    id: "co2bulle",
+    url: "https://www.co2bulle.ch/agenda/",
+    defaultVenue: "CO2",
+    defaultArea: "Bulle",
+    defaultCategory: "clubbing",
+    defaultImage: "club",
+    lat: 46.6173,
+    lng: 7.0581,
+    address: "Rue de Vevey 21, 1630 Bulle",
+  },
+  {
+    id: "lagruyere",
+    url: "https://www.la-gruyere.ch/agenda/",
+    defaultVenue: "La Gruyère",
+    defaultArea: "Bulle",
+    defaultCategory: "culture",
+    defaultImage: "culture",
+    lat: 46.6167,
+    lng: 7.0561,
+  },
+  // ===== Fribourg complément =====
+  {
+    id: "laspirale",
+    url: "https://laspirale.ch/agenda/",
+    defaultVenue: "La Spirale",
+    defaultArea: "Fribourg",
+    defaultCategory: "clubbing",
+    defaultImage: "club",
+    lat: 46.8068,
+    lng: 7.1568,
+    address: "Place Petit-Saint-Jean 39, 1700 Fribourg",
+  },
 ];
+
 
 const ALLOWED_CATEGORIES = [
   "afterwork",
