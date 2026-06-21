@@ -294,22 +294,8 @@ function Home() {
 
 
       <main id="events" className="mx-auto max-w-3xl px-5 pt-8">
-        {/* Coupe du Monde 2026 — bandeau hero */}
-        <button
-          onClick={() => setActive("sport")}
-          className="group mb-4 flex w-full items-center justify-between gap-4 overflow-hidden rounded-2xl border border-gold-soft bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-fuchsia-500/15 px-5 py-4 text-left shadow-gold transition-transform hover:scale-[1.01]"
-        >
-          <div className="flex items-center gap-3">
-            <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-gold text-xl shadow-gold">🏆</span>
-            <div className="leading-tight">
-              <p className="text-sm font-semibold tracking-wide text-foreground">Coupe du Monde 2026 — en direct</p>
-              <p className="text-xs text-muted-foreground">Watch parties dans les meilleurs bars sport · Fribourg · Bulle · Lausanne</p>
-            </div>
-          </div>
-          <span className="shrink-0 rounded-full bg-foreground px-3 py-1.5 text-xs font-semibold text-background transition-transform group-hover:translate-x-0.5">
-            Voir les matchs →
-          </span>
-        </button>
+        {/* Coupe du Monde 2026 — masqué tant que pas de vraies fixtures */}
+
 
         {/* Pro CTA banner */}
         <Link
