@@ -212,6 +212,7 @@ export type Database = {
         Args: { _value: string }
         Returns: undefined
       }
+      unaccent: { Args: { "": string }; Returns: string }
     }
     Enums: {
       app_role: "admin" | "venue" | "user"
