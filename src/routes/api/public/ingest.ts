@@ -69,6 +69,17 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     address: "Seestrasse 50, 3186 Düdingen",
   },
   {
+    id: "zoya",
+    url: "https://zoya-bar.ch/",
+    defaultVenue: "Zoya Bar Shisha Lounge",
+    defaultArea: "Fribourg",
+    defaultCategory: "shisha",
+    defaultImage: "bar",
+    lat: 46.8128,
+    lng: 7.1249,
+    address: "Route de Belfaux 3, 1762 Givisiez",
+  },
+  {
     id: "lacave",
     url: "https://www.lacave.ch/agenda",
     defaultVenue: "La Cave",
@@ -166,6 +177,17 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     address: "Rue Madeleine 18, 1003 Lausanne",
   },
   // ===== Bulle / Gruyère =====
+  {
+    id: "globull",
+    url: "https://www.globull.ch/",
+    defaultVenue: "Globull",
+    defaultArea: "Bulle",
+    defaultCategory: "clubbing",
+    defaultImage: "club",
+    lat: 46.6182,
+    lng: 7.0572,
+    address: "Rue de l'Etang 21, 1630 Bulle",
+  },
   {
     id: "ebullition",
     url: "https://www.ebull.ch/programme/",
