@@ -113,7 +113,7 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
   },
   {
     id: "mad",
-    url: "https://www.mad.ch/programme",
+    url: "https://www.mad.club/",
     defaultVenue: "MAD Club",
     defaultArea: "Lausanne",
     defaultCategory: "clubbing",
@@ -124,7 +124,7 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
   },
   {
     id: "dolce",
-    url: "https://www.dolcevita.ch/agenda",
+    url: "https://www.dclub.ch/",
     defaultVenue: "D! Club",
     defaultArea: "Lausanne",
     defaultCategory: "clubbing",
