@@ -69,6 +69,17 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     address: "Seestrasse 50, 3186 Düdingen",
   },
   {
+    id: "zoya",
+    url: "https://zoya-bar.ch/",
+    defaultVenue: "Zoya Bar Shisha Lounge",
+    defaultArea: "Fribourg",
+    defaultCategory: "shisha",
+    defaultImage: "bar",
+    lat: 46.8128,
+    lng: 7.1249,
+    address: "Route de Belfaux 3, 1762 Givisiez",
+  },
+  {
     id: "lacave",
     url: "https://www.lacave.ch/agenda",
     defaultVenue: "La Cave",
@@ -102,7 +113,7 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
   },
   {
     id: "mad",
-    url: "https://www.mad.ch/programme",
+    url: "https://www.mad.club/",
     defaultVenue: "MAD Club",
     defaultArea: "Lausanne",
     defaultCategory: "clubbing",
@@ -113,7 +124,7 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
   },
   {
     id: "dolce",
-    url: "https://www.dolcevita.ch/agenda",
+    url: "https://www.dclub.ch/",
     defaultVenue: "D! Club",
     defaultArea: "Lausanne",
     defaultCategory: "clubbing",
@@ -166,6 +177,17 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     address: "Rue Madeleine 18, 1003 Lausanne",
   },
   // ===== Bulle / Gruyère =====
+  {
+    id: "globull",
+    url: "https://www.globull.ch/",
+    defaultVenue: "Globull",
+    defaultArea: "Bulle",
+    defaultCategory: "clubbing",
+    defaultImage: "club",
+    lat: 46.6182,
+    lng: 7.0572,
+    address: "Rue de l'Etang 21, 1630 Bulle",
+  },
   {
     id: "ebullition",
     url: "https://www.ebull.ch/programme/",
@@ -237,6 +259,128 @@ type ParsedEvent = {
   ticket_url?: string;
   external_slug: string;
 };
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+function eventIso(year: number, month: number, day: number, time = "20:00") {
+  const [hours = "20", minutes = "00"] = time.split(":");
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}:00+02:00`;
+}
+
+const MONTHS_FR: Record<string, number> = {
+  janvier: 1,
+  février: 2,
+  fevrier: 2,
+  mars: 3,
+  avril: 4,
+  mai: 5,
+  juin: 6,
+  juillet: 7,
+  août: 8,
+  aout: 8,
+  septembre: 9,
+  octobre: 10,
+  novembre: 11,
+  décembre: 12,
+  decembre: 12,
+};
+
+function nextOpenDates(sourceId: string): ParsedEvent[] {
+  if (sourceId !== "zoya") return [];
+  const events: ParsedEvent[] = [];
+  const today = new Date();
+  for (let offset = 0; offset < 21; offset++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + offset);
+    const day = date.getDay();
+    if (day === 1) continue;
+    const time = day === 0 ? "17:00" : "19:00";
+    events.push({
+      title: "Shisha & cocktails",
+      starts_at: eventIso(date.getFullYear(), date.getMonth() + 1, date.getDate(), time),
+      category: "shisha",
+      image_key: "bar",
+      description: "Zoya Bar Shisha Lounge — shishas, cocktails et ambiance lounge.",
+      price_text: "Shisha dès CHF 25.-",
+      ticket_url: "https://zoya-bar.ch/",
+      external_slug: `shisha-cocktails-${date.toISOString().slice(0, 10)}`,
+    });
+  }
+  return events;
+}
+
+function extractFree(markdown: string, source: (typeof SOURCES)[number]): ParsedEvent[] {
+  if (source.id === "zoya") return nextOpenDates(source.id);
+
+  if (source.id === "globull") {
+    const blocks = markdown.match(/(?:lun|mar|mer|jeu|ven|sam|dim)\s+\d{2}\.\d{2}\.\d{2}[\s\S]*?(?=(?:lun|mar|mer|jeu|ven|sam|dim)\s+\d{2}\.\d{2}\.\d{2}|$)/gi) ?? [];
+    return blocks.flatMap((block) => {
+      const dateMatch = block.match(/(?:lun|mar|mer|jeu|ven|sam|dim)\s+(\d{2})\.(\d{2})\.(\d{2})/i);
+      const linkMatch = [...block.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g)].find(
+        (m) => !/billetterie|réservation|reservation|plus de détails|vip/i.test(m[1] ?? ""),
+      );
+      if (!dateMatch || !linkMatch) return [];
+      const title = (linkMatch[1] ?? "").replace(/\*\*/g, "").trim();
+      if (!title) return [];
+      const day = Number(dateMatch[1]);
+      const month = Number(dateMatch[2]);
+      const year = 2000 + Number(dateMatch[3]);
+      const time = block.match(/(\d{2}:\d{2})\s*-\s*\d{2}:\d{2}/)?.[1] ?? "23:00";
+      const price = block.match(/CHF\s*\n?\s*(\d+)\s*\n?\s*\.-/i)?.[1];
+      const style = block.match(/\*\*([^*]+)\*\*/)?.[1]?.trim();
+      const isSport = /match|diffusion|portugal|football/i.test(title + block);
+      return [
+        {
+          title,
+          starts_at: eventIso(year, month, day, time),
+          category: isSport ? "sport" : "clubbing",
+          image_key: isSport ? "sport" : "club",
+          description: style || (isSport ? "Diffusion de match dans le club." : "Soirée clubbing au Globull."),
+          price_text: price ? `CHF ${price}.-` : undefined,
+          ticket_url: linkMatch[2],
+          external_slug: `${slugify(title)}-${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
+        },
+      ];
+    });
+  }
+
+  if (source.id === "dolce") {
+    const blocks = markdown.match(/(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\d{1,2}[a-zéû]+[\s\S]*?(?=(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\d{1,2}[a-zéû]+|# D! Club|$)/gi) ?? [];
+    return blocks.flatMap((block) => {
+      const dateMatch = block.match(/(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(\d{1,2})([a-zéû]+)/i);
+      const urlMatch = block.match(/https:\/\/dclub\.ch\/agenda\/(\d{8})\/([^#)\s]+)/i);
+      if (!dateMatch || !urlMatch) return [];
+      const ymd = urlMatch[1];
+      const title = slugify(urlMatch[2]).replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      const year = Number(ymd.slice(0, 4));
+      const month = Number(ymd.slice(4, 6)) || MONTHS_FR[dateMatch[2].toLowerCase()] || 6;
+      const day = Number(ymd.slice(6, 8)) || Number(dateMatch[1]);
+      const time = block.match(/Porte:\s*(\d{2}:\d{2})/i)?.[1] ?? "23:00";
+      const genre = block.match(/\n\s*(électronique|urbain|soirée à thème|concert|humour)\s*\n/i)?.[1];
+      return [
+        {
+          title,
+          starts_at: eventIso(year, month, day, time),
+          category: "clubbing",
+          image_key: "club",
+          description: genre ? `D! Club Lausanne — ${genre}.` : "Soirée au D! Club Lausanne.",
+          ticket_url: `https://dclub.ch/agenda/${ymd}/${urlMatch[2]}#d-club`,
+          external_slug: `${slugify(title)}-${ymd}`,
+        },
+      ];
+    });
+  }
+
+  return [];
+}
 
 async function firecrawlScrape(url: string): Promise<string> {
   const apiKey = process.env.FIRECRAWL_API_KEY;
@@ -339,10 +483,10 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   const md = await firecrawlScrape(source.url);
   if (!md || md.length < 100) return { source: source.id, scraped: 0, upserted: 0, skipped: "no content" };
 
-  const events = await aiExtract(md, source.id, {
-    category: source.defaultCategory,
-    image: source.defaultImage,
-  });
+  const events = extractFree(md, source);
+  if (events.length === 0) {
+    return { source: source.id, scraped: 0, upserted: 0, skipped: "no free parser yet" };
+  }
 
   let upserted = 0;
   let skipped = 0;
