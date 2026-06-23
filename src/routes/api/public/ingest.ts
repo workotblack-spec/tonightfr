@@ -483,10 +483,10 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   const md = await firecrawlScrape(source.url);
   if (!md || md.length < 100) return { source: source.id, scraped: 0, upserted: 0, skipped: "no content" };
 
-  const events = await aiExtract(md, source.id, {
-    category: source.defaultCategory,
-    image: source.defaultImage,
-  });
+  const events = extractFree(md, source);
+  if (events.length === 0) {
+    return { source: source.id, scraped: 0, upserted: 0, skipped: "no free parser yet" };
+  }
 
   let upserted = 0;
   let skipped = 0;
