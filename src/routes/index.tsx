@@ -164,6 +164,10 @@ function Home() {
             alt="Nuit à Fribourg, Bulle et Lausanne"
             width={1280}
             height={1600}
+            loading="eager"
+            decoding="async"
+            // @ts-expect-error - valid HTML attribute
+            fetchpriority="high"
             className="h-full w-full object-cover scale-105 will-change-transform"
             style={{ transform: "translateZ(0)" }}
           />
