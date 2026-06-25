@@ -82,6 +82,10 @@ export async function fetchEvents(opts: {
   const range = rangeFor(opts.when);
   if (range) {
     q = q.gte("starts_at", range.from.toISOString()).lt("starts_at", range.to.toISOString());
+  } else {
+    // "all" = upcoming only — exclude past events (with 6h grace for ongoing nights)
+    const cutoff = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
+    q = q.gte("starts_at", cutoff);
   }
   if (opts.category !== "all") {
     q = q.eq("category", opts.category);
