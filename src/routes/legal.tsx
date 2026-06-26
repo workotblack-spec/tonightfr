@@ -39,8 +39,8 @@ function LegalPage() {
           Tonight.fr — projet indépendant, basé à Fribourg, Suisse.
           <br />
           Contact :{" "}
-          <a className="text-primary underline" href="mailto:hello@tonight.fr">
-            hello@tonight.fr
+          <a className="text-primary underline" href="mailto:tonightfribourg@proton.me">
+            tonightfribourg@proton.me
           </a>
         </p>
       </Section>
@@ -70,7 +70,7 @@ function LegalPage() {
         <p className="mt-2">
           Si vous n'êtes pas connecté, vos favoris restent stockés localement sur votre appareil
           (localStorage) et ne sont jamais transmis à nos serveurs. Vous pouvez supprimer votre
-          compte à tout moment en écrivant à hello@tonight.fr.
+          compte à tout moment en écrivant à tonightfribourg@proton.me.
         </p>
         <p className="mt-2">
           Aucun cookie de tracking publicitaire n'est utilisé. Aucune donnée n'est revendue ou
@@ -83,7 +83,7 @@ function LegalPage() {
         <p>
           Les visuels d'événements sont utilisés à titre illustratif. Les marques, logos et noms
           de lieux restent la propriété de leurs détenteurs respectifs. Pour toute demande de
-          retrait, contactez-nous à hello@tonight.fr — nous donnons suite sous 72h.
+          retrait, contactez-nous à tonightfribourg@proton.me — nous donnons suite sous 72h.
         </p>
       </Section>
 
@@ -91,8 +91,8 @@ function LegalPage() {
         <p>
           Pour signaler un contenu inapproprié, une information incorrecte ou demander la
           suppression d'une fiche, écrivez à{" "}
-          <a className="text-primary underline" href="mailto:hello@tonight.fr">
-            hello@tonight.fr
+          <a className="text-primary underline" href="mailto:tonightfribourg@proton.me">
+            tonightfribourg@proton.me
           </a>
           .
         </p>

@@ -37,7 +37,7 @@ export const Route = createFileRoute("/promouvoir")({
   component: PromouvoirPage,
 });
 
-const CONTACT_EMAIL = "contact@tonightfr.ch";
+const CONTACT_EMAIL = "tonightfribourg@proton.me";
 
 type PlanId = "starter" | "boost" | "premium";
 type CityId = "Fribourg" | "Bulle" | "Lausanne" | "Autre";
