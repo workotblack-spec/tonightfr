@@ -81,8 +81,8 @@ function AboutPage() {
         <h2 className="font-display text-xl font-semibold text-foreground">Contact</h2>
         <p>
           Un event à ajouter ?{" "}
-          <a className="text-primary underline" href="mailto:hello@tonight.fr">
-            hello@tonight.fr
+          <a className="text-primary underline" href="mailto:tonightfribourg@proton.me">
+            tonightfribourg@proton.me
           </a>
         </p>
       </section>
