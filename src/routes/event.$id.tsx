@@ -134,7 +134,7 @@ function EventDetail() {
       <section className="relative">
         <div className="relative h-[55vh] min-h-[380px] w-full overflow-hidden">
           <img
-            src={imageFor(ev.image_key)}
+            src={ev.image_url || imageFor(ev.image_key)}
             alt={ev.title}
             className="h-full w-full object-cover"
           />
