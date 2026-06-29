@@ -46,7 +46,7 @@ export function EventCard({
       >
         <div className="relative aspect-[16/10] overflow-hidden">
           <img
-            src={imageFor(event.image_key)}
+            src={event.image_url || imageFor(event.image_key)}
             alt={event.title}
             loading="lazy"
             width={1024}
