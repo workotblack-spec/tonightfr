@@ -108,7 +108,7 @@ function EventDetail() {
       address: ev.address || `${ev.area}, Fribourg, Switzerland`,
       ...(ev.lat && ev.lng ? { geo: { "@type": "GeoCoordinates", latitude: ev.lat, longitude: ev.lng } } : {}),
     },
-    image: imageFor(ev.image_key),
+    image: ev.image_url || imageFor(ev.image_key),
     description: ev.description || `${ev.venue} · ${ev.area}`,
     ...(safeTicketUrl ? { offers: { "@type": "Offer", url: safeTicketUrl, price: ev.price_text || "0" } } : {}),
   };
@@ -134,7 +134,7 @@ function EventDetail() {
       <section className="relative">
         <div className="relative h-[55vh] min-h-[380px] w-full overflow-hidden">
           <img
-            src={imageFor(ev.image_key)}
+            src={ev.image_url || imageFor(ev.image_key)}
             alt={ev.title}
             className="h-full w-full object-cover"
           />

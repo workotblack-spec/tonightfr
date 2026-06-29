@@ -22,6 +22,7 @@ import { Route as EventIdRouteImport } from './routes/event.$id'
 import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml'
 import { Route as ApiPublicSyncCronSecretRouteImport } from './routes/api/public/sync-cron-secret'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
+import { Route as ApiPublicBackfillImagesRouteImport } from './routes/api/public/backfill-images'
 
 const PromouvoirRoute = PromouvoirRouteImport.update({
   id: '/promouvoir',
@@ -88,6 +89,11 @@ const ApiPublicIngestRoute = ApiPublicIngestRouteImport.update({
   path: '/api/public/ingest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicBackfillImagesRoute = ApiPublicBackfillImagesRouteImport.update({
+  id: '/api/public/backfill-images',
+  path: '/api/public/backfill-images',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
+  '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/sync-cron-secret': typeof ApiPublicSyncCronSecretRoute
 }
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
+  '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/sync-cron-secret': typeof ApiPublicSyncCronSecretRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
+  '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
   '/api/public/sync-cron-secret': typeof ApiPublicSyncCronSecretRoute
 }
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
+    | '/api/public/backfill-images'
     | '/api/public/ingest'
     | '/api/public/sync-cron-secret'
   fileRoutesByTo: FileRoutesByTo
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
+    | '/api/public/backfill-images'
     | '/api/public/ingest'
     | '/api/public/sync-cron-secret'
   id:
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
+    | '/api/public/backfill-images'
     | '/api/public/ingest'
     | '/api/public/sync-cron-secret'
   fileRoutesById: FileRoutesById
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   PromouvoirRoute: typeof PromouvoirRoute
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   EventIdRoute: typeof EventIdRoute
+  ApiPublicBackfillImagesRoute: typeof ApiPublicBackfillImagesRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
   ApiPublicSyncCronSecretRoute: typeof ApiPublicSyncCronSecretRoute
 }
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicIngestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/backfill-images': {
+      id: '/api/public/backfill-images'
+      path: '/api/public/backfill-images'
+      fullPath: '/api/public/backfill-images'
+      preLoaderRoute: typeof ApiPublicBackfillImagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   PromouvoirRoute: PromouvoirRoute,
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   EventIdRoute: EventIdRoute,
+  ApiPublicBackfillImagesRoute: ApiPublicBackfillImagesRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
   ApiPublicSyncCronSecretRoute: ApiPublicSyncCronSecretRoute,
 }

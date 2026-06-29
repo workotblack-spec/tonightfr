@@ -9,6 +9,7 @@ export type DbEvent = {
   category: CategoryKey;
   starts_at: string;
   image_key: string;
+  image_url?: string | null;
   price_text: string | null;
   description: string | null;
   lineup: string | null;
