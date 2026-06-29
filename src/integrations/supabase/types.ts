@@ -24,6 +24,7 @@ export type Database = {
           external_id: string | null
           id: string
           image_key: string
+          image_url: string | null
           is_promoted: boolean
           lat: number | null
           lineup: string | null
@@ -45,6 +46,7 @@ export type Database = {
           external_id?: string | null
           id?: string
           image_key: string
+          image_url?: string | null
           is_promoted?: boolean
           lat?: number | null
           lineup?: string | null
@@ -66,6 +68,7 @@ export type Database = {
           external_id?: string | null
           id?: string
           image_key?: string
+          image_url?: string | null
           is_promoted?: boolean
           lat?: number | null
           lineup?: string | null
