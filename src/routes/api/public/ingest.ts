@@ -479,6 +479,34 @@ ${markdown.slice(0, 25000)}
   }
 }
 
+async function fetchOgImage(url: string): Promise<string | null> {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 6000);
+    const res = await fetch(url, {
+      signal: ctrl.signal,
+      headers: { "User-Agent": "Mozilla/5.0 TonightBot/1.0" },
+    });
+    clearTimeout(t);
+    if (!res.ok) return null;
+    const html = (await res.text()).slice(0, 200000);
+    const m =
+      html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ??
+      html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i) ??
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+    if (!m) return null;
+    let img = m[1].trim();
+    if (img.startsWith("//")) img = "https:" + img;
+    else if (img.startsWith("/")) {
+      const u = new URL(url);
+      img = `${u.origin}${img}`;
+    }
+    return /^https?:\/\//i.test(img) ? img : null;
+  } catch {
+    return null;
+  }
+}
+
 async function ingestSource(source: (typeof SOURCES)[number]) {
   const md = await firecrawlScrape(source.url);
   if (!md || md.length < 100) return { source: source.id, scraped: 0, upserted: 0, skipped: "no content" };
@@ -487,6 +515,7 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   if (events.length === 0) {
     return { source: source.id, scraped: 0, upserted: 0, skipped: "no free parser yet" };
   }
+
 
   let upserted = 0;
   let skipped = 0;
