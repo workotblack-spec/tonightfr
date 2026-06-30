@@ -551,6 +551,7 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
 
     const safeTicketUrl =
       ev.ticket_url && /^https?:\/\//i.test(ev.ticket_url) ? ev.ticket_url : null;
+    const ogImage = safeTicketUrl ? await fetchOgImage(safeTicketUrl) : null;
     const { error } = await supabaseAdmin
       .from("events")
       .upsert(
@@ -562,6 +563,7 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
           category: ALLOWED_CATEGORIES.includes(ev.category) ? ev.category : source.defaultCategory,
           starts_at: ev.starts_at,
           image_key: ALLOWED_IMAGES.includes(ev.image_key) ? ev.image_key : source.defaultImage,
+          image_url: ogImage,
           description: ev.description ?? null,
           lineup: ev.lineup ?? null,
           price_text: ev.price_text ?? null,
@@ -577,6 +579,7 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
   }
   return { source: source.id, scraped: events.length, upserted, skipped, errors: errors.slice(0, 3) };
 }
+
 
 
 function isAuthorized(request: Request): boolean {
