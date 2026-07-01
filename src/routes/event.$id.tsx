@@ -6,6 +6,7 @@ import { fetchEventById } from "@/lib/events";
 import { CATEGORIES } from "@/data/events";
 import { imageFor } from "@/data/eventImages";
 import { proxied } from "@/lib/image";
+import { resolveEventImage } from "@/data/venuePhotos";
 import { T, type Lang } from "@/data/i18n";
 import { useFavorites } from "@/hooks/useFavorites";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
@@ -109,7 +110,7 @@ function EventDetail() {
       address: ev.address || `${ev.area}, Fribourg, Switzerland`,
       ...(ev.lat && ev.lng ? { geo: { "@type": "GeoCoordinates", latitude: ev.lat, longitude: ev.lng } } : {}),
     },
-    image: ev.image_url || imageFor(ev.image_key),
+    image: resolveEventImage(ev.id, ev.venue, ev.image_url) || imageFor(ev.image_key),
     description: ev.description || `${ev.venue} · ${ev.area}`,
     ...(safeTicketUrl ? { offers: { "@type": "Offer", url: safeTicketUrl, price: ev.price_text || "0" } } : {}),
   };
@@ -135,7 +136,10 @@ function EventDetail() {
       <section className="relative">
         <div className="relative h-[55vh] min-h-[380px] w-full overflow-hidden bg-surface">
           <img
-            src={ev.image_url ? proxied(ev.image_url, 1600) : imageFor(ev.image_key)}
+            src={(() => {
+              const r = resolveEventImage(ev.id, ev.venue, ev.image_url);
+              return r ? proxied(r, 1600) : imageFor(ev.image_key);
+            })()}
             alt={ev.title}
             onError={(e) => {
               const img = e.currentTarget;
