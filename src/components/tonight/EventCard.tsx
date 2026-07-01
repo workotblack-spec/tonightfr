@@ -48,7 +48,10 @@ export function EventCard({
       >
         <div className="relative aspect-[16/10] overflow-hidden bg-surface">
           <img
-            src={event.image_url ? proxied(event.image_url, 800) : imageFor(event.image_key)}
+            src={(() => {
+              const r = resolveEventImage(event.id, event.venue, event.image_url);
+              return r ? proxied(r, 800) : imageFor(event.image_key);
+            })()}
             alt={event.title}
             loading="lazy"
             width={1024}
