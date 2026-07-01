@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Heart, MapPin, Clock } from "lucide-react";
 import { CATEGORIES } from "@/data/events";
 import { imageFor } from "@/data/eventImages";
+import { proxied } from "@/lib/image";
 import type { DbEvent } from "@/lib/events";
 import type { Lang } from "@/data/i18n";
 
