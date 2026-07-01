@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Heart, MapPin, Clock } from "lucide-react";
 import { CATEGORIES } from "@/data/events";
 import { imageFor } from "@/data/eventImages";
+import { proxied } from "@/lib/image";
 import type { DbEvent } from "@/lib/events";
 import type { Lang } from "@/data/i18n";
 
@@ -44,13 +45,18 @@ export function EventCard({
         className="block"
         aria-label={event.title}
       >
-        <div className="relative aspect-[16/10] overflow-hidden">
+        <div className="relative aspect-[16/10] overflow-hidden bg-surface">
           <img
-            src={event.image_url || imageFor(event.image_key)}
+            src={event.image_url ? proxied(event.image_url, 800) : imageFor(event.image_key)}
             alt={event.title}
             loading="lazy"
             width={1024}
             height={640}
+            onError={(e) => {
+              const img = e.currentTarget;
+              const fb = imageFor(event.image_key);
+              if (img.src !== fb) img.src = fb;
+            }}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
