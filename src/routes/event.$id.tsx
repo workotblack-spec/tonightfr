@@ -133,10 +133,15 @@ function EventDetail() {
       </header>
 
       <section className="relative">
-        <div className="relative h-[55vh] min-h-[380px] w-full overflow-hidden">
+        <div className="relative h-[55vh] min-h-[380px] w-full overflow-hidden bg-surface">
           <img
-            src={ev.image_url || imageFor(ev.image_key)}
+            src={ev.image_url ? proxied(ev.image_url, 1600) : imageFor(ev.image_key)}
             alt={ev.title}
+            onError={(e) => {
+              const img = e.currentTarget;
+              const fb = imageFor(ev.image_key);
+              if (img.src !== fb) img.src = fb;
+            }}
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-hero" />
