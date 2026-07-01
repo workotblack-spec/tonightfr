@@ -6,6 +6,7 @@ import { fetchEventById } from "@/lib/events";
 import { CATEGORIES } from "@/data/events";
 import { imageFor } from "@/data/eventImages";
 import { proxied } from "@/lib/image";
+import { resolveEventImage } from "@/data/venuePhotos";
 import { T, type Lang } from "@/data/i18n";
 import { useFavorites } from "@/hooks/useFavorites";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
