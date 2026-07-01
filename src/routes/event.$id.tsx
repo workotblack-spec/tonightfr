@@ -136,7 +136,10 @@ function EventDetail() {
       <section className="relative">
         <div className="relative h-[55vh] min-h-[380px] w-full overflow-hidden bg-surface">
           <img
-            src={ev.image_url ? proxied(ev.image_url, 1600) : imageFor(ev.image_key)}
+            src={(() => {
+              const r = resolveEventImage(ev.id, ev.venue, ev.image_url);
+              return r ? proxied(r, 1600) : imageFor(ev.image_key);
+            })()}
             alt={ev.title}
             onError={(e) => {
               const img = e.currentTarget;
