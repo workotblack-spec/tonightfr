@@ -150,6 +150,7 @@ export type Database = {
           message: string | null
           phone: string | null
           plan: string | null
+          user_id: string | null
           venue: string
         }
         Insert: {
@@ -162,6 +163,7 @@ export type Database = {
           message?: string | null
           phone?: string | null
           plan?: string | null
+          user_id?: string | null
           venue: string
         }
         Update: {
@@ -174,6 +176,7 @@ export type Database = {
           message?: string | null
           phone?: string | null
           plan?: string | null
+          user_id?: string | null
           venue?: string
         }
         Relationships: []
