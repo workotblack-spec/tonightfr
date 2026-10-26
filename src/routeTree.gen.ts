@@ -9,54 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PromouvoirRouteImport } from './routes/promouvoir'
-import { Route as MapRouteImport } from './routes/map'
-import { Route as LegalRouteImport } from './routes/legal'
-import { Route as FavoritesRouteImport } from './routes/favorites'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as EventIdRouteImport } from './routes/event.$id'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as FavoritesRouteImport } from './routes/favorites'
+import { Route as LegalRouteImport } from './routes/legal'
+import { Route as MapRouteImport } from './routes/map'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PromouvoirRouteImport } from './routes/promouvoir'
 import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml'
-import { Route as ApiPublicSyncCronSecretRouteImport } from './routes/api/public/sync-cron-secret'
-import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
+import { Route as EventIdRouteImport } from './routes/event.$id'
 import { Route as ApiPublicBackfillImagesRouteImport } from './routes/api/public/backfill-images'
+import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
+import { Route as ApiPublicSyncCronSecretRouteImport } from './routes/api/public/sync-cron-secret'
 
-const PromouvoirRoute = PromouvoirRouteImport.update({
-  id: '/promouvoir',
-  path: '/promouvoir',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MapRoute = MapRouteImport.update({
-  id: '/map',
-  path: '/map',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalRoute = LegalRouteImport.update({
-  id: '/legal',
-  path: '/legal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FavoritesRoute = FavoritesRouteImport.update({
-  id: '/favorites',
-  path: '/favorites',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -64,14 +36,49 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EventIdRoute = EventIdRouteImport.update({
-  id: '/event/$id',
-  path: '/event/$id',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritesRoute = FavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalRoute = LegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapRoute = MapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromouvoirRoute = PromouvoirRouteImport.update({
+  id: '/promouvoir',
+  path: '/promouvoir',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
@@ -79,9 +86,14 @@ const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
   path: '/api/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicSyncCronSecretRoute = ApiPublicSyncCronSecretRouteImport.update({
-  id: '/api/public/sync-cron-secret',
-  path: '/api/public/sync-cron-secret',
+const EventIdRoute = EventIdRouteImport.update({
+  id: '/event/$id',
+  path: '/event/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBackfillImagesRoute = ApiPublicBackfillImagesRouteImport.update({
+  id: '/api/public/backfill-images',
+  path: '/api/public/backfill-images',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicIngestRoute = ApiPublicIngestRouteImport.update({
@@ -89,9 +101,9 @@ const ApiPublicIngestRoute = ApiPublicIngestRouteImport.update({
   path: '/api/public/ingest',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicBackfillImagesRoute = ApiPublicBackfillImagesRouteImport.update({
-  id: '/api/public/backfill-images',
-  path: '/api/public/backfill-images',
+const ApiPublicSyncCronSecretRoute = ApiPublicSyncCronSecretRouteImport.update({
+  id: '/api/public/sync-cron-secret',
+  path: '/api/public/sync-cron-secret',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -101,9 +113,11 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/explore': typeof ExploreRoute
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
@@ -117,9 +131,11 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/explore': typeof ExploreRoute
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
@@ -134,9 +150,11 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/explore': typeof ExploreRoute
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
@@ -152,9 +170,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/explore'
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/profile'
     | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
@@ -168,9 +188,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/explore'
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/profile'
     | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
@@ -184,9 +206,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/explore'
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/profile'
     | '/promouvoir'
     | '/api/sitemap.xml'
     | '/event/$id'
@@ -201,9 +225,11 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  ExploreRoute: typeof ExploreRoute
   FavoritesRoute: typeof FavoritesRoute
   LegalRoute: typeof LegalRoute
   MapRoute: typeof MapRoute
+  ProfileRoute: typeof ProfileRoute
   PromouvoirRoute: typeof PromouvoirRoute
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   EventIdRoute: typeof EventIdRoute
@@ -214,53 +240,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/promouvoir': {
-      id: '/promouvoir'
-      path: '/promouvoir'
-      fullPath: '/promouvoir'
-      preLoaderRoute: typeof PromouvoirRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/map': {
-      id: '/map'
-      path: '/map'
-      fullPath: '/map'
-      preLoaderRoute: typeof MapRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/legal': {
-      id: '/legal'
-      path: '/legal'
-      fullPath: '/legal'
-      preLoaderRoute: typeof LegalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/favorites': {
-      id: '/favorites'
-      path: '/favorites'
-      fullPath: '/favorites'
-      preLoaderRoute: typeof FavoritesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -270,18 +254,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/event/$id': {
-      id: '/event/$id'
-      path: '/event/$id'
-      fullPath: '/event/$id'
-      preLoaderRoute: typeof EventIdRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal': {
+      id: '/legal'
+      path: '/legal'
+      fullPath: '/legal'
+      preLoaderRoute: typeof LegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promouvoir': {
+      id: '/promouvoir'
+      path: '/promouvoir'
+      fullPath: '/promouvoir'
+      preLoaderRoute: typeof PromouvoirRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/sitemap.xml': {
@@ -291,11 +324,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/sync-cron-secret': {
-      id: '/api/public/sync-cron-secret'
-      path: '/api/public/sync-cron-secret'
-      fullPath: '/api/public/sync-cron-secret'
-      preLoaderRoute: typeof ApiPublicSyncCronSecretRouteImport
+    '/event/$id': {
+      id: '/event/$id'
+      path: '/event/$id'
+      fullPath: '/event/$id'
+      preLoaderRoute: typeof EventIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/backfill-images': {
+      id: '/api/public/backfill-images'
+      path: '/api/public/backfill-images'
+      fullPath: '/api/public/backfill-images'
+      preLoaderRoute: typeof ApiPublicBackfillImagesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/ingest': {
@@ -305,11 +345,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicIngestRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/backfill-images': {
-      id: '/api/public/backfill-images'
-      path: '/api/public/backfill-images'
-      fullPath: '/api/public/backfill-images'
-      preLoaderRoute: typeof ApiPublicBackfillImagesRouteImport
+    '/api/public/sync-cron-secret': {
+      id: '/api/public/sync-cron-secret'
+      path: '/api/public/sync-cron-secret'
+      fullPath: '/api/public/sync-cron-secret'
+      preLoaderRoute: typeof ApiPublicSyncCronSecretRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -321,9 +361,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  ExploreRoute: ExploreRoute,
   FavoritesRoute: FavoritesRoute,
   LegalRoute: LegalRoute,
   MapRoute: MapRoute,
+  ProfileRoute: ProfileRoute,
   PromouvoirRoute: PromouvoirRoute,
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   EventIdRoute: EventIdRoute,
