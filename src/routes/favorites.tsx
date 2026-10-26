@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useFavorites } from "@/hooks/useFavorites";
 import { EventCard } from "@/components/tonight/EventCard";
+import { EmptyState } from "@/components/tonight/EmptyState";
+import { BottomNav } from "@/components/tonight/BottomNav";
 import type { DbEvent } from "@/lib/events";
 import { T } from "@/data/i18n";
 
@@ -41,21 +43,26 @@ function FavoritesPage() {
         <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> {t.back}
         </Link>
-        <h1 className="mt-4 font-display text-3xl font-bold">{t.favorites}</h1>
+        <h1 className="mt-4 font-display text-[32px] font-semibold tracking-tight">{t.favorites}</h1>
 
         {ids.length === 0 ? (
-          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl glass py-14 text-center">
-            <Heart className="h-6 w-6 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">{t.noFavorites}</p>
+          <div className="mt-8">
+            <EmptyState
+              icon={<Heart className="h-5 w-5" />}
+              title={t.emptyFavTitle}
+              body={t.emptyFavBody}
+              action={<Link to="/" className="press rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">{t.navTonight}</Link>}
+            />
           </div>
         ) : (
-          <div className="mt-6 grid gap-5">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {(q.data ?? []).map((e, i) => (
               <EventCard key={e.id} event={e} lang="fr" index={i} isFav={has(e.id)} onToggleFav={toggle} />
             ))}
           </div>
         )}
       </div>
+      <BottomNav lang="fr" favCount={ids.length} />
     </div>
   );
 }

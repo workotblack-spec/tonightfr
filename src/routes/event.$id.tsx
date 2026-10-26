@@ -119,22 +119,10 @@ function EventDetail() {
   const safeJsonLd = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 
   return (
-    <div className="relative min-h-screen pb-32">
+    <div className="relative min-h-screen pb-28">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd }} />
-      <header className="glass-strong sticky top-0 z-40">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-3">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-sm font-medium"
-          >
-            <ArrowLeft className="h-4 w-4" /> {T[lang].back}
-          </Link>
-          <LanguageSwitcher lang={lang} onChange={setLang} />
-        </div>
-      </header>
-
       <section className="relative">
-        <div className="relative h-[55vh] min-h-[380px] w-full overflow-hidden bg-surface">
+        <div className="relative h-[62vh] min-h-[420px] w-full overflow-hidden bg-surface">
           <img
             src={(() => {
               const r = resolveEventImage(ev.id, ev.venue, ev.image_url);
@@ -146,91 +134,101 @@ function EventDetail() {
               const fb = imageFor(ev.image_key);
               if (img.src !== fb) img.src = fb;
             }}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover animate-fade-in"
           />
           <div className="absolute inset-0 bg-gradient-hero" />
-          <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-5 pb-8">
-            {cat && (
-              <div className="inline-flex items-center gap-1.5 rounded-full glass px-2.5 py-1 text-[11px] font-medium uppercase tracking-wider">
-                <span className="h-1.5 w-1.5 rounded-full bg-gradient-aurora" />
-                {cat.label[lang]}
-              </div>
-            )}
-            <h1 className="mt-3 font-display text-4xl font-bold leading-tight sm:text-5xl">
+          <div className="absolute inset-x-0 top-0 mx-auto flex max-w-3xl items-center justify-between px-5 pt-4">
+            <Link to="/" aria-label={T[lang].back} className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md">
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher lang={lang} onChange={setLang} />
+              <button onClick={share} aria-label={T[lang].share} className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md">
+                <Share2 className="h-4 w-4" />
+              </button>
+              <button onClick={() => toggle(ev.id)} aria-label={isFav ? T[lang].removeFav : T[lang].addToFav} className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md">
+                <Heart className={`h-4 w-4 ${isFav ? "fill-primary text-primary" : ""}`} />
+              </button>
+            </div>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-5 pb-8 animate-fade-up">
+            {cat && <p className="label-xs text-primary">{cat.label[lang]}</p>}
+            <h1 className="mt-3 font-display text-[34px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-5xl">
               {ev.title}
             </h1>
-            <p className="mt-2 text-base text-muted-foreground">
-              {ev.venue} · {ev.area}
+            <p className="mt-3 text-[15px] text-foreground/75">
+              <span className="capitalize">{dateStr}</span> · <span className="tabular-nums">{timeStr}</span>
             </p>
           </div>
         </div>
       </section>
 
-      <main className="mx-auto max-w-3xl px-5 pt-8">
+      <main className="mx-auto max-w-3xl px-5 pt-6">
         <div className="grid gap-3 sm:grid-cols-2">
-          <InfoRow icon={<Calendar className="h-4 w-4 text-primary" />} label={T[lang].when}>
+          <InfoRow icon={<Calendar className="h-4 w-4" strokeWidth={1.75} />} label={T[lang].when}>
             <div className="capitalize">{dateStr}</div>
-            <div className="text-muted-foreground">{timeStr}</div>
+            <div className="font-display text-xl font-semibold tabular-nums text-primary">{timeStr}</div>
           </InfoRow>
-          <InfoRow icon={<MapPin className="h-4 w-4 text-primary" />} label={T[lang].address}>
-            <div>{ev.venue}</div>
-            <a
-              href={mapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-primary hover:underline"
-            >
+          <InfoRow icon={<MapPin className="h-4 w-4" strokeWidth={1.75} />} label={T[lang].venue}>
+            <div className="font-medium">{ev.venue}</div>
+            <div className="text-muted-foreground">{ev.address || ev.area}</div>
+            <a href={mapsUrl} target="_blank" rel="noreferrer" className="mt-1 inline-block text-primary hover:underline">
               {T[lang].openMap} →
             </a>
           </InfoRow>
         </div>
 
+        {ev.price_text && (
+          <div className="mt-3 flex items-center justify-between rounded-2xl border border-border bg-surface/60 px-4 py-3.5 text-sm">
+            <span className="label-xs text-muted-foreground">{T[lang].price}</span>
+            <span className="font-semibold">{ev.price_text}</span>
+          </div>
+        )}
+
         {ev.description && (
-          <section className="mt-8">
-            <h2 className="font-display text-xl font-semibold">{T[lang].aboutEvent}</h2>
-            <p className="mt-2 leading-relaxed text-foreground/90">{ev.description}</p>
+          <section className="mt-10">
+            <div className="divider-gold mb-6" />
+            <h2 className="font-display text-xl font-semibold tracking-tight">{T[lang].aboutEvent}</h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-foreground/85">{ev.description}</p>
           </section>
         )}
 
         {ev.lineup && (
-          <section className="mt-8">
-            <h2 className="font-display text-xl font-semibold">{T[lang].lineup}</h2>
-            <p className="mt-2 leading-relaxed text-foreground/90">{ev.lineup}</p>
+          <section className="mt-10">
+            <h2 className="font-display text-xl font-semibold tracking-tight">{T[lang].lineup}</h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-foreground/85">{ev.lineup}</p>
           </section>
         )}
 
-        {ev.price_text && (
-          <div className="mt-8 rounded-2xl glass p-4 text-sm">
-            <span className="font-semibold">{ev.price_text}</span>
-          </div>
+        {ev.lat != null && ev.lng != null && (
+          <section className="mt-10">
+            <h2 className="font-display text-xl font-semibold tracking-tight">{T[lang].address}</h2>
+            <a href={mapsUrl} target="_blank" rel="noreferrer" className="mt-3 block overflow-hidden rounded-2xl border border-border">
+              <iframe
+                title="map"
+                loading="lazy"
+                className="pointer-events-none h-56 w-full grayscale invert-[0.92] hue-rotate-180"
+                src={`https://www.openstreetmap.org/export/embed.html?bbox=${ev.lng - 0.006},${ev.lat - 0.004},${ev.lng + 0.006},${ev.lat + 0.004}&layer=mapnik&marker=${ev.lat},${ev.lng}`}
+              />
+            </a>
+          </section>
         )}
       </main>
 
-      {/* Floating actions */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-5">
-        <div className="pointer-events-auto flex items-center gap-1 rounded-full glass-strong p-1.5 shadow-elevated">
-          <button
-            onClick={() => toggle(ev.id)}
-            aria-label={isFav ? T[lang].removeFav : T[lang].addToFav}
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-colors hover:bg-surface"
-          >
-            <Heart className={`h-4 w-4 ${isFav ? "fill-primary text-primary" : ""}`} />
-          </button>
-          <button
-            onClick={share}
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-colors hover:bg-surface"
-          >
-            <Share2 className="h-4 w-4" />
-            {T[lang].share}
-          </button>
-          {safeTicketUrl && (
-            <a
-              href={safeTicketUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-aurora px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-neon"
-            >
+      {/* CTA fixe */}
+      <div className="fixed inset-x-0 bottom-0 z-40 glass-strong safe-bottom">
+        <div className="mx-auto flex max-w-3xl items-center gap-3 px-5 py-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold">{ev.venue}</p>
+            <p className="text-xs tabular-nums text-muted-foreground">{timeStr}{ev.price_text ? ` · ${ev.price_text}` : ""}</p>
+          </div>
+          {safeTicketUrl ? (
+            <a href={safeTicketUrl} target="_blank" rel="noreferrer" className="press inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">
               <Ticket className="h-4 w-4" /> {T[lang].getTickets}
+            </a>
+          ) : (
+            <a href={mapsUrl} target="_blank" rel="noreferrer" className="press inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">
+              <MapPin className="h-4 w-4" /> {T[lang].openMap}
             </a>
           )}
         </div>
@@ -239,21 +237,13 @@ function EventDetail() {
   );
 }
 
-function InfoRow({
-  icon,
-  label,
-  children,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  children: React.ReactNode;
-}) {
+function InfoRow({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl glass p-4">
-      <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+    <div className="rounded-2xl border border-border bg-surface/60 p-4">
+      <div className="label-xs flex items-center gap-2 text-muted-foreground">
         {icon} {label}
       </div>
-      <div className="mt-2 text-sm">{children}</div>
+      <div className="mt-3 space-y-0.5 text-sm">{children}</div>
     </div>
   );
 }
