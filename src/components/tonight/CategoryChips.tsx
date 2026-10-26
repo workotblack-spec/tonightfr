@@ -17,25 +17,23 @@ export function CategoryChips({
   ];
 
   return (
-    <div className="-mx-5 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <div className="flex gap-2 pb-1">
-        {items.map((it) => {
-          const isActive = it.key === active;
-          return (
-            <button
-              key={it.key}
-              onClick={() => onChange(it.key)}
-              className={`whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition-all ${
-                isActive
-                  ? "border-transparent bg-foreground text-background shadow-elevated"
-                  : "border-border bg-surface/60 text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {it.label}
-            </button>
-          );
-        })}
-      </div>
+    <div className="no-scrollbar snap-row -mx-5 flex gap-2 overflow-x-auto scroll-smooth px-5">
+      {items.map((it) => {
+        const isActive = it.key === active;
+        return (
+          <button
+            key={it.key}
+            onClick={() => onChange(it.key)}
+            className={`press whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
+              isActive
+                ? "border-foreground bg-foreground text-background"
+                : "border-border bg-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {it.label}
+          </button>
+        );
+      })}
     </div>
   );
 }

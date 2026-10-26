@@ -19,17 +19,15 @@ export function DateChips({
   ];
 
   return (
-    <div className="flex gap-2">
+    <div className="inline-flex rounded-xl border border-border bg-surface/60 p-1">
       {items.map((it) => {
         const isActive = it.key === active;
         return (
           <button
             key={it.key}
             onClick={() => onChange(it.key)}
-            className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-all ${
-              isActive
-                ? "bg-gradient-aurora text-primary-foreground shadow-neon"
-                : "glass text-foreground hover:bg-surface-elevated"
+            className={`press whitespace-nowrap rounded-lg px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
+              isActive ? "bg-surface-elevated text-primary" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {it.label}
