@@ -22,18 +22,13 @@ import { EmptyState } from "@/components/tonight/EmptyState";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tonight Fribourg — Bars, clubs & sorties ce soir" },
-      {
-        name: "description",
-        content:
-          "Trouve les bars, clubs, chichas, concerts et afterworks autour de toi à Fribourg, Bulle et Lausanne. La vie nocturne romande en un coup d'œil.",
-      },
-      { property: "og:title", content: "Tonight Fribourg — sorties ce soir" },
-      {
-        property: "og:description",
-        content:
-          "Bars, clubs, chichas, concerts et afterworks autour de toi à Fribourg, Bulle et Lausanne.",
-      },
+      { title: "Événements Fribourg ce soir — Concerts, clubs & bars | Tonight" },
+      { name: "description", content: "Tous les événements à Fribourg ce soir et ce week-end : concerts, clubbing, afterworks, expos et sport en direct. Agenda mis à jour chaque jour." },
+      { property: "og:title", content: "Événements Fribourg ce soir — Concerts, clubs & bars | Tonight" },
+      { property: "og:description", content: "Tous les événements à Fribourg ce soir et ce week-end : concerts, clubbing, afterworks, expos et sport en direct. Agenda mis à jour chaque jour." },
+      { name: "twitter:title", content: "Événements Fribourg ce soir — Concerts, clubs & bars | Tonight" },
+      { name: "twitter:description", content: "Tous les événements à Fribourg ce soir et ce week-end : concerts, clubbing, afterworks, expos et sport en direct. Agenda mis à jour chaque jour." },
+      { property: "og:locale", content: "fr_CH" },
       { property: "og:image", content: ogImg },
       { name: "twitter:image", content: ogImg },
       { property: "og:url", content: "/" },
