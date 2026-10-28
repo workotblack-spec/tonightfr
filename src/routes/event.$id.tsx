@@ -32,7 +32,7 @@ export const Route = createFileRoute("/event/$id")({
     const router = useRouter();
     return (
       <div className="mx-auto max-w-3xl px-5 py-20 text-center">
-        <p className="text-sm text-muted-foreground">{error.message}</p>
+        <p className="text-sm text-muted-foreground">{error instanceof Error ? error.message : String(error)}</p>
         <button
           onClick={() => {
             router.invalidate();
