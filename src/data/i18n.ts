@@ -4,7 +4,7 @@ export const T: Record<Lang, Record<string, string>> = {
   fr: {
     tonightIn: "Ce soir à",
     city: "Fribourg",
-    subtitle: "Trouve les bars, clubs, chichas et concerts autour de toi — à Fribourg, Bulle et Lausanne.",
+    subtitle: "Trouve les bars, clubs, chichas et concerts autour de toi — à Fribourg, Bulle, Lausanne et Berne.",
     nearMeCta: "Autour de moi",
     promote: "Promouvoir mon événement",
     citiesLabel: "Villes",
@@ -97,7 +97,7 @@ export const T: Record<Lang, Record<string, string>> = {
   de: {
     tonightIn: "Heute Abend in",
     city: "Freiburg",
-    subtitle: "Finde Bars, Clubs, Shisha-Lounges und Konzerte in deiner Nähe — Freiburg, Bulle und Lausanne.",
+    subtitle: "Finde Bars, Clubs, Shisha-Lounges und Konzerte in deiner Nähe — Freiburg, Bulle, Lausanne und Bern.",
     nearMeCta: "In meiner Nähe",
     promote: "Mein Event bewerben",
     citiesLabel: "Städte",
@@ -190,7 +190,7 @@ export const T: Record<Lang, Record<string, string>> = {
   en: {
     tonightIn: "Tonight in",
     city: "Fribourg",
-    subtitle: "Find bars, clubs, shisha lounges and concerts near you — Fribourg, Bulle and Lausanne.",
+    subtitle: "Find bars, clubs, shisha lounges and concerts near you — Fribourg, Bulle, Lausanne and Bern.",
     nearMeCta: "Near me",
     promote: "Promote my event",
     citiesLabel: "Cities",

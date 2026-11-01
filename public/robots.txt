@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /auth
 Disallow: /favorites
 
-Sitemap: https://tonight.fr/api/sitemap.xml
+Sitemap: https://tonightfr.lovable.app/api/sitemap.xml

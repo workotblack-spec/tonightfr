@@ -31,9 +31,18 @@ export const Route = createFileRoute("/")({
       { property: "og:locale", content: "fr_CH" },
       { property: "og:image", content: ogImg },
       { name: "twitter:image", content: ogImg },
-      { property: "og:url", content: "/" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
+      { property: "og:url", content: "https://tonightfr.lovable.app/" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "https://tonightfr.lovable.app/" },
+      { rel: "alternate", hrefLang: "fr-CH", href: "https://tonightfr.lovable.app/" },
+      { rel: "alternate", hrefLang: "de-CH", href: "https://tonightfr.lovable.app/" },
+      { rel: "alternate", hrefLang: "en-CH", href: "https://tonightfr.lovable.app/" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://tonightfr.lovable.app/" },
+    ],
   }),
   component: Home,
 });
@@ -160,7 +169,7 @@ function Home() {
           <div className="no-scrollbar -mx-5 flex items-center gap-3 overflow-x-auto px-5">
             <DateChips active={when} onChange={setWhen} lang={lang} />
             <div className="h-5 w-px shrink-0 bg-border" />
-            {(["all", "Fribourg", "Bulle", "Lausanne"] as CityFilter[]).map((c) => (
+            {(["all", "Fribourg", "Bulle", "Lausanne", "Bern"] as CityFilter[]).map((c) => (
               <button
                 key={c}
                 onClick={() => setCity(c)}

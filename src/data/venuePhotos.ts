@@ -3,6 +3,23 @@
 // so events from the same venue don't all look identical while staying authentic.
 
 export const VENUE_PHOTOS: Record<string, string[]> = {
+  // ===== Bern =====
+  "Bierhübeli": [
+    "https://upload.wikimedia.org/wikipedia/commons/1/1c/DAGMAR_im_Bierh%C3%BCbeli_Bern.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/a/a4/YRU_at_the_Bierhubeli.jpg",
+  ],
+  "Dachstock": [
+    "https://upload.wikimedia.org/wikipedia/commons/c/c1/ReithalleBern.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Reitschule_DSC04012.jpg/1280px-Reitschule_DSC04012.jpg",
+  ],
+  "Gaskessel": [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Gaskessel_Bern.jpg/1280px-Gaskessel_Bern.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Gaskessel_%281507777074%29.jpg/1280px-Gaskessel_%281507777074%29.jpg",
+  ],
+  "Bern": [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Bern_at_Night_19-20_Juni_2025_-_Flickr_-_karlheinz_klingbeil.jpg/1280px-Bern_at_Night_19-20_Juni_2025_-_Flickr_-_karlheinz_klingbeil.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Bern_Altstadt_%2847149757541%29.jpg/1280px-Bern_Altstadt_%2847149757541%29.jpg",
+  ],
   "Fri-Son": [
     "https://www.fri-son.ch/frthemes/custom/mint/assets/meta_image.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Fri-Son_Fribourg.jpg/1280px-Fri-Son_Fribourg.jpg",

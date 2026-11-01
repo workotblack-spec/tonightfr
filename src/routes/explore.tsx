@@ -79,7 +79,7 @@ function ExplorePage() {
       <div className="mx-auto max-w-3xl space-y-3 px-5 pt-4">
         <SearchBar value={search} onChange={setSearch} placeholder={t.searchPh} />
         <div className="no-scrollbar snap-row -mx-5 flex gap-2 overflow-x-auto px-5">
-          {(["all", "Fribourg", "Bulle", "Lausanne"] as CityFilter[]).map((c) => (
+          {(["all", "Fribourg", "Bulle", "Lausanne", "Bern"] as CityFilter[]).map((c) => (
             <button
               key={c}
               onClick={() => setCity(c)}
