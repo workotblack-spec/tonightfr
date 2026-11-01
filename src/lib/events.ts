@@ -72,7 +72,7 @@ function rangeFor(when: WhenFilter): { from: Date; to: Date } | null {
   return null;
 }
 
-export type CityFilter = "all" | "Fribourg" | "Bulle" | "Lausanne";
+export type CityFilter = "all" | "Fribourg" | "Bulle" | "Lausanne" | "Bern";
 
 export async function fetchEvents(opts: {
   when: WhenFilter;
@@ -94,7 +94,7 @@ export async function fetchEvents(opts: {
   if (opts.city && opts.city !== "all") {
     q = q.eq("area", opts.city);
   }
-  const { data, error } = await q;
+  const { data, error } = await q.limit(300);
   if (error) throw error;
   const list = (data ?? []) as DbEvent[];
   return list.slice().sort((a, b) => {
