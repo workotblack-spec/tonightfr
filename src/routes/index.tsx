@@ -191,8 +191,15 @@ function Home() {
               </button>
             ))}
           </div>
+          {geo.coords && (
+            <p className="text-[13px] text-muted-foreground">
+              {(() => {
+                const c = nearestCanton({ lat: geo.coords.lat, lng: geo.coords.lng });
+                return c ? <>📍 Tu es dans le canton de <span className="font-semibold text-foreground">{c.name}</span></> : <>📍 Hors de Suisse — on t'affiche toute la Suisse</>;
+              })()}
+            </p>
+          )}
           <MoodRadar moment={moment} setMoment={setMoment} company={company} setCompany={setCompany} radius={radius} setRadius={setRadius} hasGps={!!geo.coords} />
-          <CategoryChips active={active} onChange={setActive} lang={lang} />
         </div>
       </section>
 
