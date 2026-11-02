@@ -217,8 +217,10 @@ function EventDetail() {
         )}
 
         {(ev.category === "clubbing" || ev.category === "lounge" || ev.category === "shisha") && (
-          <HouseRules venue={ev.venue} />
-          <VipTableRequest eventId={ev.id} venue={ev.venue} />
+          <>
+            <HouseRules venue={ev.venue} />
+            <VipTableRequest eventId={ev.id} venue={ev.venue} />
+          </>
         )}
       </main>
 
