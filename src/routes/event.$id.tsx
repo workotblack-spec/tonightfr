@@ -11,6 +11,7 @@ import { T, type Lang } from "@/data/i18n";
 import { useFavorites } from "@/hooks/useFavorites";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { VipTableRequest } from "@/components/tonight/VipTableRequest";
+import { HouseRules } from "@/components/tonight/HouseRules";
 
 export const Route = createFileRoute("/event/$id")({
   head: ({ params }) => ({
@@ -216,6 +217,7 @@ function EventDetail() {
         )}
 
         {(ev.category === "clubbing" || ev.category === "lounge" || ev.category === "shisha") && (
+          <HouseRules venue={ev.venue} />
           <VipTableRequest eventId={ev.id} venue={ev.venue} />
         )}
       </main>
