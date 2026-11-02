@@ -8,7 +8,6 @@ import ogImg from "@/assets/og-tonight.jpg";
 import { type CategoryKey } from "@/data/events";
 import { T, type Lang } from "@/data/i18n";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
-import { CategoryChips } from "@/components/tonight/CategoryChips";
 import { DateChips } from "@/components/tonight/DateChips";
 import { SearchBar } from "@/components/tonight/SearchBar";
 import { EventCard } from "@/components/tonight/EventCard";
