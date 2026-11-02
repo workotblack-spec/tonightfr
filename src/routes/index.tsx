@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const [lang, setLang] = useState<Lang>("fr");
-  const [active, setActive] = useState<CategoryKey | "all">("all");
+  const [active] = useState<CategoryKey | "all">("all");
   const [when, setWhen] = useState<WhenFilter>("all");
   const [search, setSearch] = useState("");
   const [city, setCity] = useState<CityFilter>("all");
