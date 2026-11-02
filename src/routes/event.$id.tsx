@@ -10,6 +10,7 @@ import { resolveEventImage } from "@/data/venuePhotos";
 import { T, type Lang } from "@/data/i18n";
 import { useFavorites } from "@/hooks/useFavorites";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
+import { VipTableRequest } from "@/components/tonight/VipTableRequest";
 
 export const Route = createFileRoute("/event/$id")({
   head: ({ params }) => ({
@@ -212,6 +213,10 @@ function EventDetail() {
               />
             </a>
           </section>
+        )}
+
+        {(ev.category === "clubbing" || ev.category === "lounge" || ev.category === "shisha") && (
+          <VipTableRequest eventId={ev.id} venue={ev.venue} />
         )}
       </main>
 

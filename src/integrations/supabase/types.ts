@@ -181,6 +181,45 @@ export type Database = {
         }
         Relationships: []
       }
+      table_requests: {
+        Row: {
+          contact_name: string
+          created_at: string
+          event_id: string
+          guests: number
+          id: string
+          note: string | null
+          phone: string
+          status: string
+          user_id: string
+          zone: string
+        }
+        Insert: {
+          contact_name: string
+          created_at?: string
+          event_id: string
+          guests?: number
+          id?: string
+          note?: string | null
+          phone: string
+          status?: string
+          user_id: string
+          zone?: string
+        }
+        Update: {
+          contact_name?: string
+          created_at?: string
+          event_id?: string
+          guests?: number
+          id?: string
+          note?: string | null
+          phone?: string
+          status?: string
+          user_id?: string
+          zone?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

@@ -18,6 +18,8 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useGeolocation, distanceKm } from "@/hooks/useGeolocation";
 import { BottomNav } from "@/components/tonight/BottomNav";
 import { EmptyState } from "@/components/tonight/EmptyState";
+import { MoodRadar } from "@/components/tonight/MoodRadar";
+import { matchesMood, withinRadius, type Moment, type Company, type Radius } from "@/lib/radar";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -57,9 +59,13 @@ function Home() {
   const geo = useGeolocation();
   const t = T[lang];
 
+  const [moment, setMoment] = useState<Moment>("all");
+  const [company, setCompany] = useState<Company>("all");
+  const [radius, setRadius] = useState<Radius>("ch");
+
   const eventsQuery = useQuery({
-    queryKey: ["events", when, active, city],
-    queryFn: () => fetchEvents({ when, category: active, city }),
+    queryKey: ["events", when, active, geo.coords ? "all" : city],
+    queryFn: () => fetchEvents({ when, category: active, city: geo.coords ? "all" : city }),
   });
 
   const events = useMemo(() => {
@@ -73,17 +79,21 @@ function Home() {
           e.area.toLowerCase().includes(term),
       );
     }
+    list = list.filter((e) => matchesMood(e.category, moment, company));
     if (geo.coords) {
-      list = list.map((e) => ({
-        ...e,
-        _distance:
-          e.lat != null && e.lng != null
-            ? distanceKm(geo.coords!, { lat: e.lat, lng: e.lng })
-            : Number.POSITIVE_INFINITY,
-      }));
+      list = list
+        .map((e) => ({
+          ...e,
+          _distance:
+            e.lat != null && e.lng != null
+              ? distanceKm(geo.coords!, { lat: e.lat, lng: e.lng })
+              : Number.POSITIVE_INFINITY,
+        }))
+        .filter((e) => withinRadius(e._distance, radius))
+        .sort((a, b) => (a._distance ?? 0) - (b._distance ?? 0));
     }
     return list;
-  }, [eventsQuery.data, search, geo.coords]);
+  }, [eventsQuery.data, search, geo.coords, moment, company, radius]);
 
   const today = new Date().toLocaleDateString(
     lang === "fr" ? "fr-CH" : lang === "de" ? "de-CH" : "en-GB",
@@ -181,6 +191,7 @@ function Home() {
               </button>
             ))}
           </div>
+          <MoodRadar moment={moment} setMoment={setMoment} company={company} setCompany={setCompany} radius={radius} setRadius={setRadius} hasGps={!!geo.coords} />
           <CategoryChips active={active} onChange={setActive} lang={lang} />
         </div>
       </section>
