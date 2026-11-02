@@ -18,6 +18,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useGeolocation, distanceKm } from "@/hooks/useGeolocation";
 import { BottomNav } from "@/components/tonight/BottomNav";
 import { EmptyState } from "@/components/tonight/EmptyState";
+import { nearestCanton } from "@/data/cantons";
 import { MoodRadar } from "@/components/tonight/MoodRadar";
 import { matchesMood, withinRadius, type Moment, type Company, type Radius } from "@/lib/radar";
 
