@@ -18,6 +18,7 @@ import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as MapRouteImport } from './routes/map'
+import { Route as ProRouteImport } from './routes/pro'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PromouvoirRouteImport } from './routes/promouvoir'
 import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml'
@@ -71,6 +72,11 @@ const MapRoute = MapRouteImport.update({
   path: '/map',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProRoute = ProRouteImport.update({
+  id: '/pro',
+  path: '/pro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/pro'
     | '/profile'
     | '/promouvoir'
     | '/api/sitemap.xml'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/pro'
     | '/profile'
     | '/promouvoir'
     | '/api/sitemap.xml'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/pro'
     | '/profile'
     | '/promouvoir'
     | '/api/sitemap.xml'
@@ -229,6 +241,7 @@ export interface RootRouteChildren {
   FavoritesRoute: typeof FavoritesRoute
   LegalRoute: typeof LegalRoute
   MapRoute: typeof MapRoute
+  ProRoute: typeof ProRoute
   ProfileRoute: typeof ProfileRoute
   PromouvoirRoute: typeof PromouvoirRoute
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
@@ -303,6 +316,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pro': {
+      id: '/pro'
+      path: '/pro'
+      fullPath: '/pro'
+      preLoaderRoute: typeof ProRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -365,6 +385,7 @@ const rootRouteChildren: RootRouteChildren = {
   FavoritesRoute: FavoritesRoute,
   LegalRoute: LegalRoute,
   MapRoute: MapRoute,
+  ProRoute: ProRoute,
   ProfileRoute: ProfileRoute,
   PromouvoirRoute: PromouvoirRoute,
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,

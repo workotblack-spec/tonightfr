@@ -76,6 +76,7 @@ function ProfilePage() {
             label={t.favorites}
             extra={count > 0 ? <span className="text-xs tabular-nums text-primary">{count}</span> : null}
           />
+          <Row to="/pro" icon={<Settings className="h-4 w-4" />} label="Espace Pro (établissements)" />
           {(role === "venue" || role === "admin") && (
             <Row to="/admin" icon={<Settings className="h-4 w-4" />} label={t.proSpace} />
           )}

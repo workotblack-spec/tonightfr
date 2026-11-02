@@ -241,6 +241,51 @@ export type Database = {
         }
         Relationships: []
       }
+      venues: {
+        Row: {
+          canton: string
+          city: string
+          cloakroom: string | null
+          created_at: string
+          dress_code: string | null
+          id: string
+          min_age: number
+          name: string
+          owner_id: string
+          table_min_spend: string | null
+          updated_at: string
+          vip_rules: string | null
+        }
+        Insert: {
+          canton?: string
+          city?: string
+          cloakroom?: string | null
+          created_at?: string
+          dress_code?: string | null
+          id?: string
+          min_age?: number
+          name: string
+          owner_id: string
+          table_min_spend?: string | null
+          updated_at?: string
+          vip_rules?: string | null
+        }
+        Update: {
+          canton?: string
+          city?: string
+          cloakroom?: string | null
+          created_at?: string
+          dress_code?: string | null
+          id?: string
+          min_age?: number
+          name?: string
+          owner_id?: string
+          table_min_spend?: string | null
+          updated_at?: string
+          vip_rules?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

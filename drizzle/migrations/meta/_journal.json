@@ -15,6 +15,13 @@
       "when": 1793599739327,
       "tag": "0001_table_requests",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793608550597,
+      "tag": "0002_venue_portal",
+      "breakpoints": true
     }
   ]
 }
