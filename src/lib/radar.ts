@@ -2,7 +2,7 @@ import type { CategoryKey } from "@/data/events";
 
 export type Moment = "all" | "apero" | "bar" | "live" | "club";
 export type Company = "all" | "solo" | "duo" | "bande";
-export type Radius = 2 | 15 | 50 | "ch";
+export type Radius = 5 | 20 | "ch";
 
 export const MOMENTS: { key: Moment; label: string; cats: CategoryKey[] }[] = [
   { key: "all", label: "Tout", cats: [] },
@@ -20,9 +20,8 @@ export const COMPANIES: { key: Company; label: string; cats: CategoryKey[] }[] =
 ];
 
 export const RADII: { key: Radius; label: string }[] = [
-  { key: 2, label: "2 km" },
-  { key: 15, label: "15 km" },
-  { key: 50, label: "Mon canton" },
+  { key: 5, label: "5 km · à pied" },
+  { key: 20, label: "20 km · voiture/train" },
   { key: "ch", label: "Toute la Suisse" },
 ];
 
