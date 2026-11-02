@@ -8,7 +8,6 @@ import ogImg from "@/assets/og-tonight.jpg";
 import { type CategoryKey } from "@/data/events";
 import { T, type Lang } from "@/data/i18n";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
-import { CategoryChips } from "@/components/tonight/CategoryChips";
 import { DateChips } from "@/components/tonight/DateChips";
 import { SearchBar } from "@/components/tonight/SearchBar";
 import { EventCard } from "@/components/tonight/EventCard";
@@ -18,6 +17,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useGeolocation, distanceKm } from "@/hooks/useGeolocation";
 import { BottomNav } from "@/components/tonight/BottomNav";
 import { EmptyState } from "@/components/tonight/EmptyState";
+import { nearestCanton } from "@/data/cantons";
 import { MoodRadar } from "@/components/tonight/MoodRadar";
 import { matchesMood, withinRadius, type Moment, type Company, type Radius } from "@/lib/radar";
 
@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const [lang, setLang] = useState<Lang>("fr");
-  const [active, setActive] = useState<CategoryKey | "all">("all");
+  const [active] = useState<CategoryKey | "all">("all");
   const [when, setWhen] = useState<WhenFilter>("all");
   const [search, setSearch] = useState("");
   const [city, setCity] = useState<CityFilter>("all");
@@ -191,8 +191,15 @@ function Home() {
               </button>
             ))}
           </div>
+          {geo.coords && (
+            <p className="text-[13px] text-muted-foreground">
+              {(() => {
+                const c = nearestCanton({ lat: geo.coords.lat, lng: geo.coords.lng });
+                return c ? <>📍 Tu es dans le canton de <span className="font-semibold text-foreground">{c.name}</span></> : <>📍 Hors de Suisse — on t'affiche toute la Suisse</>;
+              })()}
+            </p>
+          )}
           <MoodRadar moment={moment} setMoment={setMoment} company={company} setCompany={setCompany} radius={radius} setRadius={setRadius} hasGps={!!geo.coords} />
-          <CategoryChips active={active} onChange={setActive} lang={lang} />
         </div>
       </section>
 
