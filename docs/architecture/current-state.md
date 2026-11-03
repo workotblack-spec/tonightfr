@@ -61,13 +61,17 @@ RLS signifie « chaque lecture ou écriture passe par des règles d’accès ».
 
 ### Historiques de migration
 
-- `supabase/migrations/` contient **17 fichiers SQL**, jusqu’au préfixe local `20260705142611`.
-- `drizzle/migrations/` contient **3 fichiers SQL supplémentaires** : `0000_restrict_profiles_select.sql`, `0001_table_requests.sql`, `0002_venue_portal.sql`, ainsi qu’un journal local et des snapshots.
-- `drizzle/schema.ts` est intentionnellement vide, à l’exception d’un commentaire généré ; il ne décrit pas les sept tables.
-- La lecture de `supabase_migrations.schema_migrations` renvoie **17 versions**, jusqu’à `20260705142613`. Certains horodatages ne sont pas identiques aux préfixes locaux.
-- Ce journal distant ne montre pas d’entrée correspondant aux trois migrations Drizzle. La présence effective de `venues` et `table_requests` ne permet pas de conclure comment elles ont été appliquées. Un journal Drizzle distinct est possible, mais non vérifié ici.
+Rapprochement en lecture seule du 3 novembre 2026 (empreintes MD5/SHA-256 comparées, aucun contenu affiché) :
 
-**Blocage :** rapprocher fichiers, journaux et schéma réel avant toute nouvelle migration ; voir [décision 0001](../decisions/0001-source-of-truth-migrations.md).
+- `supabase/migrations/` : **17 fichiers** ↔ **17 lignes** dans `supabase_migrations.schema_migrations`, appariées une à une dans l’ordre (écart d’horodatage de 0 à 2 secondes, typique d’un enregistrement après exécution).
+  - **14 fichiers identiques** octet pour octet au texte enregistré en base.
+  - **3 fichiers différents** de quelques octets : `20260523152315_…`, `20260525175342_…`, `20260525180022_…`. Deux d’entre eux sont signalés comme contenant un motif sensible ; le contenu n’a pas été ouvert. Cause non établie (édition après coup ou masquage probable).
+- `drizzle/migrations/` : **3 fichiers** ↔ **3 lignes** dans un **second journal**, `drizzle.__drizzle_migrations`, avec empreintes SHA-256 **identiques** et dates égales à celles du journal local `_journal.json`.
+- L’énigme précédente (« `venues` et `table_requests` existent sans version ») est résolue : elles ont été créées par les migrations Drizzle `0001` et `0002`, tracées dans le journal Drizzle.
+- `drizzle/schema.ts` reste vide par conception : Drizzle sert ici d’exécuteur de SQL écrit à la main, pas de modèle.
+- Aucune migration locale non appliquée, aucun doublon de version, aucune ligne en base sans fichier.
+
+**État :** deux journaux successifs et cohérents (Supabase jusqu’au 5 juillet 2026, puis Drizzle). Reste à expliquer les 3 écarts et à comparer le schéma réel en détail ; voir [décision 0001](../decisions/0001-source-of-truth-migrations.md).
 
 ### Connexions : écart avec le cadrage
 
@@ -79,7 +83,7 @@ Ne pas conclure « aucune connexion dans le workspace ». Clarifier les catégor
 
 - Le dépôt GitHub `workotblack-spec/tonightfr` contient le commit de référence ; la branche `backup/pre-execution-2026-11-03` a déjà été créée dessus. Le commit local est confirmé, mais l’état distant et la synchronisation ne sont pas vérifiés par cette session.
 - Le projet est publié à `https://tonightfr.lovable.app`. **Publié ne signifie pas production validée.** Aucun parcours publié n’a été visité ici.
-- L’identifiant de `supabase/config.toml` ne correspondrait pas aux deux projets inactifs du compte externe connecté, dont Tonight Fribourg. La base accessible par Lovable répond effectivement. L’identité des environnements reste à rapprocher, sans afficher leurs identifiants dans ces documents.
+- **Vérifié (étape a)** : l’app, l’aperçu et le site publié utilisent la base Lovable Cloud (PostgreSQL 17.6) ; `.env` (`VITE_SUPABASE_URL`, `SUPABASE_PROJECT_ID`…) et `supabase/config.toml` désignent la même référence (comparaison interne, valeurs non affichées). Les deux projets du compte Supabase externe (`Tonight Fribourg`, `workotblack-spec's Project`) sont INACTIVE, absents du dépôt, historique illisible (timeout) : **relation non démontrée**, aucune action à faire sur eux.
 - Une ancienne migration contiendrait une authentification Bearer en clair dans l’historique. Le contenu sensible n’a pas été rouvert ou recopié ici. Une rotation contrôlée de `CRON_SECRET` est urgente avant la prochaine étape de sécurité ; aucune rotation n’est effectuée maintenant.
 
 ## 3. Risques et décisions à prendre

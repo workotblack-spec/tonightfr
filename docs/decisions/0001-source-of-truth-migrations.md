@@ -1,37 +1,62 @@
 # Décision 0001 — source de vérité des migrations
 
-- Date : 3 novembre 2026.
-- Statut : **provisoire ; choix suspendu**.
-- Périmètre : changements de structure de la base Tonight FR.
+- Date : 3 novembre 2026 (mise à jour après rapprochement en lecture seule).
+- Statut : **provisoire ; choix toujours suspendu, mais hypothèse privilégiée documentée**.
+- Périmètre : changements de structure de la base Tonight FR (Lovable Cloud).
 
-## Contexte vérifié
+## Faits vérifiés (lecture seule)
 
-Le dépôt contient 17 migrations SQL historiques dans `supabase/migrations/` et trois migrations SQL supplémentaires dans `drizzle/migrations/`. Le journal Drizzle local référence ces trois fichiers ; `drizzle/schema.ts` ne décrit aucune table.
+Méthode : empreintes calculées sur les fichiers et sur le texte enregistré en base ; aucun contenu de migration affiché.
 
-La base accessible par Lovable contient `venues` et `table_requests`. Le journal `supabase_migrations.schema_migrations` interrogé ne comporte que 17 versions historiques, sans correspondance visible avec les trois migrations Drizzle. Des préfixes locaux et versions distantes diffèrent aussi de quelques secondes.
+| Historique | Fichiers locaux | Lignes en base | Correspondance |
+| --- | --- | --- | --- |
+| `supabase/migrations` ↔ `supabase_migrations.schema_migrations` | 17 | 17 | 14 identiques ; 3 diffèrent de quelques octets |
+| `drizzle/migrations` ↔ `drizzle.__drizzle_migrations` | 3 | 3 | 3 identiques (SHA-256 et dates égales) |
 
-Le mécanisme ayant appliqué les changements supplémentaires **n’est pas établi**. Un autre journal peut exister ; son existence et son contenu restent à vérifier. Ne pas conclure qu’une migration manque, qu’il faut la rejouer ou que les changements auraient été manuels.
+Matrice Supabase (préfixe fichier → version en base, statut) :
+
+| Fichier | Version base | Statut |
+| --- | --- | --- |
+| 20260523121000 | 20260523120958 | identique |
+| 20260523152315 | 20260523152314 | **différent** (fichier 2082 o / base 2071 o) |
+| 20260523165623 | 20260523165621 | identique |
+| 20260523165636 | 20260523165634 | identique |
+| 20260523180458 | 20260523180456 | identique |
+| 20260523192916 | 20260523192914 | identique |
+| 20260525161359 | 20260525161358 | identique |
+| 20260525175342 | 20260525175341 | **différent** (527 / 519) ; motif sensible signalé |
+| 20260525180022 | 20260525180021 | **différent** (852 / 848) ; motif sensible signalé |
+| 20260525180111 | 20260525180110 | identique |
+| 20260525181620 | 20260525181619 | identique |
+| 20260525185343 | 20260525185342 | identique |
+| 20260602153114 | 20260602153112 | identique |
+| 20260602153131 | 20260602153131 | identique |
+| 20260622202001 | 20260622202000 | identique |
+| 20260629181602 | 20260629181600 | identique |
+| 20260705142611 | 20260705142613 | identique |
+
+Matrice Drizzle : `0000_restrict_profiles_select`, `0001_table_requests` (crée `table_requests`), `0002_venue_portal` (crée `venues`) → lignes 1, 2, 3 du journal Drizzle, identiques.
+
+Constats : aucun doublon, aucune migration locale non appliquée, aucune version en base sans fichier. `venues` et `table_requests` sont expliquées par le journal Drizzle. Les deux journaux se succèdent dans le temps sans chevauchement.
+
+## Ce qui reste inconnu
+
+- Cause des 3 écarts d’octets (modification du fichier après exécution ou masquage probable ; non prouvé). Le texte en base fait foi de ce qui a été exécuté.
+- Comparaison détaillée du schéma réel (contraintes, index, fonctions, triggers, droits, politiques) avec la somme des migrations : non faite.
+- Lien éventuel avec les deux projets Supabase externes inactifs : non démontré.
 
 ## Décision provisoire
 
-**Aucune source de vérité de migration n’est choisie tant que l’écart entre les fichiers SQL historiques, Drizzle et l’historique réel n’est pas résolu.**
+**Aucune source de vérité n’est formellement retenue.** Hypothèse privilégiée, à confirmer : *le dossier `supabase/migrations` est un historique figé (archive) ; les nouveaux changements passent par `drizzle/migrations`, l’outil de migration Lovable qui alimente déjà le journal Drizzle.* Ne rien rejouer, ne pas fusionner ni corriger les journaux, ne pas remplir `drizzle/schema.ts`.
 
-Ne pas générer de nouvelles migrations, rejouer un dossier, remplir le schéma vide, fusionner des journaux ou corriger leurs versions pendant cette étape.
+## Conditions pour clore
 
-Cette suspension est une mesure de sécurité, pas une décision d’abandonner l’un des outils.
-
-## Conditions de résolution
-
-1. Confirmer la correspondance entre Lovable Cloud, dépôt et environnements externes.
-2. Inventorier en lecture seule l’historique complet, y compris tout journal Drizzle distant accessible.
-3. Comparer le schéma réel, les contraintes, index, fonctions, triggers, permissions et politiques aux changements attendus, sans diffuser les secrets historiques.
-4. Établir ce qui a été appliqué et ce qui ne l’a pas été avec des preuves ; marquer explicitement ce qui reste inconnu.
-5. Préparer une sauvegarde dont la restauration pourra être vérifiée dans un environnement isolé autorisé.
-6. Documenter une nouvelle décision : mécanisme retenu, registre de référence, règles de suivi, responsabilités et retour arrière.
+1. Expliquer les 3 écarts sans révéler de secret (comparaison masquée).
+2. Comparer schéma réel et migrations attendues.
+3. Plan de sauvegarde vérifiable (étape c) et rotation du secret historique (étape d).
+4. Remplacer cette décision par une décision finale signée par l’utilisateur.
 
 ## Conséquences
 
-- La documentation et les investigations de lecture peuvent avancer.
-- Toute évolution de schéma ou de permissions est bloquée.
-- GitHub conserve du code et des fichiers SQL, **pas automatiquement l’état réel des données**.
-- L’identification de l’environnement et le traitement du secret historique restent des prérequis distincts ; aucun de ces sujets ne justifie une opération d’écriture improvisée.
+- Toute évolution de schéma ou de permissions reste bloquée sans autorisation explicite.
+- GitHub conserve les fichiers, pas l’état réel des données.
