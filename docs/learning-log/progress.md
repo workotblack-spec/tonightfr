@@ -4,9 +4,9 @@ Mis à jour le **3 novembre 2026**. « Validé » s’applique seulement au pér
 
 | Phase | Statut | Résultat attendu / état exact | Condition de sortie |
 | --- | --- | --- | --- |
-| 0 — Cadre documentaire | en cours | Documents créés ; contrôles locaux à consigner dans le compte rendu | Liens et périmètre vérifiés ; réception GitHub confirmée séparément |
+| 0 — Cadre documentaire local | validé | Neuf documents créés ; liens, formats sensibles recherchés et périmètre Markdown contrôlés | Validation limitée aux documents locaux, pas à la production |
 | 0.1 — Référence de code locale | validé | SHA de départ confirmé ; état local propre avant ajout | `a05116ed6e0471b0796a72577635ab01fd9fa78c` |
-| 0.2 — Sauvegarde et livraison GitHub | bloqué | Branche distante rapportée, non vérifiée ici ; nouveau SHA non observé | Vérifier référence et documents sur `workotblack-spec/tonightfr` |
+| 0.2 — Sauvegarde et livraison GitHub | bloqué | Branche distante rapportée, non vérifiée ici ; commit documentaire local observé | Vérifier référence et documents sur `workotblack-spec/tonightfr` |
 | 1 — Identification des environnements | bloqué | Mapping Lovable Cloud / configuration / compte externe incertain | Correspondance prouvée en lecture seule, sans réactivation |
 | 2 — Rapprochement des migrations | bloqué | 17 historiques et 3 Drizzle ; source de vérité suspendue | Historique complet et schéma réel rapprochés, décision 0001 remplacée |
 | 3 — Secret historique et sauvegarde de données | bloqué | Exposition rapportée ; aucune rotation ou restauration testée | Environnement identifié, plan autorisé, rotation contrôlée et sauvegarde vérifiable |

@@ -38,7 +38,7 @@ Routes techniques présentes : `/api/sitemap.xml`, `/api/public/ingest`, `/api/p
 - `VipTableRequest` écrit dans `table_requests` : événement, demandeur, zone, nombre d’invités, contact, téléphone et note. C’est une **demande à confirmer**, pas une table numérotée avec disponibilité garantie. Les zones proposées sont actuellement fixes dans le code.
 - Le portail propose accepter/refuser puis arrivé/absent. Ses compteurs portent sur l’ensemble des demandes chargées : le « bilan du lendemain » n’est pas un rapport limité automatiquement à la veille.
 - Aucun encaissement n’est intégré au formulaire VIP lu. Tonight ne doit pas encaisser les tables, bouteilles ou consommations ; le client règle l’établissement directement. Les abonnements restent un chantier distinct.
-- Les règles maison sont affichées à partir de la fiche du propriétaire. Ce rattachement est insuffisant pour plusieurs établissements d’un même compte.
+- `HouseRules` recherche la fiche par nom avec `ilike`, puis limite le résultat à une fiche. Il ne recherche pas par propriétaire ou identifiant d’établissement : des noms proches ou dupliqués peuvent créer une ambiguïté. Ce rattachement est insuffisant pour un modèle multi-établissements fiable.
 - Des fichiers PWA, d’images, de robots et de sitemap existent ; aucune validation d’installation, d’indexation réelle ou de droits d’utilisation des photos n’est effectuée ici.
 
 ### Base accessible : sept tables publiques
