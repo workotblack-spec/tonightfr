@@ -66,3 +66,9 @@ La rotation contrôlée de `CRON_SECRET` est **urgente avant la prochaine étape
 Supprimer une valeur de la version courante ne l’efface pas de l’historique et ne remplace pas une rotation. Ne pas réécrire l’historique de manière improvisée.
 
 Ne partagez jamais un secret en clair : utilisez les réglages ou le formulaire sécurisé.
+
+### Constats de structure (3 novembre 2026)
+
+- Des tâches planifiées existent ou ont disparu **hors migration** : toujours relire `cron.job` (noms et indicateurs seulement, jamais la commande en clair) avant de planifier quoi que ce soit.
+- Ne pas « corriger » le droit d’exécution de `has_role` sans test multi-comptes et autorisation : le retrait était volontaire.
+- Comparer des fichiers sensibles par empreinte normalisée (commentaires et longues valeurs masqués), jamais par lecture.

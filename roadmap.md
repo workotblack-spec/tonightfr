@@ -11,7 +11,7 @@
 ## Phase 1 — sécurisation et compréhension (en cours)
 
 - [x] (a) Runtime identifié : base Lovable Cloud. Ouvert : deux projets Supabase externes inactifs non rapprochés (aucune action).
-- [ ] (b) Réconcilier les migrations — en cours : 17/17 + 3/3 appariées ; restent 3 écarts d’octets à expliquer et schéma réel à comparer.
+- [ ] (b) Réconcilier les migrations — en cours : 17/17 + 3/3 appariées ; écarts caractérisés et schéma comparé ; restent tâches planifiées hors migration (import non planifié) et test de `has_role` avec comptes réels.
 - [ ] (c) Préparer un plan de sauvegarde vérifiable.
 - [ ] (d) Examiner le secret historique sans le révéler et préparer une rotation contrôlée séparée.
 

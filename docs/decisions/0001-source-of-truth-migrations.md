@@ -41,7 +41,10 @@ Constats : aucun doublon, aucune migration locale non appliquée, aucune version
 
 ## Ce qui reste inconnu
 
-- Cause des 3 écarts d’octets (modification du fichier après exécution ou masquage probable ; non prouvé). Le texte en base fait foi de ce qui a été exécuté.
+- Les 3 écarts d’octets sont désormais caractérisés (empreintes normalisées, sans affichage) :
+  - `20260523152315` et `20260525180022` : **commentaires/espacement uniquement**.
+  - `20260525175342` : structure SQL identique ; la différence est **uniquement à l’intérieur de longues valeurs** (jeton ou adresse) — fichier à motif sensible, valeur non lue.
+- Plusieurs tâches planifiées diffèrent des migrations (voir état actuel §5) : la base a été modifiée **hors migration** au moins pour les robots d’import et deux tâches de nettoyage.
 - Comparaison détaillée du schéma réel (contraintes, index, fonctions, triggers, droits, politiques) avec la somme des migrations : non faite.
 - Lien éventuel avec les deux projets Supabase externes inactifs : non démontré.
 
@@ -52,7 +55,7 @@ Constats : aucun doublon, aucune migration locale non appliquée, aucune version
 ## Conditions pour clore
 
 1. Expliquer les 3 écarts sans révéler de secret (comparaison masquée).
-2. Comparer schéma réel et migrations attendues.
+2. ✅ Schéma comparé ; restent à expliquer les tâches planifiées hors migration et le droit d’exécution de `has_role`.
 3. Plan de sauvegarde vérifiable (étape c) et rotation du secret historique (étape d).
 4. Remplacer cette décision par une décision finale signée par l’utilisateur.
 
