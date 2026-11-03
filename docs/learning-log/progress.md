@@ -18,7 +18,16 @@ Mis à jour le **3 novembre 2026**. « Validé » s’applique seulement au pér
 
 ## Prochaine action
 
-La réception du commit documentaire sur GitHub est confirmée par la vérification hors de Lovable. Effectuer ensuite un inventaire **de lecture uniquement** du mapping des environnements et des journaux de migrations complets. Préparer ensuite le traitement urgent du secret dans une étape distincte et autorisée.
+**Cadrage stratégique validé** : voir [vision produit](../product/vision.md) et [décision 0003](../decisions/0003-product-vision-and-roles.md).
+
+**Phase 1 — sécurisation et compréhension : en cours.** Prochaines actions :
+
+1. (a) Identifier précisément la base Lovable Cloud et les environnements liés au dépôt.
+2. (b) Réconcilier l’historique des migrations Supabase et Drizzle, sans exécuter de migration.
+3. (c) Préparer un plan de sauvegarde vérifiable.
+4. (d) Examiner le secret historique sans le révéler et préparer une rotation contrôlée séparée.
+
+Aucune action sensible n’est faite sans autorisation explicite.
 
 La branche `backup/pre-execution-2026-11-03` a été créée avant la documentation depuis `a05116ed6e0471b0796a72577635ab01fd9fa78c`. Elle constitue un point de restauration du code initial, sans les nouveaux documents si elle n’a pas bougé ; elle ne sauvegarde pas les données.
 
