@@ -31,7 +31,7 @@ Un fichier présent ne prouve pas que sa fonction marche en ligne. Une protectio
 
 ## Où sont les éléments ?
 
-- **Code et documentation** : projet Lovable et dépôt GitHub identifié dans le cadrage, `workotblack-spec/tonightfr`. La synchronisation distante doit être vérifiée ; elle ne se déduit pas d’une modification locale.
+- **Code et documentation** : projet Lovable et dépôt GitHub `workotblack-spec/tonightfr`. La vérification GitHub effectuée hors de Lovable confirme le commit documentaire `a912595c95fbb3b31a6b021feb8f04cdeaa32d89` sur `main` (« Added 9 docs, 2 governance »). Cette confirmation porte sur ce commit, pas sur les modifications ultérieures.
 - **Données** : PostgreSQL accessible par Lovable Cloud. GitHub n’est pas une sauvegarde des données.
 - **Secrets** : réglages sécurisés ; jamais dans les documents, les captures, les commits ou le chat.
 - **Historique des modifications de base** : deux ensembles locaux et un journal distant à rapprocher ; aucune source de vérité n’est choisie à ce stade.
@@ -40,7 +40,9 @@ Un fichier présent ne prouve pas que sa fonction marche en ligne. Une protectio
 
 Commit local confirmé : `a05116ed6e0471b0796a72577635ab01fd9fa78c` (« Ajouté bloc règles maison »).
 
-Le cadrage indique que ce commit est aussi présent sur GitHub et que la branche `backup/pre-execution-2026-11-03` pointe dessus. Cette session n’a ni créé cette branche ni confirmé son état distant. Une branche de code n’est ni un export de base ni une sauvegarde des secrets.
+La vérification GitHub effectuée hors de Lovable confirme l’existence de `backup/pre-execution-2026-11-03`, créée avant la documentation à partir du commit initial ci-dessus. C’est un point de restauration du code initial : si elle n’a pas bougé, elle ne contient pas les nouveaux documents. Une branche de code n’est ni un export de base ni une sauvegarde des secrets.
+
+Les fichiers `docs/README.md`, `docs/architecture/current-state.md` et `docs/learning-log/progress.md` ont été lus directement sur `main` lors de cette vérification externe et leur contenu est présent. Cette vérification n’a pas été effectuée par l’agent Lovable.
 
 ## Limite de cette étape
 
