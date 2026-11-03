@@ -6,7 +6,7 @@ Mis à jour le **3 novembre 2026**. « Validé » s’applique seulement au pér
 | --- | --- | --- | --- |
 | 0 — Cadre documentaire local | validé | Neuf documents créés ; liens, formats sensibles recherchés et périmètre Markdown contrôlés | Validation limitée aux documents locaux, pas à la production |
 | 0.1 — Référence de code locale | validé | SHA de départ confirmé ; état local propre avant ajout | `a05116ed6e0471b0796a72577635ab01fd9fa78c` |
-| 0.2 — Sauvegarde et livraison GitHub | bloqué | Branche distante rapportée, non vérifiée ici ; commit documentaire local observé | Vérifier référence et documents sur `workotblack-spec/tonightfr` |
+| 0.2 — Sauvegarde et livraison GitHub | validé | Vérification hors de Lovable : `main` contient `a912595c95fbb3b31a6b021feb8f04cdeaa32d89` (« Added 9 docs, 2 governance ») ; README, état actuel et suivi lus directement ; branche backup existante | Validation de ce commit documentaire, pas des modifications suivantes |
 | 1 — Identification des environnements | bloqué | Mapping Lovable Cloud / configuration / compte externe incertain | Correspondance prouvée en lecture seule, sans réactivation |
 | 2 — Rapprochement des migrations | bloqué | 17 historiques et 3 Drizzle ; source de vérité suspendue | Historique complet et schéma réel rapprochés, décision 0001 remplacée |
 | 3 — Secret historique et sauvegarde de données | bloqué | Exposition rapportée ; aucune rotation ou restauration testée | Environnement identifié, plan autorisé, rotation contrôlée et sauvegarde vérifiable |
@@ -18,7 +18,9 @@ Mis à jour le **3 novembre 2026**. « Validé » s’applique seulement au pér
 
 ## Prochaine action
 
-Vérifier d’abord la réception documentaire sur GitHub, puis effectuer un inventaire **de lecture uniquement** du mapping des environnements et des journaux de migrations complets. Préparer ensuite le traitement urgent du secret dans une étape distincte et autorisée.
+La réception du commit documentaire sur GitHub est confirmée par la vérification hors de Lovable. Effectuer ensuite un inventaire **de lecture uniquement** du mapping des environnements et des journaux de migrations complets. Préparer ensuite le traitement urgent du secret dans une étape distincte et autorisée.
+
+La branche `backup/pre-execution-2026-11-03` a été créée avant la documentation depuis `a05116ed6e0471b0796a72577635ab01fd9fa78c`. Elle constitue un point de restauration du code initial, sans les nouveaux documents si elle n’a pas bougé ; elle ne sauvegarde pas les données.
 
 ## Ce qui ne bloque pas
 
