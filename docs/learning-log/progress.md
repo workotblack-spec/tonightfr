@@ -7,8 +7,8 @@ Mis à jour le **3 novembre 2026**. « Validé » s’applique seulement au pér
 | 0 — Cadre documentaire local | validé | Neuf documents créés ; liens, formats sensibles recherchés et périmètre Markdown contrôlés | Validation limitée aux documents locaux, pas à la production |
 | 0.1 — Référence de code locale | validé | SHA de départ confirmé ; état local propre avant ajout | `a05116ed6e0471b0796a72577635ab01fd9fa78c` |
 | 0.2 — Sauvegarde et livraison GitHub | validé | Vérification hors de Lovable : `main` contient `a912595c95fbb3b31a6b021feb8f04cdeaa32d89` (« Added 9 docs, 2 governance ») ; README, état actuel et suivi lus directement ; branche backup existante | Validation de ce commit documentaire, pas des modifications suivantes |
-| 1 — Identification des environnements | bloqué | Mapping Lovable Cloud / configuration / compte externe incertain | Correspondance prouvée en lecture seule, sans réactivation |
-| 2 — Rapprochement des migrations | bloqué | 17 historiques et 3 Drizzle ; source de vérité suspendue | Historique complet et schéma réel rapprochés, décision 0001 remplacée |
+| 1 — Identification des environnements | validé (runtime) | App, aperçu et site publié reliés à la base Lovable Cloud ; `.env` et `config.toml` concordent. Deux projets Supabase externes inactifs non rapprochés (relation non démontrée, aucune action) | Validé pour le runtime ; rapprochement externe laissé ouvert |
+| 2 — Rapprochement des migrations | en cours | 17/17 Supabase appariées (14 identiques, 3 écarts d’octets) ; 3/3 Drizzle identiques dans `drizzle.__drizzle_migrations` ; aucune migration en attente | Expliquer les 3 écarts, comparer le schéma réel, décision 0001 finale |
 | 3 — Secret historique et sauvegarde de données | bloqué | Exposition rapportée ; aucune rotation ou restauration testée | Environnement identifié, plan autorisé, rotation contrôlée et sauvegarde vérifiable |
 | 4 — Conception Pro multi-établissements | à faire | Vue cible proposée seulement | Modèle et permissions approuvés après levée des blocages |
 | 5 — Construction Pro progressive | à faire | Portail mono-propriétaire existant, pas encore évolution multi-lieux | Changements autorisés, additifs et vérifiés avec des comptes distincts |
@@ -22,8 +22,8 @@ Mis à jour le **3 novembre 2026**. « Validé » s’applique seulement au pér
 
 **Phase 1 — sécurisation et compréhension : en cours.** Prochaines actions :
 
-1. (a) Identifier précisément la base Lovable Cloud et les environnements liés au dépôt.
-2. (b) Réconcilier l’historique des migrations Supabase et Drizzle, sans exécuter de migration.
+1. (a) ✅ Terminé pour le runtime Lovable Cloud ; projets Supabase externes non rapprochés.
+2. (b) En cours : journaux appariés ; restent 3 écarts d’octets et la comparaison détaillée du schéma.
 3. (c) Préparer un plan de sauvegarde vérifiable.
 4. (d) Examiner le secret historique sans le révéler et préparer une rotation contrôlée séparée.
 

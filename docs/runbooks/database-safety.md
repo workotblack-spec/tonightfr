@@ -30,6 +30,14 @@ Ne pas lire aveuglément les corps de migrations ou fonctions historiques : ils 
 
 Ne pas rejouer les trois fichiers Drizzle pour « remplir » le journal historique. Ne pas bricoler un registre pour qu’il ressemble au dépôt.
 
+### Deux journaux en base (vérifié le 3 novembre 2026)
+
+- `supabase_migrations.schema_migrations` : 17 lignes, historique jusqu’au 5 juillet 2026.
+- `drizzle.__drizzle_migrations` : 3 lignes, identiques aux 3 fichiers Drizzle.
+- Ne jamais modifier, supprimer ou renuméroter une ligne de ces journaux, ni éditer un fichier de migration déjà appliqué (3 fichiers Supabase diffèrent déjà de la base : le texte en base fait foi).
+- Comparer les fichiers par **empreinte** (MD5/SHA-256) plutôt qu’en affichant leur contenu, pour ne pas exposer de secret.
+- Avant toute nouvelle migration : relire les deux journaux en SELECT et vérifier qu’aucun fichier local n’est en attente.
+
 ## RLS et droits
 
 Les sept tables publiques observées ont RLS activée. Cela n’est pas une preuve complète d’isolation.
