@@ -10,8 +10,8 @@
 
 ## Phase 1 — sécurisation et compréhension (en cours)
 
-- [ ] (a) Identifier précisément la base Lovable Cloud et les environnements liés au dépôt.
-- [ ] (b) Réconcilier l’historique des migrations Supabase et Drizzle, sans exécuter de migration.
+- [x] (a) Runtime identifié : base Lovable Cloud. Ouvert : deux projets Supabase externes inactifs non rapprochés (aucune action).
+- [ ] (b) Réconcilier les migrations — en cours : 17/17 + 3/3 appariées ; restent 3 écarts d’octets à expliquer et schéma réel à comparer.
 - [ ] (c) Préparer un plan de sauvegarde vérifiable.
 - [ ] (d) Examiner le secret historique sans le révéler et préparer une rotation contrôlée séparée.
 
