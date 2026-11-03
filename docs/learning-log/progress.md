@@ -24,7 +24,9 @@ Mis à jour le **3 novembre 2026**. « Validé » s’applique seulement au pér
 
 1. (a) ✅ Terminé pour le runtime Lovable Cloud ; projets Supabase externes non rapprochés.
 2. (b) En cours : journaux appariés ; restent 3 écarts d’octets et la comparaison détaillée du schéma.
-3. (c) Préparer un plan de sauvegarde vérifiable.
+3. (c) Procédure préparée, exécution non faite : voir [plan de sauvegarde](../runbooks/backup-plan.md).
+
+Risques issus de (b) : robots d’import absents en base (import automatique non planifié) ; tâches planifiées créées ou retirées hors migration ; droit d’exécution de `has_role` à tester avec de vrais comptes.
 4. (d) Examiner le secret historique sans le révéler et préparer une rotation contrôlée séparée.
 
 Aucune action sensible n’est faite sans autorisation explicite.

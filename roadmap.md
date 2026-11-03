@@ -12,7 +12,9 @@
 
 - [x] (a) Runtime identifié : base Lovable Cloud. Ouvert : deux projets Supabase externes inactifs non rapprochés (aucune action).
 - [ ] (b) Réconcilier les migrations — en cours : 17/17 + 3/3 appariées ; écarts caractérisés et schéma comparé ; restent tâches planifiées hors migration (import non planifié) et test de `has_role` avec comptes réels.
-- [ ] (c) Préparer un plan de sauvegarde vérifiable.
+- [ ] (c) Plan de sauvegarde — **procédure préparée, exécution non faite** ([backup-plan](docs/runbooks/backup-plan.md)).
+
+Risques issus de (b) : robots d’import absents en base (import automatique non planifié) ; tâches planifiées créées ou retirées hors migration ; droit d’exécution de `has_role` à tester avec de vrais comptes.
 - [ ] (d) Examiner le secret historique sans le révéler et préparer une rotation contrôlée séparée.
 
 Aucune action sensible (migration, données, permissions, secret, connexion, paiement, publication) sans autorisation explicite.
