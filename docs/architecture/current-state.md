@@ -104,3 +104,21 @@ Le contrôle textuel des pages indique que chacune déclare `head()`, mais plusi
 ## 4. Ce qui n’est pas validé
 
 Aucun test fonctionnel, navigateur, charge, sécurité offensive, paiement, installation PWA, notification, configuration OAuth ou conformité juridique n’a été exécuté pendant cette étape. Aucun inventaire de données personnelles n’a été exporté. Les constats servent à préparer des contrôles, pas à déclarer le système prêt.
+
+## 5. Comparaison structure réelle ↔ migrations (3 novembre 2026, lecture seule)
+
+Méthode : SELECT sur les catalogues PostgreSQL uniquement (tables, contraintes, index, RLS, droits, fonctions, extensions, noms et indicateurs des tâches planifiées). Aucune donnée client lue, aucun secret affiché.
+
+**Concordant :** les 7 tables, leurs clés, contraintes de contrôle, index, triggers et fonctions applicatives sont tous expliqués par une migration ; RLS activée partout.
+
+**En base sans migration explicative :**
+- Tâches planifiées `cleanup-old-events` et `tonight-purge-daily` (suppression quotidienne, sans appel réseau).
+- Extension `unaccent` (et ses 4 fonctions dans `public`) ; `pgcrypto`, `uuid-ossp`, `pg_stat_statements`, `supabase_vault` sont probablement fournies par la plateforme (non prouvé).
+
+**Prévu par migration mais absent en base :**
+- Les robots d’import d’événements `tonight-nightly-ingest`, `tonight-ingest-morning`, `tonight-ingest-evening` : aucune tâche actuelle n’appelle le réseau ni l’import. L’import automatique semble donc **non planifié** aujourd’hui ; la cause (retrait manuel, échec) est inconnue.
+
+**Sécurité / droits :**
+- `has_role` n’est pas exécutable par `anon` ni `authenticated` (retrait volontaire en `20260523165636`), alors que plusieurs politiques l’appellent. Risque d’erreurs « permission denied » sur les parcours admin et certaines lectures : **à tester avec de vrais comptes**, pas conclu.
+- `anon` et `authenticated` ont les droits SELECT/INSERT/UPDATE/DELETE sur les 7 tables : seule la RLS protège les données.
+- `sync_cron_secret_to_vault` n’est exécutable par aucun rôle client (attendu).
