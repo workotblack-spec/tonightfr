@@ -44,7 +44,7 @@ self.addEventListener("fetch", (event) => {
         if (response.headers.has("set-cookie")) return response;
 
         const cacheControl = response.headers.get("cache-control") || "";
-        if (/\\b(private|no-store)\\b/i.test(cacheControl)) return response;
+        if (cacheControl.toLowerCase().includes("private") || cacheControl.toLowerCase().includes("no-store")) return response;
 
         const copy = response.clone();
         event.waitUntil(
