@@ -6,8 +6,11 @@ export const Route = createFileRoute("/api/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { data, error } = await supabaseAdmin
+        const { createClient } = await import("@supabase/supabase-js");
+        const db = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!, {
+          auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+        });
+        const { data, error } = await db
           .from("events")
           .select("id")
           .gte("starts_at", new Date(Date.now() - 6 * 3600 * 1000).toISOString())
