@@ -1,12 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { bearerMatches } from "@/lib/safe-fetch";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 function isAuthorized(request: Request): boolean {
-  const expected = process.env.CRON_SECRET;
-  if (!expected) return false;
-  const header = request.headers.get("authorization") ?? "";
-  const token = header.startsWith("Bearer ") ? header.slice(7) : "";
-  return token.length > 0 && token === expected;
+  return bearerMatches(request.headers.get("authorization"), process.env.CRON_SECRET);
 }
 
 // Idempotent sync: copies CRON_SECRET (runtime env) into Vault so pg_cron

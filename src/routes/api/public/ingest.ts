@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { bearerMatches, extractOgImage, safeFetchHtml } from "@/lib/safe-fetch";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 // Sources to scrape — Fribourg nightlife & culture
@@ -480,31 +481,8 @@ ${markdown.slice(0, 25000)}
 }
 
 async function fetchOgImage(url: string): Promise<string | null> {
-  try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 6000);
-    const res = await fetch(url, {
-      signal: ctrl.signal,
-      headers: { "User-Agent": "Mozilla/5.0 TonightBot/1.0" },
-    });
-    clearTimeout(t);
-    if (!res.ok) return null;
-    const html = (await res.text()).slice(0, 200000);
-    const m =
-      html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ??
-      html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i) ??
-      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
-    if (!m) return null;
-    let img = m[1].trim();
-    if (img.startsWith("//")) img = "https:" + img;
-    else if (img.startsWith("/")) {
-      const u = new URL(url);
-      img = `${u.origin}${img}`;
-    }
-    return /^https?:\/\//i.test(img) ? img : null;
-  } catch {
-    return null;
-  }
+  const page = await safeFetchHtml(url, { timeoutMs: 6000 });
+  return page ? extractOgImage(page.html, page.finalUrl) : null;
 }
 
 async function ingestSource(source: (typeof SOURCES)[number]) {
@@ -577,16 +555,13 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
     if (error) errors.push(error.message);
     else upserted++;
   }
-  return { source: source.id, scraped: events.length, upserted, skipped, errors: errors.slice(0, 3) };
+  return { source: source.id, scraped: events.length, upserted, skipped, errors: errors.length };
 }
 
 
 
 function isAuthorized(request: Request): boolean {
-  const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
-  const header = request.headers.get("authorization") ?? "";
-  return header === `Bearer ${secret}`;
+  return bearerMatches(request.headers.get("authorization"), process.env.CRON_SECRET);
 }
 
 export const Route = createFileRoute("/api/public/ingest")({
@@ -601,7 +576,8 @@ export const Route = createFileRoute("/api/public/ingest")({
           try {
             results.push(await ingestSource(s));
           } catch (e) {
-            results.push({ source: s.id, error: e instanceof Error ? e.message : String(e) });
+            console.error("[ingest] source failed", s.id);
+            results.push({ source: s.id, error: "failed" });
           }
         }
         return Response.json({ ok: true, ranAt: new Date().toISOString(), results });

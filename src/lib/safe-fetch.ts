@@ -190,6 +190,6 @@ export function bearerMatches(header: string | null, secret: string | undefined)
   const b = enc.encode(secret);
   let diff = a.length ^ b.length;
   const n = Math.max(a.length, b.length);
-  for (let i = 0; i < n; i++) diff |= (a[i % a.length || 0] ?? 0) ^ (b[i % b.length || 0] ?? 0);
-  return diff === 0 && a.length === b.length;
+  for (let i = 0; i < n; i++) diff |= (a[i] ?? 0) ^ (b[i] ?? 0);
+  return diff === 0;
 }
