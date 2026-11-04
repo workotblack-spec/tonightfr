@@ -35,7 +35,10 @@ describe("validateImageUrl", () => {
 describe("safeFetchHtml", () => {
   it("blocks redirect to a private IP", async () => {
     const f = (async () =>
-      new Response(null, { status: 302, headers: { location: "https://127.0.0.1/" } })) as typeof fetch;
+      new Response(null, {
+        status: 302,
+        headers: { location: "https://127.0.0.1/" },
+      })) as typeof fetch;
     expect(await safeFetchHtml("https://fri-son.ch/", { fetchImpl: f })).toBeNull();
   });
   it("follows allowlisted redirect", async () => {
@@ -44,7 +47,9 @@ describe("safeFetchHtml", () => {
       n++ === 0
         ? new Response(null, { status: 301, headers: { location: "https://www.fri-son.ch/x" } })
         : html("<html>ok</html>")) as typeof fetch;
-    expect((await safeFetchHtml("https://fri-son.ch/", { fetchImpl: f }))?.finalUrl).toBe("https://www.fri-son.ch/x");
+    expect((await safeFetchHtml("https://fri-son.ch/", { fetchImpl: f }))?.finalUrl).toBe(
+      "https://www.fri-son.ch/x",
+    );
   });
   it("truncates oversized body at maxBytes", async () => {
     const f = (async () => html("a".repeat(5000))) as typeof fetch;
@@ -54,7 +59,8 @@ describe("safeFetchHtml", () => {
   it("rejects declared oversized body and non-html", async () => {
     const big = (async () => html("x", { "content-length": "999999999" })) as typeof fetch;
     expect(await safeFetchHtml("https://fri-son.ch/", { fetchImpl: big })).toBeNull();
-    const json = (async () => new Response("{}", { headers: { "content-type": "application/json" } })) as typeof fetch;
+    const json = (async () =>
+      new Response("{}", { headers: { "content-type": "application/json" } })) as typeof fetch;
     expect(await safeFetchHtml("https://fri-son.ch/", { fetchImpl: json })).toBeNull();
   });
 });

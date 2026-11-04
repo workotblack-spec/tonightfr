@@ -20,13 +20,20 @@ export const Route = createFileRoute("/api/sitemap.xml")({
 
         const staticUrls = ["/", "/explore", "/map", "/promouvoir", "/contact", "/about", "/legal"];
         const urls = [
-          ...staticUrls.map((p) => `<url><loc>${BASE}${p}</loc><changefreq>daily</changefreq></url>`),
-          ...(data ?? []).map((e) => `<url><loc>${BASE}/event/${e.id}</loc><changefreq>daily</changefreq></url>`),
+          ...staticUrls.map(
+            (p) => `<url><loc>${BASE}${p}</loc><changefreq>daily</changefreq></url>`,
+          ),
+          ...(data ?? []).map(
+            (e) => `<url><loc>${BASE}/event/${e.id}</loc><changefreq>daily</changefreq></url>`,
+          ),
         ].join("");
 
         const xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`;
         return new Response(xml, {
-          headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" },
+          headers: {
+            "Content-Type": "application/xml; charset=utf-8",
+            "Cache-Control": "public, max-age=3600",
+          },
         });
       },
     },

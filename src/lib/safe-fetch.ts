@@ -37,7 +37,10 @@ function isIpLiteral(host: string): boolean {
 
 const LOCAL_SUFFIXES = [".local", ".internal", ".localhost", ".lan", ".home", ".corp"];
 
-export function isHostAllowed(host: string, allowed: readonly string[] = ALLOWED_TICKET_DOMAINS): boolean {
+export function isHostAllowed(
+  host: string,
+  allowed: readonly string[] = ALLOWED_TICKET_DOMAINS,
+): boolean {
   const h = host.toLowerCase().replace(/\.$/, "");
   if (!h || isIpLiteral(h) || h === "localhost") return false;
   if (LOCAL_SUFFIXES.some((s) => h.endsWith(s))) return false;
@@ -45,7 +48,10 @@ export function isHostAllowed(host: string, allowed: readonly string[] = ALLOWED
 }
 
 /** Returns a normalized URL if safe to fetch, else null. */
-export function validateOutboundUrl(raw: string, allowed: readonly string[] = ALLOWED_TICKET_DOMAINS): URL | null {
+export function validateOutboundUrl(
+  raw: string,
+  allowed: readonly string[] = ALLOWED_TICKET_DOMAINS,
+): URL | null {
   if (typeof raw !== "string" || raw.length === 0 || raw.length > MAX_URL_LENGTH) return null;
   let u: URL;
   try {
@@ -87,8 +93,17 @@ export type SafeFetchOptions = {
 };
 
 /** Fetches an HTML page safely. Returns text (truncated to maxBytes) or null. */
-export async function safeFetchHtml(raw: string, opts: SafeFetchOptions = {}): Promise<{ html: string; finalUrl: string } | null> {
-  const { timeoutMs = 5000, maxBytes = 512 * 1024, maxRedirects = 3, allowed = ALLOWED_TICKET_DOMAINS, fetchImpl = fetch } = opts;
+export async function safeFetchHtml(
+  raw: string,
+  opts: SafeFetchOptions = {},
+): Promise<{ html: string; finalUrl: string } | null> {
+  const {
+    timeoutMs = 5000,
+    maxBytes = 512 * 1024,
+    maxRedirects = 3,
+    allowed = ALLOWED_TICKET_DOMAINS,
+    fetchImpl = fetch,
+  } = opts;
   let current = validateOutboundUrl(raw, allowed);
   if (!current) return null;
 
@@ -99,7 +114,8 @@ export async function safeFetchHtml(raw: string, opts: SafeFetchOptions = {}): P
         redirect: "manual",
         signal: AbortSignal.timeout(timeoutMs),
         headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; TonightFRBot/1.0; +https://tonightfr.lovable.app)",
+          "User-Agent":
+            "Mozilla/5.0 (compatible; TonightFRBot/1.0; +https://tonightfr.lovable.app)",
           Accept: "text/html,application/xhtml+xml",
         },
       });
