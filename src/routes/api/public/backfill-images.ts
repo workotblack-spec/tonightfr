@@ -1,53 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { bearerMatches, extractOgImage, safeFetchHtml } from "@/lib/safe-fetch";
 
-// Public endpoint: for each event missing image_url but with a ticket_url,
-// fetch the page and extract og:image / twitter:image. Free, no API keys.
-
-async function extractOgImage(url: string): Promise<string | null> {
-  try {
-    const res = await fetch(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (compatible; TonightFRBot/1.0; +https://tonightfr.lovable.app)",
-        Accept: "text/html,application/xhtml+xml",
-      },
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) return null;
-    const html = await res.text();
-    // Limit to <head> to reduce regex work
-    const head = html.slice(0, 60000);
-    const patterns = [
-      /<meta[^>]+property=["']og:image:secure_url["'][^>]+content=["']([^"']+)["']/i,
-      /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
-      /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
-      /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
-    ];
-    for (const re of patterns) {
-      const m = head.match(re);
-      if (m && m[1]) {
-        let u = m[1].trim();
-        if (u.startsWith("//")) u = "https:" + u;
-        else if (u.startsWith("/")) {
-          const origin = new URL(url).origin;
-          u = origin + u;
-        }
-        if (/^https?:\/\//i.test(u)) return u;
-      }
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
+// Protected maintenance endpoint (CRON_SECRET bearer). For upcoming events with
+// an allowlisted ticket_url and no image, fetch the page safely and store og:image.
+const MAX_EVENTS = 20;
 
 export const Route = createFileRoute("/api/public/backfill-images")({
   server: {
     handlers: {
-      GET: async ({ request }) => {
-        const url = new URL(request.url);
-        const limit = Math.min(parseInt(url.searchParams.get("limit") || "50", 10), 100);
+      POST: async ({ request }) => {
+        if (!bearerMatches(request.headers.get("authorization"), process.env.CRON_SECRET)) {
+          return new Response("Unauthorized", { status: 401 });
+        }
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
         const { data: events, error } = await supabaseAdmin
           .from("events")
@@ -55,45 +20,34 @@ export const Route = createFileRoute("/api/public/backfill-images")({
           .is("image_url", null)
           .not("ticket_url", "is", null)
           .gte("starts_at", new Date().toISOString())
-          .limit(limit);
+          .limit(MAX_EVENTS);
 
         if (error) {
-          return new Response(JSON.stringify({ error: error.message }), {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-          });
+          console.error("[backfill-images] select failed");
+          return Response.json({ ok: false }, { status: 500 });
         }
 
-        const list = events ?? [];
         let updated = 0;
-        let failed = 0;
-        const samples: { id: string; image_url?: string; reason?: string }[] = [];
-
-        // Sequential to be gentle with target sites
-        for (const ev of list) {
-          if (!ev.ticket_url) continue;
-          const img = await extractOgImage(ev.ticket_url);
-          if (img) {
-            const { error: uErr } = await supabaseAdmin
-              .from("events")
-              .update({ image_url: img })
-              .eq("id", ev.id);
-            if (uErr) {
-              failed++;
-              samples.push({ id: ev.id, reason: uErr.message });
-            } else {
-              updated++;
-              if (samples.length < 5) samples.push({ id: ev.id, image_url: img });
-            }
-          } else {
-            failed++;
+        let skipped = 0;
+        for (const ev of events ?? []) {
+          const page = ev.ticket_url ? await safeFetchHtml(ev.ticket_url) : null;
+          const img = page ? extractOgImage(page.html, page.finalUrl) : null;
+          if (!img) {
+            skipped++;
+            continue;
           }
+          const { error: uErr } = await supabaseAdmin
+            .from("events")
+            .update({ image_url: img })
+            .eq("id", ev.id)
+            .is("image_url", null);
+          if (uErr) {
+            console.error("[backfill-images] update failed");
+            skipped++;
+          } else updated++;
         }
 
-        return new Response(
-          JSON.stringify({ scanned: list.length, updated, failed, samples }),
-          { headers: { "Content-Type": "application/json" } },
-        );
+        return Response.json({ ok: true, scanned: events?.length ?? 0, updated, skipped });
       },
     },
   },

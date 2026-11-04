@@ -18,3 +18,12 @@ Risques issus de (b) : robots d’import absents en base (import automatique non
 - [ ] (d) Examiner le secret historique sans le révéler et préparer une rotation contrôlée séparée.
 
 Aucune action sensible (migration, données, permissions, secret, connexion, paiement, publication) sans autorisation explicite.
+## Sécurité production (4 nov. 2026)
+- [x] backfill-images protégé + garde-fou de téléchargement (tests 25/25)
+- [x] ingest / sync-cron-secret : jeton à temps constant, erreurs masquées ; sitemap sans accès élevé
+- [x] `.gitignore` exclut `.env` ; `.env.example` (noms seulement)
+- [x] Audit RLS lecture seule : docs/architecture/security-audit.md
+- [ ] Propriétaire : branche de secours + protection de main ; retirer `.env` du dépôt GitHub
+- [ ] Rotation CRON_SECRET (accord séparé)
+- [ ] Restreindre la mise à jour de table_requests à `status` (migration, après snapshot + export)
+- [ ] Revérifier les GRANT

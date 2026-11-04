@@ -1,8 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { bearerMatches, extractOgImage, safeFetchHtml } from "@/lib/safe-fetch";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 // Sources to scrape — Fribourg nightlife & culture
-const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: string; defaultCategory: string; defaultImage: string; lat?: number; lng?: number; address?: string }[] = [
+const SOURCES: {
+  id: string;
+  url: string;
+  defaultVenue: string;
+  defaultArea: string;
+  defaultCategory: string;
+  defaultImage: string;
+  lat?: number;
+  lng?: number;
+  address?: string;
+}[] = [
   {
     id: "frison",
     url: "https://fri-son.ch/programme/",
@@ -43,7 +54,7 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     defaultCategory: "culture",
     defaultImage: "culture",
     lat: 46.8048,
-    lng: 7.1530,
+    lng: 7.153,
     address: "Derrière-les-Remparts 1a, 1700 Fribourg",
   },
   {
@@ -86,7 +97,7 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     defaultArea: "Fribourg",
     defaultCategory: "clubbing",
     defaultImage: "club",
-    lat: 46.8060,
+    lat: 46.806,
     lng: 7.1612,
   },
   {
@@ -129,7 +140,7 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     defaultArea: "Lausanne",
     defaultCategory: "clubbing",
     defaultImage: "club",
-    lat: 46.5210,
+    lat: 46.521,
     lng: 6.6336,
     address: "Place Centrale 3, 1003 Lausanne",
   },
@@ -140,7 +151,7 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     defaultArea: "Lausanne",
     defaultCategory: "concert",
     defaultImage: "concert",
-    lat: 46.5180,
+    lat: 46.518,
     lng: 6.6298,
     address: "Place de l'Europe 1A, 1003 Lausanne",
   },
@@ -151,8 +162,8 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     defaultArea: "Lausanne",
     defaultCategory: "culture",
     defaultImage: "culture",
-    lat: 46.5300,
-    lng: 6.6420,
+    lat: 46.53,
+    lng: 6.642,
     address: "Route du Signal 2, 1018 Lausanne",
   },
   {
@@ -233,7 +244,6 @@ const SOURCES: { id: string; url: string; defaultVenue: string; defaultArea: str
     address: "Place Petit-Saint-Jean 39, 1700 Fribourg",
   },
 ];
-
 
 const ALLOWED_CATEGORIES = [
   "afterwork",
@@ -321,7 +331,10 @@ function extractFree(markdown: string, source: (typeof SOURCES)[number]): Parsed
   if (source.id === "zoya") return nextOpenDates(source.id);
 
   if (source.id === "globull") {
-    const blocks = markdown.match(/(?:lun|mar|mer|jeu|ven|sam|dim)\s+\d{2}\.\d{2}\.\d{2}[\s\S]*?(?=(?:lun|mar|mer|jeu|ven|sam|dim)\s+\d{2}\.\d{2}\.\d{2}|$)/gi) ?? [];
+    const blocks =
+      markdown.match(
+        /(?:lun|mar|mer|jeu|ven|sam|dim)\s+\d{2}\.\d{2}\.\d{2}[\s\S]*?(?=(?:lun|mar|mer|jeu|ven|sam|dim)\s+\d{2}\.\d{2}\.\d{2}|$)/gi,
+      ) ?? [];
     return blocks.flatMap((block) => {
       const dateMatch = block.match(/(?:lun|mar|mer|jeu|ven|sam|dim)\s+(\d{2})\.(\d{2})\.(\d{2})/i);
       const linkMatch = [...block.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g)].find(
@@ -343,7 +356,8 @@ function extractFree(markdown: string, source: (typeof SOURCES)[number]): Parsed
           starts_at: eventIso(year, month, day, time),
           category: isSport ? "sport" : "clubbing",
           image_key: isSport ? "sport" : "club",
-          description: style || (isSport ? "Diffusion de match dans le club." : "Soirée clubbing au Globull."),
+          description:
+            style || (isSport ? "Diffusion de match dans le club." : "Soirée clubbing au Globull."),
           price_text: price ? `CHF ${price}.-` : undefined,
           ticket_url: linkMatch[2],
           external_slug: `${slugify(title)}-${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
@@ -353,18 +367,27 @@ function extractFree(markdown: string, source: (typeof SOURCES)[number]): Parsed
   }
 
   if (source.id === "dolce") {
-    const blocks = markdown.match(/(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\d{1,2}[a-zéû]+[\s\S]*?(?=(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\d{1,2}[a-zéû]+|# D! Club|$)/gi) ?? [];
+    const blocks =
+      markdown.match(
+        /(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\d{1,2}[a-zéû]+[\s\S]*?(?=(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\d{1,2}[a-zéû]+|# D! Club|$)/gi,
+      ) ?? [];
     return blocks.flatMap((block) => {
-      const dateMatch = block.match(/(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(\d{1,2})([a-zéû]+)/i);
+      const dateMatch = block.match(
+        /(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(\d{1,2})([a-zéû]+)/i,
+      );
       const urlMatch = block.match(/https:\/\/dclub\.ch\/agenda\/(\d{8})\/([^#)\s]+)/i);
       if (!dateMatch || !urlMatch) return [];
       const ymd = urlMatch[1];
-      const title = slugify(urlMatch[2]).replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      const title = slugify(urlMatch[2])
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
       const year = Number(ymd.slice(0, 4));
       const month = Number(ymd.slice(4, 6)) || MONTHS_FR[dateMatch[2].toLowerCase()] || 6;
       const day = Number(ymd.slice(6, 8)) || Number(dateMatch[1]);
       const time = block.match(/Porte:\s*(\d{2}:\d{2})/i)?.[1] ?? "23:00";
-      const genre = block.match(/\n\s*(électronique|urbain|soirée à thème|concert|humour)\s*\n/i)?.[1];
+      const genre = block.match(
+        /\n\s*(électronique|urbain|soirée à thème|concert|humour)\s*\n/i,
+      )?.[1];
       return [
         {
           title,
@@ -400,7 +423,11 @@ async function firecrawlScrape(url: string): Promise<string> {
   return json.data?.markdown ?? json.markdown ?? "";
 }
 
-async function aiExtract(markdown: string, sourceId: string, defaults: { category: string; image: string }): Promise<ParsedEvent[]> {
+async function aiExtract(
+  markdown: string,
+  sourceId: string,
+  defaults: { category: string; image: string },
+): Promise<ParsedEvent[]> {
   const apiKey = process.env.LOVABLE_API_KEY;
   if (!apiKey) throw new Error("LOVABLE_API_KEY missing");
 
@@ -480,42 +507,19 @@ ${markdown.slice(0, 25000)}
 }
 
 async function fetchOgImage(url: string): Promise<string | null> {
-  try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 6000);
-    const res = await fetch(url, {
-      signal: ctrl.signal,
-      headers: { "User-Agent": "Mozilla/5.0 TonightBot/1.0" },
-    });
-    clearTimeout(t);
-    if (!res.ok) return null;
-    const html = (await res.text()).slice(0, 200000);
-    const m =
-      html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ??
-      html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i) ??
-      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
-    if (!m) return null;
-    let img = m[1].trim();
-    if (img.startsWith("//")) img = "https:" + img;
-    else if (img.startsWith("/")) {
-      const u = new URL(url);
-      img = `${u.origin}${img}`;
-    }
-    return /^https?:\/\//i.test(img) ? img : null;
-  } catch {
-    return null;
-  }
+  const page = await safeFetchHtml(url, { timeoutMs: 6000 });
+  return page ? extractOgImage(page.html, page.finalUrl) : null;
 }
 
 async function ingestSource(source: (typeof SOURCES)[number]) {
   const md = await firecrawlScrape(source.url);
-  if (!md || md.length < 100) return { source: source.id, scraped: 0, upserted: 0, skipped: "no content" };
+  if (!md || md.length < 100)
+    return { source: source.id, scraped: 0, upserted: 0, skipped: "no content" };
 
   const events = extractFree(md, source);
   if (events.length === 0) {
     return { source: source.id, scraped: 0, upserted: 0, skipped: "no free parser yet" };
   }
-
 
   let upserted = 0;
   let skipped = 0;
@@ -552,41 +556,34 @@ async function ingestSource(source: (typeof SOURCES)[number]) {
     const safeTicketUrl =
       ev.ticket_url && /^https?:\/\//i.test(ev.ticket_url) ? ev.ticket_url : null;
     const ogImage = safeTicketUrl ? await fetchOgImage(safeTicketUrl) : null;
-    const { error } = await supabaseAdmin
-      .from("events")
-      .upsert(
-        {
-          external_id: externalId,
-          title: ev.title.slice(0, 200),
-          venue: source.defaultVenue,
-          area: source.defaultArea,
-          category: ALLOWED_CATEGORIES.includes(ev.category) ? ev.category : source.defaultCategory,
-          starts_at: ev.starts_at,
-          image_key: ALLOWED_IMAGES.includes(ev.image_key) ? ev.image_key : source.defaultImage,
-          image_url: ogImage,
-          description: ev.description ?? null,
-          lineup: ev.lineup ?? null,
-          price_text: ev.price_text ?? null,
-          ticket_url: safeTicketUrl,
-          address: source.address ?? null,
-          lat: source.lat ?? null,
-          lng: source.lng ?? null,
-        },
-        { onConflict: "external_id" },
-      );
+    const { error } = await supabaseAdmin.from("events").upsert(
+      {
+        external_id: externalId,
+        title: ev.title.slice(0, 200),
+        venue: source.defaultVenue,
+        area: source.defaultArea,
+        category: ALLOWED_CATEGORIES.includes(ev.category) ? ev.category : source.defaultCategory,
+        starts_at: ev.starts_at,
+        image_key: ALLOWED_IMAGES.includes(ev.image_key) ? ev.image_key : source.defaultImage,
+        image_url: ogImage,
+        description: ev.description ?? null,
+        lineup: ev.lineup ?? null,
+        price_text: ev.price_text ?? null,
+        ticket_url: safeTicketUrl,
+        address: source.address ?? null,
+        lat: source.lat ?? null,
+        lng: source.lng ?? null,
+      },
+      { onConflict: "external_id" },
+    );
     if (error) errors.push(error.message);
     else upserted++;
   }
-  return { source: source.id, scraped: events.length, upserted, skipped, errors: errors.slice(0, 3) };
+  return { source: source.id, scraped: events.length, upserted, skipped, errors: errors.length };
 }
 
-
-
 function isAuthorized(request: Request): boolean {
-  const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
-  const header = request.headers.get("authorization") ?? "";
-  return header === `Bearer ${secret}`;
+  return bearerMatches(request.headers.get("authorization"), process.env.CRON_SECRET);
 }
 
 export const Route = createFileRoute("/api/public/ingest")({
@@ -601,7 +598,8 @@ export const Route = createFileRoute("/api/public/ingest")({
           try {
             results.push(await ingestSource(s));
           } catch (e) {
-            results.push({ source: s.id, error: e instanceof Error ? e.message : String(e) });
+            console.error("[ingest] source failed", s.id);
+            results.push({ source: s.id, error: "failed" });
           }
         }
         return Response.json({ ok: true, ranAt: new Date().toISOString(), results });
@@ -609,4 +607,3 @@ export const Route = createFileRoute("/api/public/ingest")({
     },
   },
 });
-
