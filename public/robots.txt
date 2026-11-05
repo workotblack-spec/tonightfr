@@ -8,5 +8,4 @@ Disallow: /favorites
 Disallow: /pro
 Disallow: /api/
 
-# Use the site's canonical sitemap endpoint.
-Sitemap: https://tonightfr.lovable.app/api/sitemap.xml
+Sitemap: https://tonightfr.lovable.app/sitemap.xml
