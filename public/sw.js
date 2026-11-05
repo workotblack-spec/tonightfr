@@ -1,61 +1,56 @@
-const CACHE_NAME = 'tonight-v1';
-const STATIC_ASSETS = [
-  '/',
-  '/favicon.png',
-  '/apple-touch-icon.png',
-  '/manifest.webmanifest',
-];
+const CACHE_NAME = "tonight-static-v2";
+const CACHE_PREFIX = "tonight-";
+const STATIC_ASSETS = new Set([
+  "/favicon.png",
+  "/apple-touch-icon.png",
+  "/manifest.webmanifest",
+]);
 
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll([...STATIC_ASSETS]))
   );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((names) =>
       Promise.all(
         names
-          .filter((n) => n !== CACHE_NAME)
-          .map((n) => caches.delete(n))
+          .filter((name) => name.startsWith(CACHE_PREFIX) && name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
       )
     )
   );
   self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   const { request } = event;
 
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((res) => {
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-          }
-          return res;
-        })
-        .catch(() => caches.match(request).then((r) => r || caches.match('/')))
-    );
-    return;
-  }
+  // Only explicitly approved, same-origin static assets may enter this cache.
+  if (request.method !== "GET" || request.headers.has("authorization")) return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin || !STATIC_ASSETS.has(url.pathname)) return;
 
   event.respondWith(
-    caches.match(request).then((cached) => {
+    caches.open(CACHE_NAME).then(async (cache) => {
+      const cached = await cache.match(request);
       if (cached) return cached;
-      return fetch(request)
-        .then((res) => {
-          if (res.ok && request.method === 'GET') {
-            const clone = res.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-          }
-          return res;
-        })
-        .catch(() => cached);
+
+      const response = await fetch(request);
+      if (!response.ok || response.headers.has("set-cookie")) return response;
+
+      const cacheControl = response.headers.get("cache-control") || "";
+      const directives = cacheControl.toLowerCase().split(",").map((value) => value.trim());
+      if (directives.includes("private") || directives.includes("no-store")) return response;
+
+      if ((response.headers.get("vary") || "").trim() === "*") return response;
+
+      await cache.put(request, response.clone());
+      return response;
     })
   );
 });
