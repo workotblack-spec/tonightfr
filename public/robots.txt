@@ -1,7 +1,11 @@
 User-agent: *
 Allow: /
+
+# Private application areas must never be indexed.
 Disallow: /admin
 Disallow: /auth
 Disallow: /favorites
+Disallow: /pro
+Disallow: /api/
 
-Sitemap: https://tonightfr.lovable.app/api/sitemap.xml
+Sitemap: https://tonightfr.lovable.app/sitemap.xml

@@ -40,10 +40,6 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "https://tonightfr.lovable.app/" },
-      { rel: "alternate", hrefLang: "fr-CH", href: "https://tonightfr.lovable.app/" },
-      { rel: "alternate", hrefLang: "de-CH", href: "https://tonightfr.lovable.app/" },
-      { rel: "alternate", hrefLang: "en-CH", href: "https://tonightfr.lovable.app/" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://tonightfr.lovable.app/" },
     ],
   }),
   component: Home,
