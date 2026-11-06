@@ -10,11 +10,17 @@ export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
       { title: "Profil — Tonight Fribourg" },
-      { name: "description", content: "Ton compte Tonight Fribourg : favoris, langue et espace pro." },
+      { name: "description", content: "Votre compte Tonight FR : favoris et accès à l’espace professionnel." },
       { property: "og:title", content: "Profil — Tonight Fribourg" },
-      { property: "og:description", content: "Gère tes favoris, ta langue et ton espace pro." },
+      { property: "og:description", content: "Votre compte Tonight FR : favoris et accès à l’espace professionnel." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/profile" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Profil — Tonight Fribourg" },
+      { name: "twitter:description", content: "Votre compte Tonight FR : favoris et accès à l’espace professionnel." },
       { name: "robots", content: "noindex" },
     ],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/profile" }],
   }),
   component: ProfilePage,
 });

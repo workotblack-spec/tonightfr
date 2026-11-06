@@ -8,10 +8,17 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact — Tonight Fribourg" },
-      { name: "description", content: "Contacter l'équipe Tonight — signaler un événement, soumettre un lieu, ou nous écrire." },
+      { name: "description", content: "Contacter l’équipe Tonight : signaler un événement, soumettre un lieu ou nous écrire." },
       { property: "og:title", content: "Contact — Tonight Fribourg" },
+      { property: "og:description", content: "Contacter l’équipe Tonight : signaler un événement, soumettre un lieu ou nous écrire." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/contact" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Contact — Tonight Fribourg" },
+      { name: "twitter:description", content: "Contacter l’équipe Tonight : signaler un événement, soumettre un lieu ou nous écrire." },
       { name: "robots", content: "noindex" },
     ],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/contact" }],
   }),
   component: ContactPage,
 });

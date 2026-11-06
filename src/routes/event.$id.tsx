@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { ArrowLeft, Calendar, Heart, MapPin, Share2, Ticket } from "lucide-react";
 import { useState } from "react";
-import { fetchEventById } from "@/lib/events";
+import { getPublicEvent } from "@/lib/public-events.functions";
 import { CATEGORIES } from "@/data/events";
 import { imageFor } from "@/data/eventImages";
 import { proxied } from "@/lib/image";
@@ -13,13 +13,37 @@ import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { VipTableRequest } from "@/components/tonight/VipTableRequest";
 import { HouseRules } from "@/components/tonight/HouseRules";
 
+const eventQueryOptions = (id: string) => queryOptions({
+  queryKey: ["event", id],
+  queryFn: async () => {
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) throw notFound();
+    const event = await getPublicEvent({ data: { id } });
+    if (!event) throw notFound();
+    return event;
+  },
+});
+
 export const Route = createFileRoute("/event/$id")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `Tonight FR — Event ${params.id}` },
-      { name: "description", content: "Détails de l'événement à Fribourg." },
-    ],
-  }),
+  loader: ({ params, context }) => context.queryClient.ensureQueryData(eventQueryOptions(params.id)),
+  head: ({ params, loaderData }) => {
+    const title = loaderData ? `${loaderData.title} — ${loaderData.venue} | Tonight FR` : "Événement introuvable — Tonight FR";
+    const description = loaderData ? (loaderData.description || `${loaderData.venue} · ${loaderData.area}`).slice(0, 160) : "Cet événement n’est pas disponible.";
+    const url = `https://tonightfr.lovable.app/event/${encodeURIComponent(params.id)}`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: EventDetail,
   notFoundComponent: () => (
     <div className="mx-auto max-w-3xl px-5 py-20 text-center">
@@ -30,7 +54,7 @@ export const Route = createFileRoute("/event/$id")({
       </Link>
     </div>
   ),
-  errorComponent: ({ error, reset }) => {
+  errorComponent: function EventError({ error, reset }) {
     const router = useRouter();
     return (
       <div className="mx-auto max-w-3xl px-5 py-20 text-center">
@@ -54,20 +78,7 @@ function EventDetail() {
   const [lang, setLang] = useState<Lang>("fr");
   const { has, toggle } = useFavorites();
 
-  const q = useQuery({
-    queryKey: ["event", id],
-    queryFn: async () => {
-      const ev = await fetchEventById(id);
-      if (!ev) throw notFound();
-      return ev;
-    },
-  });
-
-  if (q.isLoading) {
-    return <div className="py-20 text-center text-muted-foreground">{T[lang].loading}</div>;
-  }
-  if (!q.data) return null;
-  const ev = q.data;
+  const { data: ev } = useSuspenseQuery(eventQueryOptions(id));
   const cat = CATEGORIES.find((c) => c.key === ev.category);
   const date = new Date(ev.starts_at);
   const dateStr = date.toLocaleDateString(

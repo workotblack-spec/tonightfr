@@ -8,10 +8,18 @@ import { T, type Lang } from "@/data/i18n";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Tonight.fr — Sign in" },
-      { name: "description", content: "Sign in to Tonight.fr to sync your favorites across devices." },
+      { title: "Connexion — Tonight FR" },
+      { name: "description", content: "Connectez-vous à Tonight FR pour retrouver vos favoris sur vos appareils." },
+      { property: "og:title", content: "Connexion — Tonight FR" },
+      { property: "og:description", content: "Connectez-vous à Tonight FR pour retrouver vos favoris sur vos appareils." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/auth" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Connexion — Tonight FR" },
+      { name: "twitter:description", content: "Connectez-vous à Tonight FR pour retrouver vos favoris sur vos appareils." },
       { name: "robots", content: "noindex" },
     ],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/auth" }],
   }),
   component: AuthPage,
 });

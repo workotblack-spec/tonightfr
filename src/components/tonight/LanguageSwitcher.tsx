@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 import type { Lang } from "@/data/i18n";
 
 const LANGS: Lang[] = ["fr", "de", "en"];
 
 export function LanguageSwitcher({ lang, onChange }: { lang: Lang; onChange: (l: Lang) => void }) {
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    return () => { document.documentElement.lang = "fr"; };
+  }, [lang]);
+
   return (
     <div className="inline-flex items-center rounded-lg border border-border p-0.5 text-[11px] font-medium tracking-wider">
       {LANGS.map((l) => {
