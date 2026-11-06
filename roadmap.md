@@ -1,5 +1,14 @@
 # Tonight FR — feuille de route active
 
+## Passe Lovable du 6 novembre 2026 — sans publication
+
+- [x] Relire l’architecture et vérifier SEO, langues, cache et configuration existante.
+- [ ] Corriger les défauts confirmés de métadonnées et exposer le sitemap à la racine.
+- [ ] Neutraliser le cache applicatif dangereux en préservant l’ajout à l’écran d’accueil.
+- [ ] Exécuter tests et lint, contrôler l’aperçu et le résultat de construction automatique.
+- [ ] Synchronisation GitHub et préparation Cloudflare : actions suivantes, non exécutées ici.
+
+
 - [x] Vérifier en lecture seule la référence locale, les tables, RLS, rôles et contrainte propriétaire.
 - [x] Créer les neuf documents de référence français et les règles documentaires de gouvernance.
 - [x] Contrôler les liens, le périmètre des fichiers créés et l’absence de formats sensibles recherchés.

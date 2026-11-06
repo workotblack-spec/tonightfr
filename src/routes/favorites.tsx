@@ -12,7 +12,21 @@ import type { DbEvent } from "@/lib/events";
 import { T } from "@/data/i18n";
 
 export const Route = createFileRoute("/favorites")({
-  head: () => ({ meta: [{ title: "Tonight.fr — Favoris" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: "Favoris — Tonight FR" },
+      { name: "description", content: "Retrouvez les soirées enregistrées dans vos favoris Tonight FR." },
+      { property: "og:title", content: "Favoris — Tonight FR" },
+      { property: "og:description", content: "Retrouvez les soirées enregistrées dans vos favoris Tonight FR." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/favorites" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Favoris — Tonight FR" },
+      { name: "twitter:description", content: "Retrouvez les soirées enregistrées dans vos favoris Tonight FR." },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/favorites" }],
+  }),
   component: FavoritesPage,
 });
 

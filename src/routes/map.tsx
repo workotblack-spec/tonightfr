@@ -19,15 +19,16 @@ export const Route = createFileRoute("/map")({
   head: () => ({
     meta: [
       { title: "Carte — Tonight.fr Fribourg" },
-      {
-        name: "description",
-        content:
-          "Carte interactive des événements de la nuit à Fribourg : afterworks, concerts, clubbing, shisha, lounge, culture et sport.",
-      },
-      { property: "og:title", content: "Carte des événements — Tonight.fr" },
-      { property: "og:url", content: "/map" },
+      { name: "description", content: "Carte des événements à Fribourg : concerts, clubs, afterworks, culture et sport." },
+      { property: "og:title", content: "Carte — Tonight.fr Fribourg" },
+      { property: "og:description", content: "Carte des événements à Fribourg : concerts, clubs, afterworks, culture et sport." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/map" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Carte — Tonight.fr Fribourg" },
+      { name: "twitter:description", content: "Carte des événements à Fribourg : concerts, clubs, afterworks, culture et sport." },
     ],
-    links: [{ rel: "canonical", href: "/map" }],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/map" }],
   }),
   component: MapPage,
 });

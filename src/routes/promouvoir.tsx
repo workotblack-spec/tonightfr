@@ -20,19 +20,17 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/promouvoir")({
   head: () => ({
     meta: [
-      { title: "Espace Pro — Tonight Fribourg" },
-      {
-        name: "description",
-        content:
-          "Mettez votre bar, club ou événement en avant à Fribourg, Bulle et Lausanne. Formules de visibilité dès 0 CHF.",
-      },
-      { property: "og:title", content: "Espace Pro — Tonight Fribourg" },
-      {
-        property: "og:description",
-        content:
-          "Touchez les noctambules de Suisse romande. Placement prioritaire, badge sponsorisé, statistiques.",
-      },
+      { title: "Promouvoir un événement — Tonight Fribourg" },
+      { name: "description", content: "Demander la mise en avant de votre lieu ou événement sur Tonight FR." },
+      { property: "og:title", content: "Promouvoir un événement — Tonight Fribourg" },
+      { property: "og:description", content: "Demander la mise en avant de votre lieu ou événement sur Tonight FR." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/promouvoir" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Promouvoir un événement — Tonight Fribourg" },
+      { name: "twitter:description", content: "Demander la mise en avant de votre lieu ou événement sur Tonight FR." },
     ],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/promouvoir" }],
   }),
   component: PromouvoirPage,
 });

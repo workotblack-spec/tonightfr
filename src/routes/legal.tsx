@@ -5,16 +5,17 @@ export const Route = createFileRoute("/legal")({
   head: () => ({
     meta: [
       { title: "Mentions légales & confidentialité — Tonight.fr" },
-      {
-        name: "description",
-        content:
-          "Mentions légales, conditions d'utilisation et politique de confidentialité de Tonight.fr, conformes à la LPD suisse révisée 2023.",
-      },
-      { property: "og:title", content: "Mentions légales — Tonight.fr" },
-      { property: "og:url", content: "/legal" },
+      { name: "description", content: "Mentions légales, conditions d’utilisation et confidentialité de Tonight FR." },
+      { property: "og:title", content: "Mentions légales & confidentialité — Tonight.fr" },
+      { property: "og:description", content: "Mentions légales, conditions d’utilisation et confidentialité de Tonight FR." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/legal" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Mentions légales & confidentialité — Tonight.fr" },
+      { name: "twitter:description", content: "Mentions légales, conditions d’utilisation et confidentialité de Tonight FR." },
       { name: "robots", content: "noindex" },
     ],
-    links: [{ rel: "canonical", href: "/legal" }],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/legal" }],
   }),
   component: LegalPage,
 });

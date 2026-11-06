@@ -10,12 +10,16 @@ export const Route = createFileRoute("/pro")({
   head: () => ({
     meta: [
       { title: "Espace Pro — Tonight Suisse" },
-      { name: "description", content: "Le portail des clubs, bars et restaurants : règles maison, tables VIP et bilan du lendemain." },
+      { name: "description", content: "Gérez votre établissement, ses règles maison et ses demandes de tables VIP." },
       { property: "og:title", content: "Espace Pro — Tonight Suisse" },
-      { property: "og:description", content: "Gérez votre établissement, vos tables VIP et vos résultats sur Tonight." },
+      { property: "og:description", content: "Gérez votre établissement, ses règles maison et ses demandes de tables VIP." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/pro" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Espace Pro — Tonight Suisse" },
+      { name: "twitter:description", content: "Gérez votre établissement, ses règles maison et ses demandes de tables VIP." },
     ],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/pro" }],
   }),
   component: ProPage,
 });

@@ -6,19 +6,16 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "À propos — Tonight.fr" },
-      {
-        name: "description",
-        content:
-          "Tonight.fr est l'agenda nocturne de Fribourg : afterworks, concerts, clubbing, shisha, lounges, culture et sport, mis à jour chaque jour.",
-      },
+      { name: "description", content: "L’agenda nocturne local de Fribourg, ses lieux et ses événements." },
       { property: "og:title", content: "À propos — Tonight.fr" },
-      {
-        property: "og:description",
-        content: "L'agenda nocturne hyper-local de Fribourg.",
-      },
-      { property: "og:url", content: "/about" },
+      { property: "og:description", content: "L’agenda nocturne local de Fribourg, ses lieux et ses événements." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/about" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "À propos — Tonight.fr" },
+      { name: "twitter:description", content: "L’agenda nocturne local de Fribourg, ses lieux et ses événements." },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/about" }],
   }),
   component: AboutPage,
 });

@@ -16,17 +16,16 @@ export const Route = createFileRoute("/explore")({
   head: () => ({
     meta: [
       { title: "Explorer — Tonight Fribourg" },
-      {
-        name: "description",
-        content:
-          "Explore la vie nocturne de Fribourg, Bulle et Lausanne par catégorie : clubbing, concerts, afterworks, culture et sport en direct.",
-      },
-      { property: "og:title", content: "Explorer la nuit — Tonight Fribourg" },
-      {
-        property: "og:description",
-        content: "Clubbing, concerts, afterworks, culture et sport en direct à Fribourg, Bulle et Lausanne.",
-      },
+      { name: "description", content: "Clubbing, concerts, afterworks, culture et sport à Fribourg, Bulle et Lausanne." },
+      { property: "og:title", content: "Explorer — Tonight Fribourg" },
+      { property: "og:description", content: "Clubbing, concerts, afterworks, culture et sport à Fribourg, Bulle et Lausanne." },
+      { property: "og:url", content: "https://tonightfr.lovable.app/explore" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Explorer — Tonight Fribourg" },
+      { name: "twitter:description", content: "Clubbing, concerts, afterworks, culture et sport à Fribourg, Bulle et Lausanne." },
     ],
+    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/explore" }],
   }),
   component: ExplorePage,
 });

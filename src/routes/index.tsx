@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { Map, CalendarX, Locate, LocateFixed, MapPin, User as UserIcon, SearchX, ArrowRight } from "lucide-react";
 import heroImg from "@/assets/hero-night.jpg";
 import logo from "@/assets/logo-tonight.png";
-import ogImg from "@/assets/og-tonight.jpg";
 import { type CategoryKey } from "@/data/events";
 import { T, type Lang } from "@/data/i18n";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
@@ -31,8 +30,6 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: "Événements Fribourg ce soir — Concerts, clubs & bars | Tonight" },
       { name: "twitter:description", content: "Tous les événements à Fribourg ce soir et ce week-end : concerts, clubbing, afterworks, expos et sport en direct. Agenda mis à jour chaque jour." },
       { property: "og:locale", content: "fr_CH" },
-      { property: "og:image", content: ogImg },
-      { name: "twitter:image", content: ogImg },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
@@ -41,8 +38,6 @@ export const Route = createFileRoute("/")({
     links: [
       { rel: "canonical", href: "https://tonightfr.lovable.app/" },
       { rel: "alternate", hrefLang: "fr-CH", href: "https://tonightfr.lovable.app/" },
-      { rel: "alternate", hrefLang: "de-CH", href: "https://tonightfr.lovable.app/" },
-      { rel: "alternate", hrefLang: "en-CH", href: "https://tonightfr.lovable.app/" },
       { rel: "alternate", hrefLang: "x-default", href: "https://tonightfr.lovable.app/" },
     ],
   }),

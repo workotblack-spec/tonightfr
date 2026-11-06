@@ -21,6 +21,7 @@ import { Route as MapRouteImport } from './routes/map'
 import { Route as ProRouteImport } from './routes/pro'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PromouvoirRouteImport } from './routes/promouvoir'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml'
 import { Route as EventIdRouteImport } from './routes/event.$id'
 import { Route as ApiPublicBackfillImagesRouteImport } from './routes/api/public/backfill-images'
@@ -87,6 +88,11 @@ const PromouvoirRoute = PromouvoirRouteImport.update({
   path: '/promouvoir',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
   id: '/api/sitemap.xml',
   path: '/api/sitemap.xml',
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/pro'
     | '/profile'
     | '/promouvoir'
+    | '/sitemap.xml'
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/backfill-images'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
     | '/pro'
     | '/profile'
     | '/promouvoir'
+    | '/sitemap.xml'
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/backfill-images'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/pro'
     | '/profile'
     | '/promouvoir'
+    | '/sitemap.xml'
     | '/api/sitemap.xml'
     | '/event/$id'
     | '/api/public/backfill-images'
@@ -244,6 +256,7 @@ export interface RootRouteChildren {
   ProRoute: typeof ProRoute
   ProfileRoute: typeof ProfileRoute
   PromouvoirRoute: typeof PromouvoirRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   EventIdRoute: typeof EventIdRoute
   ApiPublicBackfillImagesRoute: typeof ApiPublicBackfillImagesRoute
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PromouvoirRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/sitemap.xml': {
       id: '/api/sitemap.xml'
       path: '/api/sitemap.xml'
@@ -388,6 +408,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProRoute: ProRoute,
   ProfileRoute: ProfileRoute,
   PromouvoirRoute: PromouvoirRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   EventIdRoute: EventIdRoute,
   ApiPublicBackfillImagesRoute: ApiPublicBackfillImagesRoute,
