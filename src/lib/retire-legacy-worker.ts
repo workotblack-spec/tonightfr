@@ -8,12 +8,13 @@ export async function retireLegacyWorker(
   await Promise.allSettled(
     registrations
       .filter((registration) => {
-        return [registration.active, registration.waiting, registration.installing]
-          .some((worker) => {
+        return [registration.active, registration.waiting, registration.installing].some(
+          (worker) => {
             if (!worker) return false;
             const url = new URL(worker.scriptURL);
             return url.origin === origin && url.pathname === "/sw.js";
-          });
+          },
+        );
       })
       .map((registration) => registration.update()),
   );

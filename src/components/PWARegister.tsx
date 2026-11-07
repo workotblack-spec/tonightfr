@@ -6,8 +6,7 @@ import { retireLegacyWorker } from "@/lib/retire-legacy-worker";
 export function PWARegister() {
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
-    void retireLegacyWorker(navigator.serviceWorker, window.location.origin)
-      .catch(() => undefined);
+    void retireLegacyWorker(navigator.serviceWorker, window.location.origin).catch(() => undefined);
   }, []);
   return null;
 }

@@ -34,8 +34,9 @@ describe("legacy app-shell retirement", () => {
   it("finds an installing same-path worker and tolerates an update failure", async () => {
     const legacy = registration("/sw.js", "installing");
     legacy.update.mockRejectedValue(new Error("Offline"));
-    await expect(retireLegacyWorker({ getRegistrations: vi.fn().mockResolvedValue([legacy]) }, origin))
-      .resolves.toBeUndefined();
+    await expect(
+      retireLegacyWorker({ getRegistrations: vi.fn().mockResolvedValue([legacy]) }, origin),
+    ).resolves.toBeUndefined();
     expect(legacy.update).toHaveBeenCalledTimes(1);
     expect(legacy.unregister).not.toHaveBeenCalled();
   });
@@ -49,7 +50,8 @@ describe("legacy app-shell retirement", () => {
 });
 
 function cleanupHarness(failListing = false) {
-  const handlers: Record<string, (event: { waitUntil: (work: Promise<unknown>) => void }) => void> = {};
+  const handlers: Record<string, (event: { waitUntil: (work: Promise<unknown>) => void }) => void> =
+    {};
   const remove = vi.fn().mockResolvedValue(true);
   const unregister = vi.fn().mockResolvedValue(true);
   const skipWaiting = vi.fn().mockResolvedValue(undefined);
@@ -60,7 +62,9 @@ function cleanupHarness(failListing = false) {
     : vi.fn().mockResolvedValue(["tonight-v1", "tonight-v10", "messaging-cache", "other-app"]);
   runInNewContext(readFileSync(new URL("../../public/sw.js", import.meta.url), "utf8"), {
     self: {
-      addEventListener: (type: string, handler: typeof handlers[string]) => { handlers[type] = handler; },
+      addEventListener: (type: string, handler: (typeof handlers)[string]) => {
+        handlers[type] = handler;
+      },
       skipWaiting,
       registration: { unregister },
       clients: { claim, matchAll },
@@ -71,7 +75,11 @@ function cleanupHarness(failListing = false) {
     const handler = handlers[type];
     if (!handler) throw new Error(`Missing handler: ${type}`);
     let work: Promise<unknown> | undefined;
-    handler({ waitUntil: (promise) => { work = promise; } });
+    handler({
+      waitUntil: (promise) => {
+        work = promise;
+      },
+    });
     await work;
   }
   return { handlers, remove, unregister, skipWaiting, claim, matchAll, dispatch };
@@ -85,7 +93,9 @@ describe("same-path replacement cleanup worker", () => {
     await worker.dispatch("activate");
     expect(worker.remove.mock.calls).toEqual([["tonight-v1"]]);
     expect(worker.unregister).toHaveBeenCalledTimes(1);
-    expect(worker.remove.mock.invocationCallOrder[0]).toBeLessThan(worker.unregister.mock.invocationCallOrder[0]);
+    expect(worker.remove.mock.invocationCallOrder[0]).toBeLessThan(
+      worker.unregister.mock.invocationCallOrder[0],
+    );
     expect(worker.claim).not.toHaveBeenCalled();
     expect(worker.matchAll).not.toHaveBeenCalled();
     expect(worker.handlers.fetch).toBeUndefined();
