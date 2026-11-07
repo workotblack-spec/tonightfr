@@ -42,7 +42,7 @@ describe("legacy app-shell retirement", () => {
 
   it("ignores an unrelated worker on another origin", async () => {
     const foreign = registration("/sw.js");
-    foreign.active.scriptURL = "https://example.com/sw.js";
+    foreign["active"] = { scriptURL: "https://example.com/sw.js" };
     await retireLegacyWorker({ getRegistrations: vi.fn().mockResolvedValue([foreign]) }, origin);
     expect(foreign.update).not.toHaveBeenCalled();
   });
