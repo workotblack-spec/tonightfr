@@ -2,11 +2,12 @@
 
 ## Passe Lovable du 7 novembre 2026 — sans publication
 
-- [ ] Corriger et tester le remplacement du worker historique, sans caches ni workers étrangers touchés.
+- [x] Corriger et tester le remplacement du worker historique, sans caches ni workers étrangers touchés : navigateur isolé, suppression exacte de `tonight-v1`, worker étranger et caches voisins préservés, aucune navigation automatique.
 - [x] Vérifier les noms serveur `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY`, conformes au client généré (aucune valeur lue).
 - [x] Vérifier par SELECT des catalogues : RLS events active, SELECT public `true`, accès anon autorisé ; aucun filtre de publication inventé.
-- [ ] Restaurer l’image sociale locale sur l’accueil et vérifier sa réponse HTTP.
-- [ ] Exécuter tests et lint, observer la construction automatique et vérifier le parcours de retraite dans le navigateur.
+- [x] Restaurer l’image sociale locale sur l’accueil : copie adaptée 1200 × 630 dans `public/og-tonight.jpg`, HTTP 200, OG/Twitter identiques.
+- [x] Vérifications exécutées : `bunx vitest run` (31/31), `bun run lint` (échec : 664 erreurs, 6 avertissements), construction automatique Lovable OK ; sitemap racine et ancien chemin HTTP 200, 9 URLs, aucune erreur de page observée.
+- [ ] Corriger le lint global dans une passe dédiée ; les corrections de cette passe ne valent pas validation complète de production.
 - [ ] Validation publiée des installations anciennes : bloquée par l’interdiction de publication, conservée pour une intervention autorisée ultérieure.
 
 ## Passe Lovable du 6 novembre 2026 — sans publication
