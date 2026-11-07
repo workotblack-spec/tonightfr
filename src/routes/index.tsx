@@ -32,6 +32,8 @@ export const Route = createFileRoute("/")({
       { property: "og:locale", content: "fr_CH" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://tonightfr.lovable.app/og-tonight.jpg" },
+      { name: "twitter:image", content: "https://tonightfr.lovable.app/og-tonight.jpg" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       { property: "og:url", content: "https://tonightfr.lovable.app/" },
     ],
