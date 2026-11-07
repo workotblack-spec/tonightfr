@@ -1,5 +1,14 @@
 # Tonight FR — feuille de route active
 
+## Passe Lovable du 7 novembre 2026 — sans publication
+
+- [ ] Corriger et tester le remplacement du worker historique, sans caches ni workers étrangers touchés.
+- [x] Vérifier les noms serveur `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY`, conformes au client généré (aucune valeur lue).
+- [x] Vérifier par SELECT des catalogues : RLS events active, SELECT public `true`, accès anon autorisé ; aucun filtre de publication inventé.
+- [ ] Restaurer l’image sociale locale sur l’accueil et vérifier sa réponse HTTP.
+- [ ] Exécuter tests et lint, observer la construction automatique et vérifier le parcours de retraite dans le navigateur.
+- [ ] Validation publiée des installations anciennes : bloquée par l’interdiction de publication, conservée pour une intervention autorisée ultérieure.
+
 ## Passe Lovable du 6 novembre 2026 — sans publication
 
 - [x] Relire l’architecture et vérifier SEO, langues, cache et configuration existante.
