@@ -4,6 +4,8 @@
 - [x] Restaurer 46 chemins propres au brouillon à l'identique via l'outil officiel ; rapprocher `AGENTS.md`, `package.json`, `roadmap.md` et `src/routes/event.$id.tsx` avec `3ce3827de2ac`.
 - [x] Conserver les images de partage et leur liste explicite d'événements, tout en réintégrant le bouton Pass et son erreur non sensible ; aucun choix du brouillon abandonné.
 - [x] Conserver `qrcode.react` et la version de configuration 2.27.1 ; aucune installation demandée, aucune migration appliquée, aucun secret consulté, aucune acceptation ni publication.
+- [x] Contrôles de ce second rapprochement : `bun test` et `bunx vitest run` **46/46**, 8 fichiers ; compilation automatique **OK**. `lovable drafts verify` : **needs_review**, aucun chemin `dropped` ; contenus manuels de `AGENTS.md`, `roadmap.md`, `src/routes/event.$id.tsx` contrôlés avec les deux versions.
+- Lint et navigateur non relancés pendant ce second rapprochement ; leurs résultats précédents ne constituent pas une nouvelle validation. Parcours Pass réel toujours non vérifié ; aucune livraison distante prouvée, aucune correction volontairement écartée.
 
 ## Mise à jour du brouillon — 16 novembre 2026
 - [x] Rapprocher les corrections du brouillon avec la version `03e8c2ca991d`, sans acceptation ni publication ; [preuves et arbitrages](docs/learning-log/2026-11-16-draft-refresh.md).
