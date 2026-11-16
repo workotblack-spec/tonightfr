@@ -7,3 +7,4 @@
 - Let Lovable manage Git mutations and verify remote synchronization separately from local changes; a local revision is not proof of a GitHub delivery or a database backup.
 - Public event SEO reads use an anonymous server function with an explicit public-column projection; both sitemap paths share a server-only handler to avoid privileged reads and divergent XML.
 - Legacy app-shell retirement updates existing same-path registrations only; the replacement worker deletes its exact legacy cache and unregisters itself without reloading clients.
+- Event social previews are static share-sized JPEGs with an explicit ID allowlist; never advertise ungenerated assets or use privileged reads to create previews.

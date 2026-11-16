@@ -2,7 +2,7 @@
 
 ## Images de partage des événements — 16 novembre 2026
 
-- [ ] Composer une image JPEG 1200 × 630 pour chacun des deux événements publics observés, avec ses informations réelles et le visuel de sa fiche.
+- [x] Composer une image JPEG 1200 × 630 pour chacun des deux événements publics observés, avec ses informations réelles et le visuel de sa fiche (photo inaccessible : même secours local).
 - [ ] Relier chaque fiche à son image OG/Twitter et vérifier les réponses publiques, les dimensions et les tests ; aucune publication ni écriture en base.
 - Les futurs événements nécessiteront une nouvelle image ; aucune génération automatique ni donnée métier n’est ajoutée dans cette passe.
 

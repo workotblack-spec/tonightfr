@@ -3,6 +3,7 @@ import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { ArrowLeft, Calendar, Heart, MapPin, Share2, Ticket } from "lucide-react";
 import { useState } from "react";
 import { getPublicEvent } from "@/lib/public-events.functions";
+import { eventPreviewUrl } from "@/lib/event-preview";
 import { CATEGORIES } from "@/data/events";
 import { imageFor } from "@/data/eventImages";
 import { proxied } from "@/lib/image";
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/event/$id")({
     const title = loaderData ? `${loaderData.title} — ${loaderData.venue} | Tonight FR` : "Événement introuvable — Tonight FR";
     const description = loaderData ? (loaderData.description || `${loaderData.venue} · ${loaderData.area}`).slice(0, 160) : "Cet événement n’est pas disponible.";
     const url = `https://tonightfr.lovable.app/event/${encodeURIComponent(params.id)}`;
+    const preview = loaderData ? eventPreviewUrl(loaderData.id) : null;
     return {
       meta: [
         { title },
@@ -37,9 +39,18 @@ export const Route = createFileRoute("/event/$id")({
         { property: "og:description", content: description },
         { property: "og:url", content: url },
         { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary" },
+        { name: "twitter:card", content: preview ? "summary_large_image" : "summary" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
+        ...(preview ? [
+          { property: "og:image", content: preview },
+          { property: "og:image:type", content: "image/jpeg" },
+          { property: "og:image:width", content: "1200" },
+          { property: "og:image:height", content: "630" },
+          { property: "og:image:alt", content: title },
+          { name: "twitter:image", content: preview },
+          { name: "twitter:image:alt", content: title },
+        ] : []),
       ],
       links: [{ rel: "canonical", href: url }],
     };
