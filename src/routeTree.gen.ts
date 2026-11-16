@@ -18,6 +18,7 @@ import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as MapRouteImport } from './routes/map'
+import { Route as PassRouteImport } from './routes/pass'
 import { Route as ProRouteImport } from './routes/pro'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PromouvoirRouteImport } from './routes/promouvoir'
@@ -71,6 +72,11 @@ const LegalRoute = LegalRouteImport.update({
 const MapRoute = MapRouteImport.update({
   id: '/map',
   path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PassRoute = PassRouteImport.update({
+  id: '/pass',
+  path: '/pass',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProRoute = ProRouteImport.update({
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/pass': typeof PassRoute
   '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/pass': typeof PassRoute
   '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/favorites': typeof FavoritesRoute
   '/legal': typeof LegalRoute
   '/map': typeof MapRoute
+  '/pass': typeof PassRoute
   '/pro': typeof ProRoute
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/pass'
     | '/pro'
     | '/profile'
     | '/promouvoir'
@@ -212,6 +222,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/pass'
     | '/pro'
     | '/profile'
     | '/promouvoir'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '/favorites'
     | '/legal'
     | '/map'
+    | '/pass'
     | '/pro'
     | '/profile'
     | '/promouvoir'
@@ -253,6 +265,7 @@ export interface RootRouteChildren {
   FavoritesRoute: typeof FavoritesRoute
   LegalRoute: typeof LegalRoute
   MapRoute: typeof MapRoute
+  PassRoute: typeof PassRoute
   ProRoute: typeof ProRoute
   ProfileRoute: typeof ProfileRoute
   PromouvoirRoute: typeof PromouvoirRoute
@@ -327,6 +340,13 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/map'
       preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pass': {
+      id: '/pass'
+      path: '/pass'
+      fullPath: '/pass'
+      preLoaderRoute: typeof PassRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pro': {
@@ -405,6 +425,7 @@ const rootRouteChildren: RootRouteChildren = {
   FavoritesRoute: FavoritesRoute,
   LegalRoute: LegalRoute,
   MapRoute: MapRoute,
+  PassRoute: PassRoute,
   ProRoute: ProRoute,
   ProfileRoute: ProfileRoute,
   PromouvoirRoute: PromouvoirRoute,

@@ -1,22 +1,10 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Sparkles, Heart, MapPin } from "lucide-react";
 import logo from "@/assets/logo-tonight.png";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "À propos — Tonight.fr" },
-      { name: "description", content: "L’agenda nocturne local de Fribourg, ses lieux et ses événements." },
-      { property: "og:title", content: "À propos — Tonight.fr" },
-      { property: "og:description", content: "L’agenda nocturne local de Fribourg, ses lieux et ses événements." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/about" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "À propos — Tonight.fr" },
-      { name: "twitter:description", content: "L’agenda nocturne local de Fribourg, ses lieux et ses événements." },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/about" }],
-  }),
+  head: () => pageHead("/about", "À propos — Tonight FR", "Découvrez Tonight FR, la plateforme suisse de découverte de sorties et de vie nocturne."),
   component: AboutPage,
 });
 

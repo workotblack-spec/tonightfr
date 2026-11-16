@@ -1,6 +1,6 @@
 # Project working rules
 
-- Keep this execution stage documentation-only; application code, data, permissions, secrets, dependencies, external connections and publication are out of scope because the baseline must be understood first.
+- Keep security corrections isolated in this unaccepted draft, grouped by existing PR topic; database operations, secrets, production configuration, external connections and publication remain out of scope.
 - Treat the migration source of truth as unresolved until local SQL histories and the actual database journals are reconciled; this prevents accidental replay or divergence.
 - Treat the Pro multi-venue and Promoter architecture in `docs/architecture/target-overview.md` as a proposal, not an implemented model; the current owner-based data model cannot establish team permissions.
 - Record verified facts separately from supplied observations and hypotheses in the French reference documentation; this makes the work reproducible without overstating evidence.

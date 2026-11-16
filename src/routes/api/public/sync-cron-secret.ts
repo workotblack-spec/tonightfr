@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { bearerMatches } from "@/lib/safe-fetch";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 function isAuthorized(request: Request): boolean {
   return bearerMatches(request.headers.get("authorization"), process.env.CRON_SECRET);
@@ -16,7 +15,9 @@ export const Route = createFileRoute("/api/public/sync-cron-secret")({
         if (!isAuthorized(request)) {
           return new Response("Unauthorized", { status: 401 });
         }
-        const secret = process.env.CRON_SECRET!;
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const secret = process.env.CRON_SECRET;
+        if (!secret) return new Response("Unauthorized", { status: 401 });
         const { error } = await supabaseAdmin.rpc("sync_cron_secret_to_vault", {
           _value: secret,
         });

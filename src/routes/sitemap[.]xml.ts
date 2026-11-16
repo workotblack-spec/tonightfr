@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+// Root URL shares the draft's paginated XML builder with the legacy endpoint.
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {

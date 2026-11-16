@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Mail, Lock, Loader2 } from "lucide-react";
@@ -6,21 +7,7 @@ import { lovable } from "@/integrations/lovable";
 import { T, type Lang } from "@/data/i18n";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Connexion — Tonight FR" },
-      { name: "description", content: "Connectez-vous à Tonight FR pour retrouver vos favoris sur vos appareils." },
-      { property: "og:title", content: "Connexion — Tonight FR" },
-      { property: "og:description", content: "Connectez-vous à Tonight FR pour retrouver vos favoris sur vos appareils." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/auth" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Connexion — Tonight FR" },
-      { name: "twitter:description", content: "Connectez-vous à Tonight FR pour retrouver vos favoris sur vos appareils." },
-      { name: "robots", content: "noindex" },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/auth" }],
-  }),
+  head: () => pageHead("/auth", "Connexion — Tonight FR", "Connectez-vous à Tonight FR pour retrouver votre compte et vos favoris.", true),
   component: AuthPage,
 });
 
@@ -115,6 +102,8 @@ function AuthPage() {
             <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="email"
+              aria-label={t.email}
+              autoComplete="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -126,6 +115,8 @@ function AuthPage() {
             <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="password"
+              aria-label={t.password}
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
               required
               minLength={6}
               value={password}

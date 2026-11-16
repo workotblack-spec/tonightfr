@@ -56,7 +56,8 @@ export function useFavorites() {
     async (id: string) => {
       const next = new Set(favs);
       const isAdding = !next.has(id);
-      isAdding ? next.add(id) : next.delete(id);
+      if (isAdding) next.add(id);
+      else next.delete(id);
       setFavs(next);
 
       if (user) {

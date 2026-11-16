@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Heart, LogOut, Settings, Sparkles, ChevronRight, User } from "lucide-react";
 import { T, type Lang } from "@/data/i18n";
@@ -7,21 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { BottomNav } from "@/components/tonight/BottomNav";
 
 export const Route = createFileRoute("/profile")({
-  head: () => ({
-    meta: [
-      { title: "Profil — Tonight Fribourg" },
-      { name: "description", content: "Votre compte Tonight FR : favoris et accès à l’espace professionnel." },
-      { property: "og:title", content: "Profil — Tonight Fribourg" },
-      { property: "og:description", content: "Votre compte Tonight FR : favoris et accès à l’espace professionnel." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/profile" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Profil — Tonight Fribourg" },
-      { name: "twitter:description", content: "Votre compte Tonight FR : favoris et accès à l’espace professionnel." },
-      { name: "robots", content: "noindex" },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/profile" }],
-  }),
+  head: () => pageHead("/profile", "Mon profil — Tonight FR", "Votre compte Tonight FR, vos favoris et votre accès à l’espace établissements.", true),
   component: ProfilePage,
 });
 
@@ -82,6 +69,7 @@ function ProfilePage() {
             label={t.favorites}
             extra={count > 0 ? <span className="text-xs tabular-nums text-primary">{count}</span> : null}
           />
+          <Row to="/pass" icon={<Sparkles className="h-4 w-4" />} label="Mon Pass Membre" />
           <Row to="/pro" icon={<Settings className="h-4 w-4" />} label="Espace Pro (établissements)" />
           {(role === "venue" || role === "admin") && (
             <Row to="/admin" icon={<Settings className="h-4 w-4" />} label={t.proSpace} />

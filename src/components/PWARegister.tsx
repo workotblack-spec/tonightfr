@@ -3,6 +3,7 @@ import { retireLegacyWorker } from "@/lib/retire-legacy-worker";
 
 // Home-screen support stays manifest-only. The same-path cleanup worker
 // retires the legacy app-shell cache without touching unrelated workers.
+// Never register an app-shell worker, even in a production-built preview.
 export function PWARegister() {
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;

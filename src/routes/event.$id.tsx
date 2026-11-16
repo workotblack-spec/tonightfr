@@ -12,6 +12,7 @@ import { T, type Lang } from "@/data/i18n";
 import { useFavorites } from "@/hooks/useFavorites";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { VipTableRequest } from "@/components/tonight/VipTableRequest";
+import { GetPassButton } from "@/components/tonight/GetPassButton";
 import { HouseRules } from "@/components/tonight/HouseRules";
 
 const eventQueryOptions = (id: string) =>
@@ -77,12 +78,12 @@ export const Route = createFileRoute("/event/$id")({
       </Link>
     </div>
   ),
-  errorComponent: function EventError({ error, reset }) {
+  errorComponent: function EventError({ reset }) {
     const router = useRouter();
     return (
       <div className="mx-auto max-w-3xl px-5 py-20 text-center">
         <p className="text-sm text-muted-foreground">
-          {error instanceof Error ? error.message : String(error)}
+          Impossible de charger cet événement. Réessayez dans un instant.
         </p>
         <button
           onClick={() => {
@@ -290,6 +291,7 @@ function EventDetail() {
         {(ev.category === "clubbing" || ev.category === "lounge" || ev.category === "shisha") && (
           <>
             <HouseRules venue={ev.venue} />
+            <GetPassButton eventId={ev.id} />
             <VipTableRequest eventId={ev.id} venue={ev.venue} />
           </>
         )}

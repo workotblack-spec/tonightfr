@@ -1,6 +1,6 @@
 # Tonight FR — documentation de référence
 
-État documentaire au **3 novembre 2026**. Cette première étape ajoute uniquement des documents : aucun code applicatif, aucune donnée et aucune configuration ne sont modifiés.
+Cadre documentaire initial du **3 novembre 2026**, conservé comme historique. Les corrections de sécurité du 5 novembre sont isolées dans le brouillon non accepté : [rapport et PR](learning-log/2026-11-05-draft-security.md). Aucun changement de données, secrets ou production n’est autorisé ici.
 
 ## Par où commencer ?
 
