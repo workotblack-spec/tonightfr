@@ -14,21 +14,28 @@ import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { VipTableRequest } from "@/components/tonight/VipTableRequest";
 import { HouseRules } from "@/components/tonight/HouseRules";
 
-const eventQueryOptions = (id: string) => queryOptions({
-  queryKey: ["event", id],
-  queryFn: async () => {
-    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) throw notFound();
-    const event = await getPublicEvent({ data: { id } });
-    if (!event) throw notFound();
-    return event;
-  },
-});
+const eventQueryOptions = (id: string) =>
+  queryOptions({
+    queryKey: ["event", id],
+    queryFn: async () => {
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id))
+        throw notFound();
+      const event = await getPublicEvent({ data: { id } });
+      if (!event) throw notFound();
+      return event;
+    },
+  });
 
 export const Route = createFileRoute("/event/$id")({
-  loader: ({ params, context }) => context.queryClient.ensureQueryData(eventQueryOptions(params.id)),
+  loader: ({ params, context }) =>
+    context.queryClient.ensureQueryData(eventQueryOptions(params.id)),
   head: ({ params, loaderData }) => {
-    const title = loaderData ? `${loaderData.title} — ${loaderData.venue} | Tonight FR` : "Événement introuvable — Tonight FR";
-    const description = loaderData ? (loaderData.description || `${loaderData.venue} · ${loaderData.area}`).slice(0, 160) : "Cet événement n’est pas disponible.";
+    const title = loaderData
+      ? `${loaderData.title} — ${loaderData.venue} | Tonight FR`
+      : "Événement introuvable — Tonight FR";
+    const description = loaderData
+      ? (loaderData.description || `${loaderData.venue} · ${loaderData.area}`).slice(0, 160)
+      : "Cet événement n’est pas disponible.";
     const url = `https://tonightfr.lovable.app/event/${encodeURIComponent(params.id)}`;
     const preview = loaderData ? eventPreviewUrl(loaderData.id) : null;
     return {
@@ -42,15 +49,17 @@ export const Route = createFileRoute("/event/$id")({
         { name: "twitter:card", content: preview ? "summary_large_image" : "summary" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
-        ...(preview ? [
-          { property: "og:image", content: preview },
-          { property: "og:image:type", content: "image/jpeg" },
-          { property: "og:image:width", content: "1200" },
-          { property: "og:image:height", content: "630" },
-          { property: "og:image:alt", content: title },
-          { name: "twitter:image", content: preview },
-          { name: "twitter:image:alt", content: title },
-        ] : []),
+        ...(preview
+          ? [
+              { property: "og:image", content: preview },
+              { property: "og:image:type", content: "image/jpeg" },
+              { property: "og:image:width", content: "1200" },
+              { property: "og:image:height", content: "630" },
+              { property: "og:image:alt", content: title },
+              { name: "twitter:image", content: preview },
+              { name: "twitter:image:alt", content: title },
+            ]
+          : []),
       ],
       links: [{ rel: "canonical", href: url }],
     };
@@ -60,7 +69,10 @@ export const Route = createFileRoute("/event/$id")({
     <div className="mx-auto max-w-3xl px-5 py-20 text-center">
       <h1 className="font-display text-3xl font-bold">404</h1>
       <p className="mt-2 text-muted-foreground">Événement introuvable.</p>
-      <Link to="/" className="mt-6 inline-block rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background">
+      <Link
+        to="/"
+        className="mt-6 inline-block rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background"
+      >
         Retour
       </Link>
     </div>
@@ -69,7 +81,9 @@ export const Route = createFileRoute("/event/$id")({
     const router = useRouter();
     return (
       <div className="mx-auto max-w-3xl px-5 py-20 text-center">
-        <p className="text-sm text-muted-foreground">{error instanceof Error ? error.message : String(error)}</p>
+        <p className="text-sm text-muted-foreground">
+          {error instanceof Error ? error.message : String(error)}
+        </p>
         <button
           onClick={() => {
             router.invalidate();
@@ -109,7 +123,11 @@ function EventDetail() {
     const url = window.location.href;
     if (navigator.share) {
       try {
-        await navigator.share({ title: ev.title, text: `${ev.venue} · ${dateStr} ${timeStr}`, url });
+        await navigator.share({
+          title: ev.title,
+          text: `${ev.venue} · ${dateStr} ${timeStr}`,
+          url,
+        });
       } catch {
         /* user cancelled */
       }
@@ -132,11 +150,15 @@ function EventDetail() {
       "@type": "Place",
       name: ev.venue,
       address: ev.address || `${ev.area}, Fribourg, Switzerland`,
-      ...(ev.lat && ev.lng ? { geo: { "@type": "GeoCoordinates", latitude: ev.lat, longitude: ev.lng } } : {}),
+      ...(ev.lat && ev.lng
+        ? { geo: { "@type": "GeoCoordinates", latitude: ev.lat, longitude: ev.lng } }
+        : {}),
     },
     image: resolveEventImage(ev.id, ev.venue, ev.image_url) || imageFor(ev.image_key),
     description: ev.description || `${ev.venue} · ${ev.area}`,
-    ...(safeTicketUrl ? { offers: { "@type": "Offer", url: safeTicketUrl, price: ev.price_text || "0" } } : {}),
+    ...(safeTicketUrl
+      ? { offers: { "@type": "Offer", url: safeTicketUrl, price: ev.price_text || "0" } }
+      : {}),
   };
 
   // Escape </script> and < to prevent XSS via JSON-LD injection
@@ -162,15 +184,27 @@ function EventDetail() {
           />
           <div className="absolute inset-0 bg-gradient-hero" />
           <div className="absolute inset-x-0 top-0 mx-auto flex max-w-3xl items-center justify-between px-5 pt-4">
-            <Link to="/" aria-label={T[lang].back} className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md">
+            <Link
+              to="/"
+              aria-label={T[lang].back}
+              className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md"
+            >
               <ArrowLeft className="h-4 w-4" />
             </Link>
             <div className="flex items-center gap-2">
               <LanguageSwitcher lang={lang} onChange={setLang} />
-              <button onClick={share} aria-label={T[lang].share} className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md">
+              <button
+                onClick={share}
+                aria-label={T[lang].share}
+                className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md"
+              >
                 <Share2 className="h-4 w-4" />
               </button>
-              <button onClick={() => toggle(ev.id)} aria-label={isFav ? T[lang].removeFav : T[lang].addToFav} className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md">
+              <button
+                onClick={() => toggle(ev.id)}
+                aria-label={isFav ? T[lang].removeFav : T[lang].addToFav}
+                className="press grid h-10 w-10 place-items-center rounded-full bg-background/60 backdrop-blur-md"
+              >
                 <Heart className={`h-4 w-4 ${isFav ? "fill-primary text-primary" : ""}`} />
               </button>
             </div>
@@ -181,7 +215,8 @@ function EventDetail() {
               {ev.title}
             </h1>
             <p className="mt-3 text-[15px] text-foreground/75">
-              <span className="capitalize">{dateStr}</span> · <span className="tabular-nums">{timeStr}</span>
+              <span className="capitalize">{dateStr}</span> ·{" "}
+              <span className="tabular-nums">{timeStr}</span>
             </p>
           </div>
         </div>
@@ -191,12 +226,19 @@ function EventDetail() {
         <div className="grid gap-3 sm:grid-cols-2">
           <InfoRow icon={<Calendar className="h-4 w-4" strokeWidth={1.75} />} label={T[lang].when}>
             <div className="capitalize">{dateStr}</div>
-            <div className="font-display text-xl font-semibold tabular-nums text-primary">{timeStr}</div>
+            <div className="font-display text-xl font-semibold tabular-nums text-primary">
+              {timeStr}
+            </div>
           </InfoRow>
           <InfoRow icon={<MapPin className="h-4 w-4" strokeWidth={1.75} />} label={T[lang].venue}>
             <div className="font-medium">{ev.venue}</div>
             <div className="text-muted-foreground">{ev.address || ev.area}</div>
-            <a href={mapsUrl} target="_blank" rel="noreferrer" className="mt-1 inline-block text-primary hover:underline">
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-1 inline-block text-primary hover:underline"
+            >
               {T[lang].openMap} →
             </a>
           </InfoRow>
@@ -212,7 +254,9 @@ function EventDetail() {
         {ev.description && (
           <section className="mt-10">
             <div className="divider-gold mb-6" />
-            <h2 className="font-display text-xl font-semibold tracking-tight">{T[lang].aboutEvent}</h2>
+            <h2 className="font-display text-xl font-semibold tracking-tight">
+              {T[lang].aboutEvent}
+            </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-foreground/85">{ev.description}</p>
           </section>
         )}
@@ -227,7 +271,12 @@ function EventDetail() {
         {ev.lat != null && ev.lng != null && (
           <section className="mt-10">
             <h2 className="font-display text-xl font-semibold tracking-tight">{T[lang].address}</h2>
-            <a href={mapsUrl} target="_blank" rel="noreferrer" className="mt-3 block overflow-hidden rounded-2xl border border-border">
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 block overflow-hidden rounded-2xl border border-border"
+            >
               <iframe
                 title="map"
                 loading="lazy"
@@ -251,14 +300,27 @@ function EventDetail() {
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-5 py-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold">{ev.venue}</p>
-            <p className="text-xs tabular-nums text-muted-foreground">{timeStr}{ev.price_text ? ` · ${ev.price_text}` : ""}</p>
+            <p className="text-xs tabular-nums text-muted-foreground">
+              {timeStr}
+              {ev.price_text ? ` · ${ev.price_text}` : ""}
+            </p>
           </div>
           {safeTicketUrl ? (
-            <a href={safeTicketUrl} target="_blank" rel="noreferrer" className="press inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">
+            <a
+              href={safeTicketUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="press inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
+            >
               <Ticket className="h-4 w-4" /> {T[lang].getTickets}
             </a>
           ) : (
-            <a href={mapsUrl} target="_blank" rel="noreferrer" className="press inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="press inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
+            >
               <MapPin className="h-4 w-4" /> {T[lang].openMap}
             </a>
           )}
@@ -268,7 +330,15 @@ function EventDetail() {
   );
 }
 
-function InfoRow({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
+function InfoRow({
+  icon,
+  label,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="rounded-2xl border border-border bg-surface/60 p-4">
       <div className="label-xs flex items-center gap-2 text-muted-foreground">

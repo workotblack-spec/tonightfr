@@ -5,7 +5,5 @@ const eventPreviewIds = new Set([
 ]);
 
 export function eventPreviewUrl(id: string): string | null {
-  return eventPreviewIds.has(id)
-    ? `https://tonightfr.lovable.app/event-previews/${id}.jpg`
-    : null;
+  return eventPreviewIds.has(id) ? `https://tonightfr.lovable.app/event-previews/${id}.jpg` : null;
 }
