@@ -1,26 +1,15 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Check, X, UserCheck, UserX, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { PassEntryCheck } from "@/components/tonight/PassEntryCheck";
 import { CANTONS } from "@/data/cantons";
 
 export const Route = createFileRoute("/pro")({
-  head: () => ({
-    meta: [
-      { title: "Espace Pro — Tonight Suisse" },
-      { name: "description", content: "Gérez votre établissement, ses règles maison et ses demandes de tables VIP." },
-      { property: "og:title", content: "Espace Pro — Tonight Suisse" },
-      { property: "og:description", content: "Gérez votre établissement, ses règles maison et ses demandes de tables VIP." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/pro" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Espace Pro — Tonight Suisse" },
-      { name: "twitter:description", content: "Gérez votre établissement, ses règles maison et ses demandes de tables VIP." },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/pro" }],
-  }),
+  head: () => pageHead("/pro", "Portail établissements — Tonight FR", "Gérez votre fiche établissement, vos règles maison et les demandes de tables VIP.", true),
   component: ProPage,
 });
 
@@ -41,7 +30,8 @@ function ProPage() {
   const venueQ = useQuery({
     queryKey: ["my-venue", user?.id], enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase.from("venues").select("*").eq("owner_id", user!.id).maybeSingle();
+      if (!user) return null;
+      const { data, error } = await supabase.from("venues").select("*").eq("owner_id", user.id).maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -51,7 +41,9 @@ function ProPage() {
   const reqQ = useQuery({
     queryKey: ["venue-requests", user?.id], enabled: !!user,
     queryFn: async () => {
-      const { data: evs } = await supabase.from("events").select("id,title,starts_at").eq("owner_id", user!.id);
+      if (!user) return { events: [], requests: [] };
+      const { data: evs, error: eventError } = await supabase.from("events").select("id,title,starts_at").eq("owner_id", user.id);
+      if (eventError) throw eventError;
       const ids = (evs ?? []).map((e) => e.id);
       if (!ids.length) return { events: [], requests: [] };
       const { data, error } = await supabase.from("table_requests").select("*").in("event_id", ids).order("created_at", { ascending: false });
@@ -165,6 +157,7 @@ function ProPage() {
           <Link to="/admin" className="block text-center text-xs text-primary underline">Gérer mes soirées</Link>
         </div>
       </section>
+      <PassEntryCheck />
     </main>
   );
 }

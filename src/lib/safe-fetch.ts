@@ -44,7 +44,7 @@ export function isHostAllowed(
   const h = host.toLowerCase().replace(/\.$/, "");
   if (!h || isIpLiteral(h) || h === "localhost") return false;
   if (LOCAL_SUFFIXES.some((s) => h.endsWith(s))) return false;
-  return allowed.some((d) => h === d || h.endsWith("." + d));
+  return allowed.some((d) => h === d || h === "www." + d);
 }
 
 /** Returns a normalized URL if safe to fetch, else null. */
@@ -92,7 +92,7 @@ export type SafeFetchOptions = {
   fetchImpl?: typeof fetch;
 };
 
-/** Fetches an HTML page safely. Returns text (truncated to maxBytes) or null. */
+/** Fetches an HTML page safely. Rejects bodies exceeding maxBytes. */
 export async function safeFetchHtml(
   raw: string,
   opts: SafeFetchOptions = {},
@@ -159,11 +159,9 @@ async function readLimited(res: Response, maxBytes: number): Promise<string | nu
       const { done, value } = await reader.read();
       if (done) break;
       const room = maxBytes - total;
-      if (value.byteLength >= room) {
-        chunks.push(value.slice(0, room));
-        total += room;
+      if (value.byteLength > room) {
         await reader.cancel();
-        break;
+        return null;
       }
       chunks.push(value);
       total += value.byteLength;

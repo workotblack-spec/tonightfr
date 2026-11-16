@@ -1,22 +1,9 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/legal")({
-  head: () => ({
-    meta: [
-      { title: "Mentions légales & confidentialité — Tonight.fr" },
-      { name: "description", content: "Mentions légales, conditions d’utilisation et confidentialité de Tonight FR." },
-      { property: "og:title", content: "Mentions légales & confidentialité — Tonight.fr" },
-      { property: "og:description", content: "Mentions légales, conditions d’utilisation et confidentialité de Tonight FR." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/legal" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Mentions légales & confidentialité — Tonight.fr" },
-      { name: "twitter:description", content: "Mentions légales, conditions d’utilisation et confidentialité de Tonight FR." },
-      { name: "robots", content: "noindex" },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/legal" }],
-  }),
+  head: () => pageHead("/legal", "Mentions légales et confidentialité — Tonight FR", "Informations légales, conditions d’utilisation et confidentialité de Tonight FR.", true),
   component: LegalPage,
 });
 

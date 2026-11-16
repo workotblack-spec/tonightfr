@@ -7,11 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.5"
-  }
   public: {
     Tables: {
       events: {
@@ -105,6 +100,96 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "favorites_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_pass_secrets: {
+        Row: {
+          pass_id: string
+          secret: string
+        }
+        Insert: {
+          pass_id: string
+          secret?: string
+        }
+        Update: {
+          pass_id?: string
+          secret?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_pass_secrets_pass_id_fkey"
+            columns: ["pass_id"]
+            isOneToOne: true
+            referencedRelation: "member_passes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_pass_transfers: {
+        Row: {
+          created_at: string
+          from_user: string
+          id: string
+          pass_id: string
+          to_user: string
+        }
+        Insert: {
+          created_at?: string
+          from_user: string
+          id?: string
+          pass_id: string
+          to_user: string
+        }
+        Update: {
+          created_at?: string
+          from_user?: string
+          id?: string
+          pass_id?: string
+          to_user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_pass_transfers_pass_id_fkey"
+            columns: ["pass_id"]
+            isOneToOne: false
+            referencedRelation: "member_passes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_passes: {
+        Row: {
+          created_at: string
+          event_id: string
+          holder_id: string
+          id: string
+          status: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          holder_id: string
+          id?: string
+          status?: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          holder_id?: string
+          id?: string
+          status?: string
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_passes_event_id_fkey"
             columns: ["event_id"]
             isOneToOne: false
             referencedRelation: "events"
@@ -291,6 +376,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      _pass_code: { Args: { _pass: string; _step: number }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -298,11 +384,30 @@ export type Database = {
         }
         Returns: boolean
       }
+      issue_member_pass: { Args: { _event_id: string }; Returns: string }
+      member_pass_code: {
+        Args: { _pass_id: string }
+        Returns: {
+          code: string
+          expires_at: string
+        }[]
+      }
       sync_cron_secret_to_vault: {
         Args: { _value: string }
         Returns: undefined
       }
+      transfer_member_pass: {
+        Args: { _email: string; _pass_id: string }
+        Returns: undefined
+      }
       unaccent: { Args: { "": string }; Returns: string }
+      validate_member_pass: {
+        Args: { _code: string }
+        Returns: {
+          event_title: string
+          result: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "venue" | "user"
@@ -437,3 +542,4 @@ export const Constants = {
     },
   },
 } as const
+

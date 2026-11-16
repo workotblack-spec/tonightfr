@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -9,21 +10,7 @@ import { T } from "@/data/i18n";
 import type { DbEvent } from "@/lib/events";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({
-    meta: [
-      { title: "Administration — Tonight FR" },
-      { name: "description", content: "Gestion des événements Tonight FR pour les comptes autorisés." },
-      { property: "og:title", content: "Administration — Tonight FR" },
-      { property: "og:description", content: "Gestion des événements Tonight FR pour les comptes autorisés." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/admin" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Administration — Tonight FR" },
-      { name: "twitter:description", content: "Gestion des événements Tonight FR pour les comptes autorisés." },
-      { name: "robots", content: "noindex" },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/admin" }],
-  }),
+  head: () => pageHead("/admin", "Gestion des événements — Tonight FR", "Espace privé de gestion des événements pour les organisateurs et l’administration Tonight FR.", true),
   component: AdminPage,
 });
 

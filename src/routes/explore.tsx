@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -13,20 +14,7 @@ import { SearchBar } from "@/components/tonight/SearchBar";
 import { useFavorites } from "@/hooks/useFavorites";
 
 export const Route = createFileRoute("/explore")({
-  head: () => ({
-    meta: [
-      { title: "Explorer — Tonight Fribourg" },
-      { name: "description", content: "Clubbing, concerts, afterworks, culture et sport à Fribourg, Bulle et Lausanne." },
-      { property: "og:title", content: "Explorer — Tonight Fribourg" },
-      { property: "og:description", content: "Clubbing, concerts, afterworks, culture et sport à Fribourg, Bulle et Lausanne." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/explore" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Explorer — Tonight Fribourg" },
-      { name: "twitter:description", content: "Clubbing, concerts, afterworks, culture et sport à Fribourg, Bulle et Lausanne." },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/explore" }],
-  }),
+  head: () => pageHead("/explore", "Explorer les sorties — Tonight FR", "Explorez les concerts, clubs, afterworks, culture et sport à Fribourg, Bulle et Lausanne."),
   component: ExplorePage,
 });
 

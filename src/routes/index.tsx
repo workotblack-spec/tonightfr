@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -21,28 +22,13 @@ import { MoodRadar } from "@/components/tonight/MoodRadar";
 import { matchesMood, withinRadius, type Moment, type Company, type Radius } from "@/lib/radar";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Événements Fribourg ce soir — Concerts, clubs & bars | Tonight" },
-      { name: "description", content: "Tous les événements à Fribourg ce soir et ce week-end : concerts, clubbing, afterworks, expos et sport en direct. Agenda mis à jour chaque jour." },
-      { property: "og:title", content: "Événements Fribourg ce soir — Concerts, clubs & bars | Tonight" },
-      { property: "og:description", content: "Tous les événements à Fribourg ce soir et ce week-end : concerts, clubbing, afterworks, expos et sport en direct. Agenda mis à jour chaque jour." },
-      { name: "twitter:title", content: "Événements Fribourg ce soir — Concerts, clubs & bars | Tonight" },
-      { name: "twitter:description", content: "Tous les événements à Fribourg ce soir et ce week-end : concerts, clubbing, afterworks, expos et sport en direct. Agenda mis à jour chaque jour." },
-      { property: "og:locale", content: "fr_CH" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+  head: () => {
+    const head = pageHead("/", "Événements Fribourg ce soir — Concerts, clubs & bars | Tonight", "Concerts, clubs, bars et sorties à Fribourg, Bulle et Lausanne : découvrez les événements selon la date et l’ambiance.");
+    return { ...head, meta: [...head.meta,
       { property: "og:image", content: "https://tonightfr.lovable.app/og-tonight.jpg" },
       { name: "twitter:image", content: "https://tonightfr.lovable.app/og-tonight.jpg" },
-      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
-      { property: "og:url", content: "https://tonightfr.lovable.app/" },
-    ],
-    links: [
-      { rel: "canonical", href: "https://tonightfr.lovable.app/" },
-      { rel: "alternate", hrefLang: "fr-CH", href: "https://tonightfr.lovable.app/" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://tonightfr.lovable.app/" },
-    ],
-  }),
+    ] };
+  },
   component: Home,
 });
 

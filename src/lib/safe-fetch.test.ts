@@ -19,6 +19,7 @@ describe("validateOutboundUrl", () => {
     "https://user:pw@fri-son.ch/",
     "https://fri-son.ch:8443/",
     "https://2130706433/",
+    "https://untrusted.fri-son.ch/",
   ])("rejects %s", (u) => {
     expect(validateOutboundUrl(u)).toBeNull();
   });
@@ -51,10 +52,10 @@ describe("safeFetchHtml", () => {
       "https://www.fri-son.ch/x",
     );
   });
-  it("truncates oversized body at maxBytes", async () => {
+  it("rejects oversized body instead of parsing truncated HTML", async () => {
     const f = (async () => html("a".repeat(5000))) as typeof fetch;
     const r = await safeFetchHtml("https://fri-son.ch/", { fetchImpl: f, maxBytes: 100 });
-    expect(r?.html.length).toBe(100);
+    expect(r).toBeNull();
   });
   it("rejects declared oversized body and non-html", async () => {
     const big = (async () => html("x", { "content-length": "999999999" })) as typeof fetch;

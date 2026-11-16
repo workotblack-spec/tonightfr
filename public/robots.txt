@@ -3,5 +3,10 @@ Allow: /
 Disallow: /admin
 Disallow: /auth
 Disallow: /favorites
+Disallow: /profile
+Disallow: /pro$
+Disallow: /pro?
+Disallow: /pro/
+Disallow: /api/
 
 Sitemap: https://tonightfr.lovable.app/sitemap.xml

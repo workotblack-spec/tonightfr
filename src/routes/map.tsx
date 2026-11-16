@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
@@ -16,20 +17,7 @@ const MapView = lazy(() =>
 );
 
 export const Route = createFileRoute("/map")({
-  head: () => ({
-    meta: [
-      { title: "Carte — Tonight.fr Fribourg" },
-      { name: "description", content: "Carte des événements à Fribourg : concerts, clubs, afterworks, culture et sport." },
-      { property: "og:title", content: "Carte — Tonight.fr Fribourg" },
-      { property: "og:description", content: "Carte des événements à Fribourg : concerts, clubs, afterworks, culture et sport." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/map" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Carte — Tonight.fr Fribourg" },
-      { name: "twitter:description", content: "Carte des événements à Fribourg : concerts, clubs, afterworks, culture et sport." },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/map" }],
-  }),
+  head: () => pageHead("/map", "Carte des sorties — Tonight FR", "Localisez les événements et les établissements de Fribourg, Bulle et Lausanne sur la carte."),
   component: MapPage,
 });
 

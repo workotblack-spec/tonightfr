@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, Mail, Send, CheckCircle2, Loader2, MessageSquare, Building2 } from "lucide-react";
@@ -5,21 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Tonight Fribourg" },
-      { name: "description", content: "Contacter l’équipe Tonight : signaler un événement, soumettre un lieu ou nous écrire." },
-      { property: "og:title", content: "Contact — Tonight Fribourg" },
-      { property: "og:description", content: "Contacter l’équipe Tonight : signaler un événement, soumettre un lieu ou nous écrire." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/contact" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Contact — Tonight Fribourg" },
-      { name: "twitter:description", content: "Contacter l’équipe Tonight : signaler un événement, soumettre un lieu ou nous écrire." },
-      { name: "robots", content: "noindex" },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/contact" }],
-  }),
+  head: () => pageHead("/contact", "Contact — Tonight FR", "Contactez l’équipe Tonight FR pour un événement, un établissement ou une demande d’assistance.", true),
   component: ContactPage,
 });
 
@@ -72,7 +59,7 @@ function ContactPage() {
     <div className="min-h-screen bg-background pb-24">
       <header className="sticky top-0 z-40 border-b border-border/40 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-4">
-          <Link to="/" className="flex h-9 w-9 items-center justify-center rounded-full glass">
+          <Link to="/" aria-label="Retour à l’accueil" className="flex h-9 w-9 items-center justify-center rounded-full glass">
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <h1 className="text-lg font-semibold">Contact</h1>
@@ -147,26 +134,28 @@ function ContactPage() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <label htmlFor="contact-name" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Nom *
                 </label>
                 <input
                   type="text"
                   required
-                  value={form.name}
+                  id="contact-name"
+                value={form.name}
                   onChange={onChange("name")}
                   maxLength={100}
                   className="h-11 w-full rounded-2xl glass px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </div>
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <label htmlFor="contact-email" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Email *
                 </label>
                 <input
                   type="email"
                   required
-                  value={form.email}
+                  id="contact-email"
+                value={form.email}
                   onChange={onChange("email")}
                   maxLength={255}
                   placeholder="toi@exemple.com"
@@ -176,11 +165,12 @@ function ContactPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <label htmlFor="contact-subject" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Sujet
               </label>
               <input
                 type="text"
+                id="contact-subject"
                 value={form.subject}
                 onChange={onChange("subject")}
                 maxLength={150}
@@ -189,12 +179,13 @@ function ContactPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <label htmlFor="contact-message" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Message *
               </label>
               <textarea
                 required
                 rows={6}
+                id="contact-message"
                 value={form.message}
                 onChange={onChange("message")}
                 maxLength={2000}

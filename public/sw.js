@@ -1,5 +1,6 @@
 // One-release kill switch for the deployed legacy Tonight app-shell worker.
 // Delete only the exact cache owned by that worker; messaging caches stay intact.
+// No fetch listener: all requests go to the network, including static assets.
 self.addEventListener("install", (event) => event.waitUntil(self.skipWaiting()));
 self.addEventListener("activate", (event) => {
   event.waitUntil(

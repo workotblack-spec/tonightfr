@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { bearerMatches, extractOgImage, safeFetchHtml } from "@/lib/safe-fetch";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 // Sources to scrape — Fribourg nightlife & culture
 const SOURCES: {
@@ -511,7 +510,7 @@ async function fetchOgImage(url: string): Promise<string | null> {
   return page ? extractOgImage(page.html, page.finalUrl) : null;
 }
 
-async function ingestSource(source: (typeof SOURCES)[number]) {
+async function ingestSource(source: (typeof SOURCES)[number], supabaseAdmin: typeof import("@/integrations/supabase/client.server").supabaseAdmin) {
   const md = await firecrawlScrape(source.url);
   if (!md || md.length < 100)
     return { source: source.id, scraped: 0, upserted: 0, skipped: "no content" };
@@ -593,10 +592,11 @@ export const Route = createFileRoute("/api/public/ingest")({
         if (!isAuthorized(request)) {
           return new Response("Unauthorized", { status: 401 });
         }
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const results = [];
         for (const s of SOURCES) {
           try {
-            results.push(await ingestSource(s));
+            results.push(await ingestSource(s, supabaseAdmin));
           } catch (e) {
             console.error("[ingest] source failed", s.id);
             results.push({ source: s.id, error: "failed" });

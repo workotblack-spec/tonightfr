@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
@@ -18,20 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/promouvoir")({
-  head: () => ({
-    meta: [
-      { title: "Promouvoir un événement — Tonight Fribourg" },
-      { name: "description", content: "Demander la mise en avant de votre lieu ou événement sur Tonight FR." },
-      { property: "og:title", content: "Promouvoir un événement — Tonight Fribourg" },
-      { property: "og:description", content: "Demander la mise en avant de votre lieu ou événement sur Tonight FR." },
-      { property: "og:url", content: "https://tonightfr.lovable.app/promouvoir" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Promouvoir un événement — Tonight Fribourg" },
-      { name: "twitter:description", content: "Demander la mise en avant de votre lieu ou événement sur Tonight FR." },
-    ],
-    links: [{ rel: "canonical", href: "https://tonightfr.lovable.app/promouvoir" }],
-  }),
+  head: () => pageHead("/promouvoir", "Visibilité des établissements — Tonight FR", "Contactez Tonight FR pour mettre en avant votre établissement ou votre événement."),
   component: PromouvoirPage,
 });
 
