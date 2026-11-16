@@ -1,5 +1,27 @@
 # Tonight FR — feuille de route active
 
+## Second rapprochement du brouillon — 16 novembre 2026
+- [x] Restaurer 46 chemins propres au brouillon à l'identique via l'outil officiel ; rapprocher `AGENTS.md`, `package.json`, `roadmap.md` et `src/routes/event.$id.tsx` avec `3ce3827de2ac`.
+- [x] Conserver les images de partage et leur liste explicite d'événements, tout en réintégrant le bouton Pass et son erreur non sensible ; aucun choix du brouillon abandonné.
+- [x] Conserver `qrcode.react` et la version de configuration 2.27.1 ; aucune installation demandée, aucune migration appliquée, aucun secret consulté, aucune acceptation ni publication.
+
+## Mise à jour du brouillon — 16 novembre 2026
+- [x] Rapprocher les corrections du brouillon avec la version `03e8c2ca991d`, sans acceptation ni publication ; [preuves et arbitrages](docs/learning-log/2026-11-16-draft-refresh.md).
+- [x] Préserver le Pass, ses fichiers de migration existants, les protections de maintenance et les corrections SEO ; aucune migration exécutée pendant ce rapprochement.
+- [x] Vérifications : Bun et Vitest 44/44 ; pages publiques desktop/mobile et deux sitemaps HTTP 200 ; compilation automatique OK.
+- [ ] Lint global : 815 erreurs et 7 avertissements, principalement formatage ; à traiter dans un lot dédié, pas par réécriture générale ici.
+- [ ] Parcours Pass multi-comptes, transfert et entrée réelle : non vérifiés ici ; conserver ce blocage avant validation opérationnelle.
+
+## Brouillon sécurité — 5 novembre 2026
+- [x] A1 : retrait ciblé du cache ; tests passants, installation réelle ancienne non testée.
+- [x] A2 : robots, sitemap racine paginé et métadonnées corrigés ; titre/image événementiels issus des données restent un lot séparé.
+- [x] A3 : métadonnées PR #3 vérifiées ; `.env` absent du SHA distant, suivi local inchangé.
+- [x] B : imports privilégiés après autorisation, refus 401 et protections réseau testés sans base ; DNS/RLS effectifs non validés.
+- [x] C/D : références examinées, aucune suppression prouvée ; pages publiques desktop/mobile contrôlées sans écritures. Lint global reste bloqué par 671 erreurs de formatage, six avertissements.
+- [x] E : README et [rapport/PR](docs/learning-log/2026-11-05-draft-security.md), 35 tests réussis, dernière compilation automatique OK.
+- [ ] Livraison distante : propriétaire doit mettre à jour les branches existantes ; aucun accès écriture établi, aucun doublon à créer.
+- [ ] Hors périmètre : tests multi-comptes/RLS, rotation, sauvegarde, migration, fusion et publication ; nécessitent autorisation séparée.
+
 ## Images de partage des événements — 16 novembre 2026
 
 - [x] Composer une image JPEG 1200 × 630 pour chacun des deux événements publics observés, avec ses informations réelles et le visuel de sa fiche (photo inaccessible : même secours local).
