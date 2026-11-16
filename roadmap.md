@@ -1,5 +1,11 @@
 # Tonight FR — feuille de route active
 
+## Images de partage des événements — 16 novembre 2026
+
+- [ ] Composer une image JPEG 1200 × 630 pour chacun des deux événements publics observés, avec ses informations réelles et le visuel de sa fiche.
+- [ ] Relier chaque fiche à son image OG/Twitter et vérifier les réponses publiques, les dimensions et les tests ; aucune publication ni écriture en base.
+- Les futurs événements nécessiteront une nouvelle image ; aucune génération automatique ni donnée métier n’est ajoutée dans cette passe.
+
 ## Passe Lovable du 7 novembre 2026 — sans publication
 
 - [x] Corriger et tester le remplacement du worker historique, sans caches ni workers étrangers touchés : navigateur isolé, suppression exacte de `tonight-v1`, worker étranger et caches voisins préservés, aucune navigation automatique.
