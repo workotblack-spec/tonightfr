@@ -2,7 +2,7 @@ import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Check, X, UserCheck, UserX, Building2 } from "lucide-react";
+import { ArrowLeft, Check, X, UserCheck, UserX, Building2, Plus, CreditCard, LifeBuoy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { PassEntryCheck } from "@/components/tonight/PassEntryCheck";
@@ -91,6 +91,26 @@ function ProPage() {
     <main className="mx-auto max-w-xl px-5 pb-24 pt-6">
       <Link to="/profile" className="inline-flex items-center gap-1 text-sm text-muted-foreground"><ArrowLeft className="h-4 w-4" /> Retour</Link>
       <h1 className="mt-3 font-display text-3xl font-semibold">Espace Pro</h1>
+
+      <Link to="/admin" className="press mt-5 flex h-12 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground">
+        <Plus className="h-4 w-4" /> Publier une soirée
+      </Link>
+
+      <section className="mt-6 rounded-2xl border border-border bg-surface/60 p-5">
+        <h2 className="flex items-center gap-2 font-semibold"><CreditCard className="h-4 w-4 text-primary" /> Mon abonnement & factures</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Aucun abonnement actif pour l'instant. Les factures apparaîtront ici dès l'activation de votre forfait.</p>
+        <p className="mt-1 text-xs text-muted-foreground">Tonight facture uniquement l'abonnement : vos tables et consommations sont payées directement chez vous.</p>
+        <Link to="/promouvoir" className="press mt-4 flex h-10 items-center justify-center rounded-xl border border-border text-sm font-medium">Voir les offres</Link>
+      </section>
+
+      <section className="mt-6 rounded-2xl border border-border bg-surface/60 p-5">
+        <h2 className="flex items-center gap-2 font-semibold"><LifeBuoy className="h-4 w-4 text-primary" /> Assistance Tonight Pro</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Une question, un souci un samedi soir ? Écrivez-nous.</p>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <a href="mailto:tonightfribourg@proton.me?subject=Assistance%20Pro" className="press flex h-10 items-center justify-center rounded-xl bg-surface-elevated text-sm font-medium">Email</a>
+          <Link to="/contact" className="press flex h-10 items-center justify-center rounded-xl bg-surface-elevated text-sm font-medium">Formulaire</Link>
+        </div>
+      </section>
 
       <section className="mt-6 rounded-2xl border border-border bg-surface/60 p-5">
         <h2 className="font-semibold">Bilan de vos soirées</h2>
