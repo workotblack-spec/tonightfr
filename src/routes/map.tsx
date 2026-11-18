@@ -23,7 +23,7 @@ export const Route = createFileRoute("/map")({
 
 function MapPage() {
   const [lang, setLang] = useState<Lang>("fr");
-  const [when, setWhen] = useState<WhenFilter>("tonight");
+  const [when, setWhen] = useState<WhenFilter>("all");
   const [active, setActive] = useState<CategoryKey | "all">("all");
   const [mounted, setMounted] = useState(false);
   const geo = useGeolocation();
