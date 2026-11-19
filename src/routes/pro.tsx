@@ -113,6 +113,17 @@ function ProPage() {
       </section>
 
       <section className="mt-6 rounded-2xl border border-border bg-surface/60 p-5">
+        <h2 className="font-semibold">Mes soirées</h2>
+        {(reqQ.data?.events.length ?? 0) === 0 && <p className="mt-3 text-sm text-muted-foreground">Aucune soirée publiée pour l'instant.</p>}
+        <ul className="mt-3 space-y-2">
+          {[...(reqQ.data?.events ?? [])].sort((a, b) => a.starts_at.localeCompare(b.starts_at)).map((e) => (
+            <li key={e.id}><Link to="/event/$id" params={{ id: e.id }} className="block rounded-xl border border-border p-3 text-sm"><span className="font-medium">{e.title}</span><span className="block text-xs text-muted-foreground">{new Date(e.starts_at).toLocaleString("fr-CH", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Zurich" })} · {reqs.filter((r) => r.event_id === e.id && (r.status === "accepted" || r.status === "arrived")).length} table(s) validée(s)</span></Link></li>
+          ))}
+        </ul>
+        {form.id && <Link to="/etablissement/$id" params={{ id: form.id }} className="mt-4 block text-center text-xs text-primary underline">Voir ma page publique</Link>}
+      </section>
+
+      <section className="mt-6 rounded-2xl border border-border bg-surface/60 p-5">
         <h2 className="font-semibold">Bilan de vos soirées</h2>
         <div className="mt-4 grid grid-cols-2 gap-3 text-center">
           {[["Demandes", reqs.length], ["Acceptées", count("accepted") + count("arrived")], ["Tables venues", count("arrived")], ["Clients amenés", guestsIn]].map(([l, v]) => (
@@ -129,7 +140,7 @@ function ProPage() {
         <p className="mt-1 text-xs text-muted-foreground">Le client paie ses consommations directement chez vous.</p>
         {reqs.length === 0 && <p className="mt-4 text-sm text-muted-foreground">Aucune demande pour l'instant. Publiez une soirée depuis votre espace événements.</p>}
         <ul className="mt-4 space-y-3">
-          {reqs.map((r) => (
+          {[...reqs].sort((a, b) => (a.status === "pending" ? 0 : a.status === "accepted" ? 1 : 2) - (b.status === "pending" ? 0 : b.status === "accepted" ? 1 : 2)).map((r) => (
             <li key={r.id} className="rounded-xl border border-border p-3 text-sm">
               <div className="flex justify-between gap-2">
                 <span className="font-medium">{r.contact_name} · {r.guests} pers.</span>

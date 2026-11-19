@@ -24,6 +24,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PromouvoirRouteImport } from './routes/promouvoir'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml'
+import { Route as EtablissementIdRouteImport } from './routes/etablissement.$id'
 import { Route as EventIdRouteImport } from './routes/event.$id'
 import { Route as ApiPublicBackfillImagesRouteImport } from './routes/api/public/backfill-images'
 import { Route as ApiPublicIngestRouteImport } from './routes/api/public/ingest'
@@ -104,6 +105,11 @@ const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
   path: '/api/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EtablissementIdRoute = EtablissementIdRouteImport.update({
+  id: '/etablissement/$id',
+  path: '/etablissement/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventIdRoute = EventIdRouteImport.update({
   id: '/event/$id',
   path: '/event/$id',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/promouvoir': typeof PromouvoirRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
+  '/etablissement/$id': typeof EtablissementIdRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/promouvoir': typeof PromouvoirRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
+  '/etablissement/$id': typeof EtablissementIdRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -184,6 +192,7 @@ export interface FileRoutesById {
   '/promouvoir': typeof PromouvoirRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
+  '/etablissement/$id': typeof EtablissementIdRoute
   '/event/$id': typeof EventIdRoute
   '/api/public/backfill-images': typeof ApiPublicBackfillImagesRoute
   '/api/public/ingest': typeof ApiPublicIngestRoute
@@ -207,6 +216,7 @@ export interface FileRouteTypes {
     | '/promouvoir'
     | '/sitemap.xml'
     | '/api/sitemap.xml'
+    | '/etablissement/$id'
     | '/event/$id'
     | '/api/public/backfill-images'
     | '/api/public/ingest'
@@ -228,6 +238,7 @@ export interface FileRouteTypes {
     | '/promouvoir'
     | '/sitemap.xml'
     | '/api/sitemap.xml'
+    | '/etablissement/$id'
     | '/event/$id'
     | '/api/public/backfill-images'
     | '/api/public/ingest'
@@ -249,6 +260,7 @@ export interface FileRouteTypes {
     | '/promouvoir'
     | '/sitemap.xml'
     | '/api/sitemap.xml'
+    | '/etablissement/$id'
     | '/event/$id'
     | '/api/public/backfill-images'
     | '/api/public/ingest'
@@ -271,6 +283,7 @@ export interface RootRouteChildren {
   PromouvoirRoute: typeof PromouvoirRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
+  EtablissementIdRoute: typeof EtablissementIdRoute
   EventIdRoute: typeof EventIdRoute
   ApiPublicBackfillImagesRoute: typeof ApiPublicBackfillImagesRoute
   ApiPublicIngestRoute: typeof ApiPublicIngestRoute
@@ -384,6 +397,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/etablissement/$id': {
+      id: '/etablissement/$id'
+      path: '/etablissement/$id'
+      fullPath: '/etablissement/$id'
+      preLoaderRoute: typeof EtablissementIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/event/$id': {
       id: '/event/$id'
       path: '/event/$id'
@@ -431,6 +451,7 @@ const rootRouteChildren: RootRouteChildren = {
   PromouvoirRoute: PromouvoirRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
+  EtablissementIdRoute: EtablissementIdRoute,
   EventIdRoute: EventIdRoute,
   ApiPublicBackfillImagesRoute: ApiPublicBackfillImagesRoute,
   ApiPublicIngestRoute: ApiPublicIngestRoute,
