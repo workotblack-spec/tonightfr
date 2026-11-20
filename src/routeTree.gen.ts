@@ -23,6 +23,7 @@ import { Route as ProRouteImport } from './routes/pro'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PromouvoirRouteImport } from './routes/promouvoir'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SoireesRouteImport } from './routes/soirees'
 import { Route as ApiSitemapDotxmlRouteImport } from './routes/api/sitemap[.]xml'
 import { Route as EtablissementIdRouteImport } from './routes/etablissement.$id'
 import { Route as EventIdRouteImport } from './routes/event.$id'
@@ -100,6 +101,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SoireesRoute = SoireesRouteImport.update({
+  id: '/soirees',
+  path: '/soirees',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSitemapDotxmlRoute = ApiSitemapDotxmlRouteImport.update({
   id: '/api/sitemap.xml',
   path: '/api/sitemap.xml',
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/soirees': typeof SoireesRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/etablissement/$id': typeof EtablissementIdRoute
   '/event/$id': typeof EventIdRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/soirees': typeof SoireesRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/etablissement/$id': typeof EtablissementIdRoute
   '/event/$id': typeof EventIdRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/promouvoir': typeof PromouvoirRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/soirees': typeof SoireesRoute
   '/api/sitemap.xml': typeof ApiSitemapDotxmlRoute
   '/etablissement/$id': typeof EtablissementIdRoute
   '/event/$id': typeof EventIdRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/promouvoir'
     | '/sitemap.xml'
+    | '/soirees'
     | '/api/sitemap.xml'
     | '/etablissement/$id'
     | '/event/$id'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/promouvoir'
     | '/sitemap.xml'
+    | '/soirees'
     | '/api/sitemap.xml'
     | '/etablissement/$id'
     | '/event/$id'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/promouvoir'
     | '/sitemap.xml'
+    | '/soirees'
     | '/api/sitemap.xml'
     | '/etablissement/$id'
     | '/event/$id'
@@ -282,6 +294,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   PromouvoirRoute: typeof PromouvoirRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SoireesRoute: typeof SoireesRoute
   ApiSitemapDotxmlRoute: typeof ApiSitemapDotxmlRoute
   EtablissementIdRoute: typeof EtablissementIdRoute
   EventIdRoute: typeof EventIdRoute
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/soirees': {
+      id: '/soirees'
+      path: '/soirees'
+      fullPath: '/soirees'
+      preLoaderRoute: typeof SoireesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/sitemap.xml': {
       id: '/api/sitemap.xml'
       path: '/api/sitemap.xml'
@@ -450,6 +470,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   PromouvoirRoute: PromouvoirRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SoireesRoute: SoireesRoute,
   ApiSitemapDotxmlRoute: ApiSitemapDotxmlRoute,
   EtablissementIdRoute: EtablissementIdRoute,
   EventIdRoute: EventIdRoute,
