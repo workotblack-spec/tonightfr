@@ -46,6 +46,7 @@ function SoireesPage() {
         <div className="mx-auto max-w-3xl px-5 py-4">
           <h1 className="font-display text-2xl font-semibold tracking-tight">Soirées</h1>
           <p className="mt-1 text-[13px] text-muted-foreground">Toutes les soirées à venir, avec horaires et dress code.</p>
+          <Link to="/agenda" className="mt-2 inline-block text-xs font-medium text-primary underline">Voir le calendrier du mois</Link>
         </div>
       </header>
       <main className="mx-auto max-w-3xl space-y-8 px-5 pt-5">

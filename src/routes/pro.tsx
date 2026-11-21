@@ -2,11 +2,12 @@ import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Check, X, UserCheck, UserX, Building2, Plus, CreditCard, LifeBuoy } from "lucide-react";
+import { ArrowLeft, Check, X, UserCheck, UserX, Building2, CreditCard, LifeBuoy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { PassEntryCheck } from "@/components/tonight/PassEntryCheck";
 import { CANTONS } from "@/data/cantons";
+import { PublishEventForm } from "@/components/tonight/PublishEventForm";
 
 export const Route = createFileRoute("/pro")({
   head: () => pageHead("/pro", "Portail établissements — Tonight FR", "Gérez votre fiche établissement, vos règles maison et les demandes de tables VIP.", true),
@@ -92,9 +93,7 @@ function ProPage() {
       <Link to="/profile" className="inline-flex items-center gap-1 text-sm text-muted-foreground"><ArrowLeft className="h-4 w-4" /> Retour</Link>
       <h1 className="mt-3 font-display text-3xl font-semibold">Espace Pro</h1>
 
-      <Link to="/admin" className="press mt-5 flex h-12 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground">
-        <Plus className="h-4 w-4" /> Publier une soirée
-      </Link>
+      <PublishEventForm userId={user.id} venue={venueQ.data ? { name: venueQ.data.name, city: venueQ.data.city } : null} />
 
       <section className="mt-6 rounded-2xl border border-border bg-surface/60 p-5">
         <h2 className="flex items-center gap-2 font-semibold"><CreditCard className="h-4 w-4 text-primary" /> Mon abonnement & factures</h2>
