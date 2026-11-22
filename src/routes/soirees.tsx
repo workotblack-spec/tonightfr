@@ -4,6 +4,7 @@ import { CalendarDays, Clock, MapPin, Shirt } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pageHead } from "@/lib/page-head";
 import { BottomNav } from "@/components/tonight/BottomNav";
+import { motion } from "motion/react";
 
 const soireesQuery = queryOptions({
   queryKey: ["soirees-public"],
@@ -41,10 +42,11 @@ function SoireesPage() {
   for (const e of data) groups.set(day(e.starts_at), [...(groups.get(day(e.starts_at)) ?? []), e]);
 
   return (
-    <div className="min-h-screen pb-28">
+    <div className="relative min-h-screen pb-28">
+      <div className="night-aurora" aria-hidden />
       <header className="glass-strong sticky top-0 z-40">
         <div className="mx-auto max-w-3xl px-5 py-4">
-          <h1 className="font-display text-2xl font-semibold tracking-tight">Soirées</h1>
+          <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="neon-text font-display text-3xl font-semibold tracking-tight">Soirées</motion.h1>
           <p className="mt-1 text-[13px] text-muted-foreground">Toutes les soirées à venir, avec horaires et dress code.</p>
           <Link to="/agenda" className="mt-2 inline-block text-xs font-medium text-primary underline">Voir le calendrier du mois</Link>
         </div>
@@ -53,11 +55,11 @@ function SoireesPage() {
         {data.length === 0 && <p className="text-sm text-muted-foreground">Aucune soirée annoncée pour le moment. Revenez bientôt !</p>}
         {[...groups].map(([d, list]) => (
           <section key={d}>
-            <h2 className="flex items-center gap-2 text-sm font-semibold capitalize text-primary"><CalendarDays className="h-4 w-4" /> {d}</h2>
+            <h2 className="flex items-center gap-2 text-sm font-semibold capitalize text-primary"><span className="neon-dot h-1.5 w-1.5 rounded-full" /><CalendarDays className="h-4 w-4" /> <span className="neon-gradient-text">{d}</span></h2>
             <ul className="mt-3 space-y-3">
-              {list.map((e) => (
-                <li key={e.id}>
-                  <Link to="/event/$id" params={{ id: e.id }} className="press block rounded-2xl border border-border bg-surface/60 p-4">
+              {list.map((e, i) => (
+                <motion.li key={e.id} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <Link to="/event/$id" params={{ id: e.id }} className="smoked block rounded-2xl p-4">
                     <p className="font-semibold">{e.title}</p>
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                       <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {hour(e.starts_at)}</span>
@@ -67,7 +69,7 @@ function SoireesPage() {
                       {e.price_text && <span>{e.price_text}</span>}
                     </div>
                   </Link>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </section>

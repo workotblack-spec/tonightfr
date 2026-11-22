@@ -1,4 +1,5 @@
 import { pageHead } from "@/lib/page-head";
+import { motion } from "motion/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -85,6 +86,7 @@ function Home() {
 
   return (
     <div className="relative min-h-screen pb-28">
+      <div className="night-aurora" aria-hidden />
       <header className="glass-strong sticky top-0 z-40">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-5 py-3">
           <Link to="/" className="flex items-center gap-2.5">
@@ -111,7 +113,7 @@ function Home() {
 
       {/* Hero compact */}
       <section className="mx-auto max-w-3xl px-5 pt-4">
-        <div className="relative overflow-hidden rounded-2xl border border-border">
+        <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="relative overflow-hidden rounded-2xl border border-border shadow-[0_20px_60px_-25px_var(--neon)]">
           <img
             src={heroImg}
             alt="Fribourg la nuit"
@@ -121,17 +123,17 @@ function Home() {
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover opacity-60"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-primary/10" />
           <div className="relative px-5 pb-6 pt-24 sm:px-8 sm:pt-32">
             <div className="flex items-center gap-2 text-xs text-muted-foreground animate-fade-in">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="neon-dot h-1.5 w-1.5 rounded-full" />
               <span className="capitalize">{today}</span>
               <span>·</span>
               <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> Fribourg</span>
             </div>
-            <h1 className="mt-3 font-display text-[34px] font-semibold leading-[1.05] tracking-[-0.03em] animate-fade-up sm:text-5xl">
+            <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="neon-text mt-3 font-display text-[34px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-5xl">
               {t.heroTitle}
-            </h1>
+            </motion.h1>
             <p className="mt-3 max-w-md text-[15px] leading-relaxed text-foreground/75 animate-fade-up" style={{ animationDelay: "80ms" }}>
               {t.heroSub}
             </p>
@@ -152,7 +154,7 @@ function Home() {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Filtres */}
@@ -228,7 +230,9 @@ function Home() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {events.map((e, i) => (
-              <EventCard key={e.id} event={e} lang={lang} index={i} isFav={has(e.id)} onToggleFav={toggle} />
+              <motion.div key={e.id} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: Math.min(i, 6) * 0.06, ease: [0.16, 1, 0.3, 1] }} whileTap={{ scale: 0.98 }}>
+                <EventCard event={e} lang={lang} index={i} isFav={has(e.id)} onToggleFav={toggle} />
+              </motion.div>
             ))}
           </div>
         )}
