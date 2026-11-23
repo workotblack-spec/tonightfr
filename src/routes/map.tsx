@@ -10,6 +10,8 @@ import { CategoryChips } from "@/components/tonight/CategoryChips";
 import { DateChips } from "@/components/tonight/DateChips";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { useGeolocation } from "@/hooks/useGeolocation";
+import { BottomNav } from "@/components/tonight/BottomNav";
+import { useFavorites } from "@/hooks/useFavorites";
 
 // Leaflet must be loaded client-side only (depends on `window`).
 const MapView = lazy(() =>
@@ -27,6 +29,7 @@ function MapPage() {
   const [active, setActive] = useState<CategoryKey | "all">("all");
   const [mounted, setMounted] = useState(false);
   const geo = useGeolocation();
+  const { count } = useFavorites();
 
   useEffect(() => setMounted(true), []);
 
@@ -39,7 +42,8 @@ function MapPage() {
   const geolocated = events.filter((e) => e.lat != null && e.lng != null);
 
   return (
-    <div className="relative min-h-screen pb-6">
+    <div className="relative min-h-screen pb-28">
+      <div className="night-aurora" aria-hidden />
       <header className="glass-strong sticky top-0 z-40">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
           <Link
@@ -99,6 +103,7 @@ function MapPage() {
           </p>
         )}
       </main>
+      <BottomNav lang={lang} favCount={count} />
     </div>
   );
 }

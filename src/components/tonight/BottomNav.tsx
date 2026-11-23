@@ -19,7 +19,7 @@ export function BottomNav({ lang, favCount = 0 }: { lang: Lang; favCount?: numbe
   return (
     <nav
       aria-label="Navigation principale"
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[1100] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
     >
       <div className="smoked pointer-events-auto mx-auto flex max-w-md items-stretch justify-between rounded-[1.75rem] border border-border/60 px-1.5 py-1.5 shadow-[0_10px_40px_-10px_color-mix(in_oklab,var(--primary)_45%,transparent)]">
         {items.map(({ to, label, Icon, exact, badge }) => {
