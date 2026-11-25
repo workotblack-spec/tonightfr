@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 
 const KEY = "tonight-fr:favs";
+const EVT = "tonight-fr:favs-changed";
 
 function readLocal(): Set<string> {
   if (typeof window === "undefined") return new Set();
@@ -52,6 +53,13 @@ export function useFavorites() {
     };
   }, [user]);
 
+  // Keep every instance (pages + persistent nav badge) in sync.
+  useEffect(() => {
+    const onChange = (e: Event) => setFavs(new Set((e as CustomEvent<string[]>).detail));
+    window.addEventListener(EVT, onChange);
+    return () => window.removeEventListener(EVT, onChange);
+  }, []);
+
   const toggle = useCallback(
     async (id: string) => {
       const next = new Set(favs);
@@ -59,6 +67,7 @@ export function useFavorites() {
       if (isAdding) next.add(id);
       else next.delete(id);
       setFavs(next);
+      window.dispatchEvent(new CustomEvent(EVT, { detail: [...next] }));
 
       if (user) {
         if (isAdding) {

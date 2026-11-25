@@ -3,7 +3,6 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { CalendarDays, Clock, MapPin, Shirt } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pageHead } from "@/lib/page-head";
-import { BottomNav } from "@/components/tonight/BottomNav";
 import { motion } from "motion/react";
 
 const soireesQuery = queryOptions({
@@ -75,7 +74,6 @@ function SoireesPage() {
           </section>
         ))}
       </main>
-      <BottomNav lang="fr" />
     </div>
   );
 }

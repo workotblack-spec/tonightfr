@@ -10,8 +10,6 @@ import { CategoryChips } from "@/components/tonight/CategoryChips";
 import { DateChips } from "@/components/tonight/DateChips";
 import { LanguageSwitcher } from "@/components/tonight/LanguageSwitcher";
 import { useGeolocation } from "@/hooks/useGeolocation";
-import { BottomNav } from "@/components/tonight/BottomNav";
-import { useFavorites } from "@/hooks/useFavorites";
 
 // Leaflet must be loaded client-side only (depends on `window`).
 const MapView = lazy(() =>
@@ -29,7 +27,6 @@ function MapPage() {
   const [active, setActive] = useState<CategoryKey | "all">("all");
   const [mounted, setMounted] = useState(false);
   const geo = useGeolocation();
-  const { count } = useFavorites();
 
   useEffect(() => setMounted(true), []);
 
@@ -103,7 +100,6 @@ function MapPage() {
           </p>
         )}
       </main>
-      <BottomNav lang={lang} favCount={count} />
     </div>
   );
 }

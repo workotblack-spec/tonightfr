@@ -8,7 +8,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useFavorites } from "@/hooks/useFavorites";
 import { EventCard } from "@/components/tonight/EventCard";
 import { EmptyState } from "@/components/tonight/EmptyState";
-import { BottomNav } from "@/components/tonight/BottomNav";
 import type { DbEvent } from "@/lib/events";
 import { T } from "@/data/i18n";
 
@@ -63,7 +62,6 @@ function FavoritesPage() {
           </div>
         )}
       </div>
-      <BottomNav lang="fr" favCount={ids.length} />
     </div>
   );
 }

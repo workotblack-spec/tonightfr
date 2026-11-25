@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import { Send, Users, ShieldCheck, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useFavorites } from "@/hooks/useFavorites";
-import { BottomNav } from "@/components/tonight/BottomNav";
 import { passError } from "@/lib/member-pass";
 import { QRCodeSVG } from "qrcode.react";
 
@@ -63,7 +61,6 @@ function TransferForm({ passId }: { passId: string }) {
 
 function PassPage() {
   const { user, loading } = useAuth();
-  const { count } = useFavorites();
   const passes = useQuery({
     queryKey: ["my-passes", user?.id], enabled: !!user,
     queryFn: async () => {
@@ -111,7 +108,6 @@ function PassPage() {
           </>
         )}
       </main>
-      <BottomNav lang="fr" favCount={count} />
     </div>
   );
 }

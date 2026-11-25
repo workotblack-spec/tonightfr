@@ -5,7 +5,6 @@ import { T, type Lang } from "@/data/i18n";
 import { useAuth } from "@/hooks/useAuth";
 import { useFavorites } from "@/hooks/useFavorites";
 import { supabase } from "@/integrations/supabase/client";
-import { BottomNav } from "@/components/tonight/BottomNav";
 
 export const Route = createFileRoute("/profile")({
   head: () => pageHead("/profile", "Mon profil — Tonight FR", "Votre compte Tonight FR, vos favoris et votre accès à l’espace établissements.", true),
@@ -92,7 +91,6 @@ function ProfilePage() {
           </button>
         )}
       </main>
-      <BottomNav lang={lang} favCount={count} />
     </div>
   );
 }

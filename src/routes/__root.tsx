@@ -12,6 +12,19 @@ import appCss from "../styles.css?url";
 import { AuthSync } from "@/components/AuthSync";
 import { PWARegister } from "@/components/PWARegister";
 import { Button } from "@/components/ui/button";
+import { BottomNav } from "@/components/tonight/BottomNav";
+import { useFavorites } from "@/hooks/useFavorites";
+import { useRouterState } from "@tanstack/react-router";
+
+const NAV_PATHS = ["/", "/explore", "/map", "/favorites", "/profile", "/soirees", "/agenda", "/pass"];
+
+// Mounted once at the root so the neon bubble glides between pages.
+function PersistentNav() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { count } = useFavorites();
+  if (!NAV_PATHS.includes(pathname)) return null;
+  return <BottomNav lang="fr" favCount={count} />;
+}
 
 function NotFoundComponent() {
   return (
@@ -124,6 +137,7 @@ function RootComponent() {
       <AuthSync />
       <PWARegister />
       <Outlet />
+      <PersistentNav />
     </QueryClientProvider>
   );
 }

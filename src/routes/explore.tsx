@@ -9,7 +9,6 @@ import { fetchEvents, type CityFilter, type DbEvent } from "@/lib/events";
 import { EventCard } from "@/components/tonight/EventCard";
 import { EventCardSkeleton } from "@/components/tonight/EventCardSkeleton";
 import { EmptyState } from "@/components/tonight/EmptyState";
-import { BottomNav } from "@/components/tonight/BottomNav";
 import { SearchBar } from "@/components/tonight/SearchBar";
 import { useFavorites } from "@/hooks/useFavorites";
 
@@ -23,7 +22,7 @@ function ExplorePage() {
   const t = T[lang];
   const [city, setCity] = useState<CityFilter>("all");
   const [search, setSearch] = useState("");
-  const { has, toggle, count } = useFavorites();
+  const { has, toggle } = useFavorites();
 
   const q = useQuery({
     queryKey: ["events", "explore", city],
@@ -135,7 +134,6 @@ function ExplorePage() {
         </div>
       </main>
 
-      <BottomNav lang={lang} favCount={count} />
     </div>
   );
 }

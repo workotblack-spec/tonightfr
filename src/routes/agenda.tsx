@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight, Clock, MapPin, Shirt } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pageHead } from "@/lib/page-head";
-import { BottomNav } from "@/components/tonight/BottomNav";
 import { TZ, monthGrid, zurichDayKey } from "@/lib/agenda";
 
 const agendaQuery = queryOptions({
@@ -101,7 +100,6 @@ function AgendaPage() {
           </ul>
         </section>
       </main>
-      <BottomNav lang="fr" />
     </div>
   );
 }

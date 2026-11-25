@@ -16,7 +16,6 @@ import { EventCardSkeleton } from "@/components/tonight/EventCardSkeleton";
 import { fetchEvents, type WhenFilter, type DbEvent, type CityFilter } from "@/lib/events";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useGeolocation, distanceKm } from "@/hooks/useGeolocation";
-import { BottomNav } from "@/components/tonight/BottomNav";
 import { EmptyState } from "@/components/tonight/EmptyState";
 import { nearestCanton } from "@/data/cantons";
 import { MoodRadar } from "@/components/tonight/MoodRadar";
@@ -39,7 +38,7 @@ function Home() {
   const [when, setWhen] = useState<WhenFilter>("all");
   const [search, setSearch] = useState("");
   const [city, setCity] = useState<CityFilter>("all");
-  const { has, toggle, count } = useFavorites();
+  const { has, toggle } = useFavorites();
   const geo = useGeolocation();
   const t = T[lang];
 
@@ -262,7 +261,6 @@ function Home() {
         </footer>
       </main>
 
-      <BottomNav lang={lang} favCount={count} />
     </div>
   );
 }
