@@ -4,7 +4,7 @@ import { Sparkles, Compass, Map as MapIcon, Heart, User } from "lucide-react";
 import type { Lang } from "@/data/i18n";
 import { T } from "@/data/i18n";
 
-const SPRING = { type: "spring", stiffness: 420, damping: 34, mass: 0.8 } as const;
+const SPRING = { type: "spring", stiffness: 170, damping: 22, mass: 1 } as const;
 
 export function BottomNav({ lang, favCount = 0 }: { lang: Lang; favCount?: number }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
